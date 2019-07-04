@@ -48,6 +48,7 @@ class Signup extends Component {
     const validform = validField.includes(false);
     return (
       <div className="tp-auth-container">
+        <h1 className="tp-auth-title">Sign up</h1>
         <form>
           <div>
             <label htmlFor="name">Firstname</label>
