@@ -17,7 +17,7 @@ class ResetPassword extends Component {
     const { email } = resetpassword_input_data;
     return (
       <div className="tp-auth-container">
-        <h1 className="tp-auth-title">Change your password</h1>
+        <h2 className="tp-auth-title">Password Reset</h2>
         <form>
           <div>
             <label htmlFor="email">Email</label>

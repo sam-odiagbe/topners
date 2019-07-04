@@ -20,7 +20,7 @@ class Login extends Component {
     const { email, password } = login_input_data;
     return (
       <div className="tp-auth-container">
-        <h1 className="tp-auth-title">Login</h1>
+        <h2 className="tp-auth-title">Login</h2>
         <form>
           <div>
             <label htmlFor="email">Email</label>
