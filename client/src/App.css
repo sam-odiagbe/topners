@@ -1,0 +1,115 @@
+*,
+*::after,
+*::before {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body,
+html {
+  background: #421046;
+}
+a {
+  text-decoration: none;
+}
+
+li {
+  display: inline-block;
+}
+
+/* inputs - buttons */
+button {
+  padding: 10px 0.8em;
+  border-radius: 5px;
+}
+
+input,
+select {
+  padding: 1em 0.5em;
+  padding-right: 0;
+  display: block;
+  border-radius: 5px;
+  outline: 0;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.1);
+  border: 0;
+  transition: border 0.5s;
+}
+
+.tp-auth-container {
+  padding: 10px 0.5em;
+  margin: 10px 0.8em;
+  margin-top: 15px;
+  background: #fff;
+  box-shadow: 10px 10px 10px 10px rgba(87, 85, 85, 0.4);
+  border-radius: 10px;
+}
+
+label {
+  display: block;
+  font-size: 0.8em;
+  margin: 5px 0;
+}
+
+.tp-input-field {
+  font-size: 0.8em;
+}
+
+.tp-auth-btn {
+  background: rgb(39, 148, 238);
+  color: #ffffff;
+  font-weight: bold;
+  border: 0;
+  margin: 10px 0;
+  display: block;
+  width: 100%;
+}
+
+.tp-forgot-password {
+  text-align: center;
+  font-size: 0.8em;
+  display: block;
+  margin: 10px 0;
+}
+
+/* navigation */
+
+nav.tp-navigation {
+  height: 60px;
+  margin: 0 0.8em;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+nav.tp-navigation a {
+  color: #fff;
+  font-size: 0.8em;
+  font-weight: bold;
+}
+
+a.tp-brand {
+  font-size: 1.5em !important;
+  font-weight: bold;
+}
+
+nav.tp-navigation ul li {
+  padding: 0 0.4em;
+}
+
+.tp-active-link-class {
+  border-bottom: 3px solid rgb(39, 148, 238);
+}
+
+.tp-valid-field {
+  border: 2px solid green;
+}
+
+.tp-invalid-field {
+  border: 1px solid rgb(241, 3, 63);
+}
+
+button:disabled {
+  opacity: 0.5;
+}
