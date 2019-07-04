@@ -17,21 +17,24 @@ class ResetPassword extends Component {
     const { email } = resetpassword_input_data;
     return (
       <div className="tp-auth-container">
-        <div>
-          <label htmlFor="email">Email</label>
-          <input
-            type="email"
-            placeholder="email"
-            id="email"
-            required
-            className="tp-input-field"
-            value={email}
-            onChange={this.handleInputChange}
-          />
-        </div>
-        <div>
-          <button className="tp-auth-btn">Send reset link</button>
-        </div>
+        <h1 className="tp-auth-title">Change your password</h1>
+        <form>
+          <div>
+            <label htmlFor="email">Email</label>
+            <input
+              type="email"
+              placeholder="email"
+              id="email"
+              required
+              className="tp-input-field"
+              value={email}
+              onChange={this.handleInputChange}
+            />
+          </div>
+          <div>
+            <button className="tp-auth-btn">Send reset link</button>
+          </div>
+        </form>
       </div>
     );
   }
