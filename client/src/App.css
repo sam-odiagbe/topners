@@ -137,3 +137,106 @@ button:disabled {
   font-size: 0.7em;
   margin: 5px 0;
 }
+
+/* dashboar */
+
+.tp-main-container {
+  min-height: calc(100vh - 60px);
+  width: 100%;
+  padding: 10px 1em;
+}
+
+.tp-user-header {
+  height: 60px;
+  color: #fff;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 0.8em;
+  /* box-shadow: 0 0 2px 3px rgba(0, 0, 0, 0.3); */
+}
+
+.tp-user-header div {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.tp-top-up-account {
+  padding: 5px 1.5em;
+  font-weight: bold;
+  border-radius: 30px;
+  border: 0;
+  outline: 0;
+  background: rgb(11, 194, 93);
+  color: #fff;
+  box-shadow: 0 0 2px 0.5px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  margin-left: 15px;
+}
+
+.tp-card {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  transition: 0.3s;
+  margin-bottom: 15px;
+}
+
+.tp-card-container {
+  margin-top: 20px;
+  padding: 0 1em;
+}
+
+.tp-card:hover {
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+}
+.tp-card-top {
+  background: #ec4dc4;
+  border-radius: 5px 5px 0 0;
+  height: 180px;
+  color: #fff;
+  text-align: center;
+  vertical-align: center;
+  line-height: 180px;
+}
+
+.tp-card-top h1 {
+  font-size: 3em;
+}
+.tp-card-bottom {
+  padding: 10px 16px;
+  background: #fff;
+  border-radius: 0 0 5px 5px;
+  color: #222;
+}
+
+.tp-midy {
+  background: #10a35a;
+}
+
+.tp-maxi {
+  background: rgb(121, 17, 48);
+}
+
+.tp-entrance-fee,
+.tp-possible-win {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px;
+}
+
+.tp-enter-context {
+  padding: 5px 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.tp-enter-context-btn {
+  background: #10a35a;
+  color: #fff;
+  font-weight: bold;
+  border: 0;
+  outline: 0;
+  padding: 0.8em 1em;
+}
