@@ -8,6 +8,15 @@ const initState = {
     confirm_password: true,
     username: true,
     validField: [false, false, false, false, false, false, false]
+  },
+  login: {
+    email: true,
+    validfield: false
+  },
+
+  passwordreset: {
+    email: true,
+    validfield: false
   }
 };
 
@@ -26,7 +35,16 @@ const validationReducer = (state = initState, action) => {
       state = { ...state, signup };
       break;
     case "LOGIN-VALIDATION":
+      let login = { ...state.login, email: valid, validfield: valid };
+      state = { ...state, login };
       break;
+    case "PASSWORD-RESET-VALIDATION":
+      let passwordreset = {
+        ...state.passwordreset,
+        email: valid,
+        validfield: valid
+      };
+      state = { ...state, passwordreset };
     default:
       break;
   }

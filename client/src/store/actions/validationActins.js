@@ -72,3 +72,19 @@ export const signupValidation = data => {
     dispatch(feedback);
   };
 };
+
+export const loginValidation = email => {
+  let emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+  return {
+    type: "LOGIN-VALIDATION",
+    payload: { valid: emailRegex.test(email) }
+  };
+};
+
+export const passwordResetValidation = email => {
+  let emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+  return {
+    type: "PASSWORD-RESET-VALIDATION",
+    payload: { valid: emailRegex.test(email) }
+  };
+};

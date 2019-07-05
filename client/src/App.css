@@ -112,7 +112,7 @@ nav.tp-navigation ul li a {
 }
 
 .tp-invalid-field {
-  border: 1px solid rgb(241, 3, 63);
+  border: 2px solid rgb(241, 3, 63);
 }
 
 button:disabled {
