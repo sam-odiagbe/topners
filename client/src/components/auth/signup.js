@@ -51,19 +51,25 @@ class Signup extends Component {
         <h2 className="tp-auth-title">Sign up</h2>
         <form>
           <div>
-            <label htmlFor="name">Firstname</label>
+            <label htmlFor="name">Fullname</label>
             <input
               type="text"
               className={`tp-input-field ${
                 validName ? "" : "tp-invalid-field"
               }`}
-              placeholder="Name"
+              placeholder="John Doe"
               id="name"
               required
               value={name}
               onChange={this.handleInputChange}
               onBlur={this.validateField}
             />
+            <p className="tp-form-note">
+              Name must match the name on your bank account
+            </p>
+            {!validName && (
+              <p className="tp-field-error">*field is not valid</p>
+            )}
           </div>
           <div>
             <label htmlFor="email">Email</label>
@@ -79,6 +85,9 @@ class Signup extends Component {
               onChange={this.handleInputChange}
               onBlur={this.validateField}
             />
+            {!validEmail && (
+              <p className="tp-field-error">*email is not valid</p>
+            )}
           </div>
           <div>
             <label htmlFor="username">Username</label>
@@ -94,6 +103,11 @@ class Signup extends Component {
               onChange={this.handleInputChange}
               onBlur={this.validateField}
             />
+            {!validUsername && (
+              <p className="tp-field-error">
+                *Username can contain only letters and _
+              </p>
+            )}
           </div>
           <div>
             <label htmlFor="bank">Bank Name</label>
@@ -116,6 +130,9 @@ class Signup extends Component {
               <option>GTB</option>
               <option>Eco Bank</option>
             </select>
+            {!validBank && (
+              <p className="tp-field-error">*field is not valid</p>
+            )}
           </div>
           <div>
             <label htmlFor="account_number">Account Number</label>
@@ -131,6 +148,11 @@ class Signup extends Component {
               onChange={this.handleInputChange}
               onBlur={this.validateField}
             />
+            {!validAccount && (
+              <p className="tp-field-error">
+                *Account should be numbers and not more than ten in length
+              </p>
+            )}
           </div>
           <div>
             <label htmlFor="password">Password</label>
@@ -146,6 +168,12 @@ class Signup extends Component {
               onChange={this.handleInputChange}
               onBlur={this.validateField}
             />
+            {!validPassword && (
+              <p className="tp-field-error">
+                *password must contain numbers,lowercase, uppercas, any of this
+                [@#$%..]
+              </p>
+            )}
           </div>
           <div>
             <label htmlFor="confirm_password">Confirm Password</label>
@@ -161,6 +189,9 @@ class Signup extends Component {
               onChange={this.handleInputChange}
               onBlur={this.validateField}
             />
+            {!validConfirmPassword && (
+              <p className="tp-field-error">*password do not match</p>
+            )}
           </div>
           <div>
             <button className="tp-auth-btn" disabled={validform}>

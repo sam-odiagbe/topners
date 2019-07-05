@@ -125,3 +125,14 @@ button:disabled {
   font-weight: normal;
   margin-bottom: 20px;
 }
+
+.tp-form-note {
+  background: #f1f1f1;
+  padding: 8px 0.4em;
+  font-size: 0.8em;
+}
+
+.tp-field-error {
+  color: rgb(241, 37, 37);
+  font-size: 0.8em;
+}
