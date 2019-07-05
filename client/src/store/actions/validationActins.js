@@ -29,8 +29,20 @@ export const signupValidation = data => {
         feedback = { ...feedback, payload: { id, valid, index: 1 } };
         break;
       case "password":
+        const confirmPassword = getState().input.signup.confirm_password;
+        dispatch({
+          type: "SIGNUP-VALIDATION",
+          payload: {
+            id: "confirm_password",
+            valid: confirmPassword === value,
+            index: 5
+          }
+        });
         valid = passwordRegex.test(value);
-        feedback = { ...feedback, payload: { id, valid, index: 5 } };
+        feedback = {
+          ...feedback,
+          payload: { id, valid, index: 5 }
+        };
         break;
       case "bank":
         valid = banks.includes(value);
@@ -38,8 +50,10 @@ export const signupValidation = data => {
         break;
       case "account_number":
         valid = accountNumberRegex.test(value);
-        console.log(valid);
-        feedback = { ...feedback, payload: { id, valid, index: 4 } };
+        feedback = {
+          ...feedback,
+          payload: { id, valid, index: 4 }
+        };
         break;
       case "confirm_password":
         let password = getState().input.signup.password;
@@ -47,7 +61,6 @@ export const signupValidation = data => {
         feedback = { ...feedback, payload: { id, valid, index: 6 } };
         break;
       case "username":
-        console.log(value);
         valid = usernameRegex.test(value);
         let payload = { id, valid, index: 2 };
         feedback = { ...feedback, payload };

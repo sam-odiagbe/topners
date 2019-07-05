@@ -11,7 +11,7 @@ const initState = {
     name: "",
     email: "",
     username: "",
-    bank: "",
+    bank: "Select your bank",
     account_number: "",
     password: "",
     confirm_password: ""

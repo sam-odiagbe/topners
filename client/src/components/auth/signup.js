@@ -42,9 +42,6 @@ class Signup extends Component {
       confirm_password: validConfirmPassword,
       validField
     } = validation;
-
-    console.log(validField);
-
     const validform = validField.includes(false);
     return (
       <div className="tp-auth-container">
@@ -65,7 +62,7 @@ class Signup extends Component {
               onBlur={this.validateField}
             />
             <p className="tp-form-note">
-              Name must match the name on your bank account
+              * Name must match the name in your bank account
             </p>
             {!validName && (
               <p className="tp-field-error">*field is not valid</p>
@@ -103,6 +100,9 @@ class Signup extends Component {
               onChange={this.handleInputChange}
               onBlur={this.validateField}
             />
+            <p className="tp-form-note">
+              * Username can only have letters and _
+            </p>
             {!validUsername && (
               <p className="tp-field-error">
                 *Username can contain only letters and _
@@ -148,9 +148,13 @@ class Signup extends Component {
               onChange={this.handleInputChange}
               onBlur={this.validateField}
             />
+            <p className="tp-form-note">
+              * Name in account must match name provided above
+            </p>
             {!validAccount && (
               <p className="tp-field-error">
-                *Account should be numbers and not more than ten in length
+                * Account should be numbers and not more or less than ten in
+                length
               </p>
             )}
           </div>
@@ -168,6 +172,12 @@ class Signup extends Component {
               onChange={this.handleInputChange}
               onBlur={this.validateField}
             />
+            <div className="tp-form-note">
+              <p>* must have an uppercase</p>
+              <p>* must have a lowercase</p>
+              <p>* must have a number</p>
+              <p>* must have any of this #$^+=!*()@%&</p>
+            </div>
             {!validPassword && (
               <p className="tp-field-error">
                 *password must contain numbers,lowercase, uppercas, any of this
@@ -190,7 +200,7 @@ class Signup extends Component {
               onBlur={this.validateField}
             />
             {!validConfirmPassword && (
-              <p className="tp-field-error">*password do not match</p>
+              <p className="tp-field-error">*passwords do not match</p>
             )}
           </div>
           <div>

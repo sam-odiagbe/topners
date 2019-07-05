@@ -13,6 +13,7 @@ const initState = {
 
 const validationReducer = (state = initState, action) => {
   const { id, valid, index } = action.payload ? action.payload : {};
+
   switch (action.type) {
     case "SIGNUP-VALIDATION":
       let checkFields = state.signup.validField;
