@@ -192,7 +192,7 @@ button:disabled {
 }
 .tp-card-top {
   background: #ffffff;
-  border: 5px solid salmon;
+  border-bottom: 5px solid salmon;
   border-radius: 5px 5px 0 0;
   height: 200px;
   text-align: center;
