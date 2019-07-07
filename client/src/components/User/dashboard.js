@@ -43,45 +43,6 @@ class Dashboard extends Component {
               </div>
             </div>
           </div>
-
-          <div className="tp-card">
-            <div className="tp-card-top tp-midy">
-              <h1>Silver</h1>
-            </div>
-            <div className="tp-card-bottom">
-              <div className="tp-entrance-fee">
-                <h4>Entrance fee</h4>
-                <h4>&#8358;100</h4>
-              </div>
-
-              <div className="tp-possible-win">
-                <h4>Prize</h4>
-                <h4>upto 150k</h4>
-              </div>
-              <div className="tp-enter-context">
-                <button className="tp-enter-context-btn">Enter silver</button>
-              </div>
-            </div>
-          </div>
-
-          <div className="tp-card">
-            <div className="tp-card-top tp-maxi">
-              <h1>Gold</h1>
-            </div>
-            <div className="tp-card-bottom">
-              <div className="tp-entrance-fee">
-                <h4>Entrance fee</h4>
-                <h4>&#8358;500</h4>
-              </div>
-              <div className="tp-possible-win">
-                <h4>Win</h4>
-                <h4>upto 250k</h4>
-              </div>
-              <div className="tp-enter-context">
-                <button className="tp-enter-context-btn">Enter Gold</button>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     );
