@@ -191,13 +191,13 @@ button:disabled {
   box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
 }
 .tp-card-top {
-  background: #ec4dc4;
+  background: #ffffff;
+  border: 5px solid salmon;
   border-radius: 5px 5px 0 0;
-  height: 180px;
-  color: #fff;
+  height: 200px;
   text-align: center;
   vertical-align: center;
-  line-height: 180px;
+  line-height: 120px;
 }
 
 .tp-card-top h1 {
