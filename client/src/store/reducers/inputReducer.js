@@ -8,13 +8,13 @@ const initState = {
   },
 
   signup: {
-    name: "",
+    name: "Odiagbe Samson",
     email: "",
     username: "",
     bank: "Select your bank",
     account_number: "",
-    password: "",
-    confirm_password: ""
+    password: "Samson1@",
+    confirm_password: "Samson1@"
   }
 };
 

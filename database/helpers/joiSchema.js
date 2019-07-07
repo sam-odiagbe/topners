@@ -20,7 +20,8 @@ module.exports = {
     password: JOI.string()
       .trim()
       .required()
-      .regex(/^[0-9a-zA-Z]{8,30}$/)
+      .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$^+=!*()@%&]).{8,30}$/),
+    confirm_password: JOI.optional()
   }),
   loginSchema: JOI.object().keys({
     email: JOI.string()
@@ -30,7 +31,7 @@ module.exports = {
     password: JOI.string()
       .trim()
       .required()
-      .regex(/^[a-z0-9A-Z]{8,30}$/)
+      .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$^+=!*()@%&]).{8,30}$/)
   }),
 
   resetPassword: JOI.object().keys({

@@ -17,7 +17,7 @@ const auth = {
 module.exports = ({ user, type, token }) => {
   return new Promise((resolve, reject) => {
     const { email, _id } = user;
-    const from = "noreply@topners.com";
+    const from = "app138750920@heroku.com";
     const to = email;
     let subject, html, url;
 
@@ -55,7 +55,8 @@ module.exports = ({ user, type, token }) => {
       if (err) {
         reject({
           error: "Verification error",
-          message: "Couldn't send email verification"
+          message: "Couldn't send email verification",
+          err: err
         });
       }
       resolve({ error: null, message: "Verification email sent successfully" });

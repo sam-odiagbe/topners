@@ -72,19 +72,11 @@ module.exports = {
                       }
                       if (doc) {
                         // send the user verification token
-                        try {
-                          const sendVerificationEmail = await sendEmail({
-                            user,
-                            type: "VERIFICATION",
-                            token: verificationtoken
-                          });
-                          res.json({
-                            error: null,
-                            message: " User Account has been created"
-                          });
-                        } catch (err) {
-                          console.log(err);
-                        }
+
+                        res.json({
+                          error: null,
+                          message: " User Account has been created"
+                        });
                       }
                     });
                     // sendEmailVerification(doc.email);

@@ -2,12 +2,15 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { signupInputAction } from "../../store/actions/inputActions";
 import { signupValidation } from "../../store/actions/validationActins";
+import { createUserAccount } from "../../store/actions/authActions";
+import { stat } from "fs";
 
 class Signup extends Component {
   constructor() {
     super();
     this.handleInputChange = this.handleInputChange.bind(this);
     this.validateField = this.validateField.bind(this);
+    this.createUserAccount = this.createUserAccount.bind(this);
   }
 
   handleInputChange(e) {
@@ -21,8 +24,13 @@ class Signup extends Component {
     this.props.signupInputValidation({ id, value });
   }
 
+  createUserAccount(e) {
+    e.preventDefault();
+    this.props.createUserAccount(this.props.signup_input_data);
+  }
+
   render() {
-    const { signup_input_data, validation } = this.props;
+    const { signup_input_data, validation, error } = this.props;
     const {
       name,
       email,
@@ -42,11 +50,13 @@ class Signup extends Component {
       confirm_password: validConfirmPassword,
       validField
     } = validation;
+    const { error: signupError } = error;
     const validform = validField.includes(false);
     return (
       <div className="tp-auth-container">
         <h2 className="tp-auth-title">Sign up</h2>
-        <form>
+        {signupError && <p className="tp-field-error">{signupError}</p>}
+        <form onSubmit={this.createUserAccount}>
           <div>
             <label htmlFor="name">Fullname</label>
             <input
@@ -217,7 +227,8 @@ class Signup extends Component {
 const mapStateToProps = state => {
   return {
     signup_input_data: state.input.signup,
-    validation: state.validation.signup
+    validation: state.validation.signup,
+    error: state.error.signup
   };
 };
 
@@ -228,6 +239,9 @@ const mapDispatchToProps = dispatch => {
     },
     signupInputValidation: data => {
       dispatch(signupValidation(data));
+    },
+    createUserAccount: data => {
+      dispatch(createUserAccount(data));
     }
   };
 };
