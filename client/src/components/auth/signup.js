@@ -31,7 +31,13 @@ class Signup extends Component {
   }
 
   render() {
-    const { signup_input_data, validation, error, auth } = this.props;
+    const {
+      signup_input_data,
+      validation,
+      error,
+      auth,
+      signingup
+    } = this.props;
     const {
       name,
       email,
@@ -53,6 +59,15 @@ class Signup extends Component {
     } = validation;
     const { error: signupError } = error;
     const validform = validField.includes(false);
+    const signupButton = signingup ? (
+      <button className="tp-auth-btn" disabled={true}>
+        <i className="fas fa-circle-notch fa-spin" /> Creating account...
+      </button>
+    ) : (
+      <button className="tp-auth-btn" disabled={false}>
+        Create Account
+      </button>
+    );
     if (auth) {
       return <Redirect to="/dashboard" />;
     }
@@ -217,11 +232,7 @@ class Signup extends Component {
               <p className="tp-field-error">*passwords do not match</p>
             )}
           </div>
-          <div>
-            <button className="tp-auth-btn" disabled={validform}>
-              Sign up
-            </button>
-          </div>
+          <div>{signupButton}</div>
         </form>
       </div>
     );
@@ -233,7 +244,8 @@ const mapStateToProps = state => {
     signup_input_data: state.input.signup,
     validation: state.validation.signup,
     error: state.error.signup,
-    auth: state.auth.user
+    auth: state.auth.user,
+    signingup: state.components.signingup
   };
 };
 

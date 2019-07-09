@@ -30,11 +30,20 @@ class Login extends Component {
   }
 
   render() {
-    const { login_input_data, validation, auth, error } = this.props;
+    const { login_input_data, validation, auth, error, logingin } = this.props;
+    console.log(logingin);
     const { email, password } = login_input_data;
     const { email: validEmail, validfield } = validation;
     const { error: loginError } = error;
-    console.log(loginError);
+    const loginButton = logingin ? (
+      <button className="tp-auth-btn" disabled={true}>
+        <i className="fas fa-circle-notch fa-spin" /> Loging in...
+      </button>
+    ) : (
+      <button className="tp-auth-btn" disabled={false}>
+        Log in
+      </button>
+    );
     if (auth) {
       return <Redirect to="/dashboard" />;
     }
@@ -73,11 +82,7 @@ class Login extends Component {
               onChange={this.handleInputChange}
             />
           </div>
-          <div>
-            <button className="tp-auth-btn" disabled={false}>
-              Log in
-            </button>
-          </div>
+          <div>{loginButton}</div>
           <div>
             <p>
               <Link to="/auth/password-reset" className="tp-forgot-password">
@@ -96,7 +101,8 @@ const mapStateToProps = state => {
     login_input_data: state.input.login,
     validation: state.validation.login,
     auth: state.auth.user,
-    error: state.error.login
+    error: state.error.login,
+    logingin: state.components.logingin
   };
 };
 

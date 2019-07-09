@@ -1,43 +1,49 @@
 import axios from "axios";
+import { logingin, signingup } from "../actions/componentActions";
 import * as jwt from "jsonwebtoken";
 
 const url = "https://topner.herokuapp.com/";
 
 export const createUserAccount = data => {
   return dispatch => {
-    console.log("creating user account");
+    dispatch(signingup(true));
     axios
       .post(`${url}auth/signup`, data)
       .then(res => {
         console.log(res.data);
         const { error, success } = res.data;
         if (error) {
-          return dispatch({
+          dispatch({
             type: "SIGNUP-ERROR",
             payload: { error: error.message, success: null }
           });
+        } else {
+          dispatch({
+            type: "SIGNUP-SUCCESS",
+            payload: { error: null, success: success.message }
+          });
         }
-        return dispatch({
-          type: "SIGNUP-SUCCESS",
-          payload: { error: null, success: success.message }
-        });
+
+        dispatch(signingup(false));
       })
       .catch(err => {
-        return dispatch({
+        dispatch({
           type: "SIGNUP-ERROR",
           payload: err.message
         });
+
+        dispatch(signingup(false));
       });
   };
 };
 
 export const logUserIn = data => {
   return dispatch => {
+    dispatch(logingin(true));
     axios
       .post(`${url}auth/login`, data, { withCredentials: true })
       .then(res => {
         const { error, success } = res.data;
-        console.log(error);
         if (error) {
           dispatch({
             type: "LOGIN-ERROR",
@@ -45,8 +51,8 @@ export const logUserIn = data => {
           });
         } else {
           let user = jwt.verify(success.auth, "posiedonathenazeuskratoshydra");
-          console.log(user);
           dispatch({ type: "SET-ACTIVE-USER", payload: { user: user.auth } });
+          dispatch(logingin(false));
         }
       })
       .catch(err => {
@@ -55,6 +61,7 @@ export const logUserIn = data => {
           type: "LOGIN-ERROR",
           payload: { error: "Invalid credentials provided" }
         });
+        dispatch(logingin(false));
       });
   };
 };
