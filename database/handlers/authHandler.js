@@ -98,7 +98,7 @@ module.exports = {
           if (!user) {
             return res.json({
               error: "Invalid Credentials",
-              message: "Invalid credentials provided"
+              message: "Invalid credentials provided, user doesn't exist"
             });
           } else {
             //validate user password
@@ -132,7 +132,7 @@ module.exports = {
             } else {
               res.json({
                 error: "Invalid Credentials",
-                message: "Invalid credentials provided"
+                message: "Invalid credentials provided hey"
               });
             }
           }

@@ -37,6 +37,7 @@ export const logUserIn = data => {
       .post(`${url}/auth/login`, data, { withCredentials: true })
       .then(res => {
         const { error, success } = res.data;
+        console.log(error);
         if (error) {
           dispatch({
             type: "LOGIN-ERROR",
@@ -49,6 +50,7 @@ export const logUserIn = data => {
         }
       })
       .catch(err => {
+        console.log(err);
         dispatch({
           type: "LOGIN-ERROR",
           payload: { error: "Invalid credentials provided" }
