@@ -34,7 +34,7 @@ export const createUserAccount = data => {
 export const logUserIn = data => {
   return dispatch => {
     axios
-      .post(`${url}/auth/login`, data, { withCredentials: true })
+      .post(`${url}auth/login`, data, { withCredentials: true })
       .then(res => {
         const { error, success } = res.data;
         console.log(error);
