@@ -1,11 +1,13 @@
 import axios from "axios";
 import * as jwt from "jsonwebtoken";
 
+const url = "https://topner.herokuapp.com/";
+
 export const createUserAccount = data => {
   return dispatch => {
     console.log("creating user account");
     axios
-      .post("http://localhost:5000/auth/signup", data)
+      .post(`${url}auth/signup`, data)
       .then(res => {
         console.log(res.data);
         const { error, success } = res.data;
@@ -34,7 +36,7 @@ export const logUserIn = data => {
   console.log("loggin user in");
   return dispatch => {
     axios
-      .post("http://localhost:5000/auth/login", data, { withCredentials: true })
+      .post(`${url}/auth/login`, data, { withCredentials: true })
       .then(res => {
         const { error, success } = res.data;
         if (error) {
@@ -60,7 +62,7 @@ export const logUserIn = data => {
 export const verifyAuthentication = () => {
   return dispatch => {
     axios
-      .get("http://localhost:5000/auth/verify_authentication", {
+      .get(`${url}auth/verify_authentication`, {
         withCredentials: true
       })
       .then(res => {
@@ -89,17 +91,15 @@ export const verifyAuthentication = () => {
 
 export const logout = () => {
   return dispatch => {
-    axios
-      .post("http://localhost:5000/auth/logout", {}, { withCredentials: true })
-      .then(res => {
-        const { error, success } = res.data;
-        if (error) {
-        } else {
-          dispatch({
-            type: "SET-ACTIVE-USER",
-            payload: { user: null }
-          });
-        }
-      });
+    axios.post(`${url}auth/logout`, {}, { withCredentials: true }).then(res => {
+      const { error, success } = res.data;
+      if (error) {
+      } else {
+        dispatch({
+          type: "SET-ACTIVE-USER",
+          payload: { user: null }
+        });
+      }
+    });
   };
 };
