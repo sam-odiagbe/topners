@@ -1,7 +1,7 @@
 const initState = {
   login: {
-    email: "",
-    password: ""
+    email: "odiagbesamsonosaro@gmail.com",
+    password: "Samsonosaro$1"
   },
   resetpassword: {
     email: ""

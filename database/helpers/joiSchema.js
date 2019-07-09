@@ -30,7 +30,7 @@ module.exports = {
       .trim(),
     password: JOI.string()
       .trim()
-      .required()
+      .optional()
       .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$^+=!*()@%&]).{8,30}$/)
   }),
 

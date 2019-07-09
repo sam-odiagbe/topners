@@ -44,6 +44,7 @@ select {
   background: #fff;
   box-shadow: 10px 10px 10px 10px rgba(87, 85, 85, 0.4);
   border-radius: 10px;
+  z-index: 5;
 }
 
 label {
@@ -57,7 +58,7 @@ label {
 }
 
 .tp-auth-btn {
-  background: rgb(11, 194, 93);
+  background: #e20c4c;
   color: #ffffff;
   font-weight: bolder;
   font-size: 1em;
@@ -134,7 +135,7 @@ button:disabled {
 
 .tp-field-error {
   color: rgb(241, 37, 37);
-  font-size: 0.7em;
+  font-size: 0.8em;
   margin: 5px 0;
 }
 
@@ -169,7 +170,7 @@ button:disabled {
   border-radius: 30px;
   border: 0;
   outline: 0;
-  background: rgb(11, 194, 93);
+  background: #e20c4c;
   color: #fff;
   box-shadow: 0 0 2px 0.5px rgba(0, 0, 0, 0.3);
   cursor: pointer;
@@ -233,10 +234,72 @@ button:disabled {
 }
 
 .tp-enter-context-btn {
-  background: #10a35a;
+  background: #e20c4c;
   color: #fff;
   font-weight: bold;
   border: 0;
   outline: 0;
   padding: 0.8em 1em;
+}
+
+/* usr */
+.tp-initials {
+  display: inline-block;
+  height: 30px;
+  width: 30px;
+  border-radius: 50%;
+  line-height: 30px;
+  background: #e20c4c;
+  text-align: center;
+  vertical-align: center;
+  font-size: 1.2em;
+  font-weight: bolder;
+  color: #fff;
+}
+
+.tp-initials span {
+  vertical-align: center;
+}
+
+.tp-snackbar {
+  visibility: visible;
+  min-width: 250px;
+  margin-left: -125px;
+  background: #333;
+  color: #fff;
+  text-align: center;
+  border-radius: 5px;
+  padding: 16px;
+  position: fixed;
+  z-index: 100;
+  left: 50%;
+  bottom: -100px;
+}
+
+.tp-show-snackbar {
+  visibility: visible;
+  animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+/* snackbar animation */
+@keyframes fadein {
+  from {
+    bottom: -100px;
+    opacity: 0;
+  }
+  to {
+    bottom: 100px;
+    opacity: 1;
+  }
+}
+
+@keyframes fadeout {
+  from {
+    bottom: 100px;
+    opacity: 1;
+  }
+  to {
+    bottom: -100px;
+    opacity: 0;
+  }
 }

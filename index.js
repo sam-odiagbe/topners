@@ -3,11 +3,18 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 const path = require("path");
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
 const connection = require("./database/connect");
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(cors());
+
+const corsOption = {
+  origin: "https://topner.herokuapp.com",
+  credentials: true
+};
+app.use(cors(corsOption));
+app.use(cookieParser());
 
 // routes
 app.use("/auth", require("./routes/authRoutes"));

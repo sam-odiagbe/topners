@@ -1,8 +1,9 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { loginInputAction } from "../../store/actions/inputActions";
 import { loginValidation } from "../../store/actions/validationActins";
+import { logUserIn } from "../../store/actions/authActions";
 
 class Login extends Component {
   constructor() {
@@ -10,28 +11,38 @@ class Login extends Component {
 
     this.handleInputChange = this.handleInputChange.bind(this);
     this.validateField = this.validateField.bind(this);
+    this.logUserIn = this.logUserIn.bind(this);
   }
 
   handleInputChange(e) {
     const { id, value } = e.target;
     this.props.loginInputAction({ id, value });
-    this.props.loginValidation(value);
+    //his.props.loginValidation(value);
   }
 
   validateField(e) {
-    this.props.loginValidation(e.target.value);
+    //this.props.loginValidation(e.target.value);
+  }
+
+  logUserIn(e) {
+    e.preventDefault();
+    this.props.loguserin(this.props.login_input_data);
   }
 
   render() {
-    const { login_input_data, validation } = this.props;
-    console.log(validation);
+    const { login_input_data, validation, auth, error } = this.props;
     const { email, password } = login_input_data;
     const { email: validEmail, validfield } = validation;
-    console.log(validEmail);
+    const { error: loginError } = error;
+    console.log(loginError);
+    if (auth) {
+      return <Redirect to="/dashboard" />;
+    }
     return (
       <div className="tp-auth-container">
         <h2 className="tp-auth-title">Login</h2>
-        <form>
+        {loginError && <p className="tp-field-error">{loginError}</p>}
+        <form onSubmit={this.logUserIn}>
           <div>
             <label htmlFor="email">Email</label>
             <input
@@ -63,7 +74,7 @@ class Login extends Component {
             />
           </div>
           <div>
-            <button className="tp-auth-btn" disabled={!validfield}>
+            <button className="tp-auth-btn" disabled={false}>
               Log in
             </button>
           </div>
@@ -83,7 +94,9 @@ class Login extends Component {
 const mapStateToProps = state => {
   return {
     login_input_data: state.input.login,
-    validation: state.validation.login
+    validation: state.validation.login,
+    auth: state.auth.user,
+    error: state.error.login
   };
 };
 
@@ -94,6 +107,9 @@ const mapDispatchToProps = dispatch => {
     },
     loginValidation: data => {
       dispatch(loginValidation(data));
+    },
+    loguserin: data => {
+      return dispatch(logUserIn(data));
     }
   };
 };

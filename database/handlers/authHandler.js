@@ -11,6 +11,8 @@ const {
   validateIncomingResetPasswordBody
 } = require("../helpers/validateData");
 
+const JWT_SECRET_KEY = require("../../config").JWT_SECRET_KEY;
+
 module.exports = {
   createnewuser: async (req, res) => {
     const { name, email, password, username, bank, account_balance } = req.body;
@@ -24,15 +26,19 @@ module.exports = {
           // TODO: err
           if (user) {
             res.json({
-              error: "Account Exist",
-              message: "User with email already Exist"
+              error: {
+                message: "User exist"
+              },
+              success: null
             });
           } else {
             User.findOne({ username }, (err, user) => {
               if (user) {
                 res.json({
-                  error: "Account Exist",
-                  message: "Username already taken"
+                  error: {
+                    message: "Username already taken"
+                  },
+                  success: null
                 });
               } else {
                 // user details is valid
@@ -55,30 +61,14 @@ module.exports = {
                   }
                   if (user) {
                     // send email verification
-
+                    res.json({
+                      error: null,
+                      success: {
+                        message: "User Account Created successfully"
+                      }
+                    });
                     // create verification token  for user
-                    const verificationtoken = randomString({ length: 32 });
-                    const verify = new Verification({
-                      user: user._id,
-                      verificationtoken
-                    });
 
-                    verify.save(async (err, doc) => {
-                      if (err) {
-                        res.json({
-                          error: "Error",
-                          message: "Something went wrong"
-                        });
-                      }
-                      if (doc) {
-                        // send the user verification token
-
-                        res.json({
-                          error: null,
-                          message: " User Account has been created"
-                        });
-                      }
-                    });
                     // sendEmailVerification(doc.email);
                     // res.send("Account Created");
                   }
@@ -89,7 +79,12 @@ module.exports = {
         });
       }
     } catch (err) {
-      res.send(err.message);
+      res.json({
+        error: {
+          message: "Invalid Credentials"
+        },
+        success: null
+      });
     }
   },
   loguserin: async (req, res) => {
@@ -110,14 +105,30 @@ module.exports = {
             const validPassword = BCRYPT.compareSync(password, user.password);
             if (validPassword) {
               const token = jwt.sign(
-                { auth: user },
-                "posiedonzeusathenaarieskratos"
+                {
+                  auth: {
+                    id: user.id,
+                    username: user.username,
+                    balance: user.balance
+                  }
+                },
+                JWT_SECRET_KEY,
+                {
+                  expiresIn: "1d"
+                }
               );
-              res.json({
-                error: null,
-                message: "You are now logged in",
-                token
-              });
+              res
+                .cookie("poseidon_auth_urs", token, {
+                  expires: new Date(Date.now() + 900000),
+                  httpOnly: true
+                })
+                .json({
+                  error: null,
+                  success: {
+                    message: "You are now logged in",
+                    auth: token
+                  }
+                });
             } else {
               res.json({
                 error: "Invalid Credentials",
@@ -126,8 +137,18 @@ module.exports = {
             }
           }
         });
+      } else {
+        res.json({
+          error: "Unauthorized",
+          message: "something went wrong"
+        });
       }
-    } catch (err) {}
+    } catch (err) {
+      res.json({
+        error: "Invalid credentials",
+        message: "Invalid credentials provided"
+      });
+    }
   },
   resetpassword: async (req, res) => {
     // reseting the user password

@@ -2,6 +2,10 @@ const initState = {
   signup: {
     error: null,
     success: null
+  },
+
+  login: {
+    error: null
   }
 };
 
@@ -12,6 +16,10 @@ const errorReducer = (state = initState, action) => {
       const signup = { error, success };
       state = { ...state, signup };
       break;
+    case "LOGIN-ERROR":
+      console.log(error);
+      const login = { error };
+      state = { ...state, login };
     default:
       break;
   }

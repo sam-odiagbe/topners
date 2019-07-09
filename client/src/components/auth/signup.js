@@ -4,6 +4,7 @@ import { signupInputAction } from "../../store/actions/inputActions";
 import { signupValidation } from "../../store/actions/validationActins";
 import { createUserAccount } from "../../store/actions/authActions";
 import { stat } from "fs";
+import { Redirect } from "react-router-dom";
 
 class Signup extends Component {
   constructor() {
@@ -30,7 +31,7 @@ class Signup extends Component {
   }
 
   render() {
-    const { signup_input_data, validation, error } = this.props;
+    const { signup_input_data, validation, error, auth } = this.props;
     const {
       name,
       email,
@@ -52,6 +53,9 @@ class Signup extends Component {
     } = validation;
     const { error: signupError } = error;
     const validform = validField.includes(false);
+    if (auth) {
+      return <Redirect to="/dashboard" />;
+    }
     return (
       <div className="tp-auth-container">
         <h2 className="tp-auth-title">Sign up</h2>
@@ -228,7 +232,8 @@ const mapStateToProps = state => {
   return {
     signup_input_data: state.input.signup,
     validation: state.validation.signup,
-    error: state.error.signup
+    error: state.error.signup,
+    auth: state.auth.user
   };
 };
 
