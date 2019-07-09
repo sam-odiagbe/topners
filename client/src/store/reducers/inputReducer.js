@@ -1,20 +1,20 @@
 const initState = {
   login: {
-    email: "odiagbesamsonosaro@gmail.com",
-    password: "Samsonosaro$1"
+    email: "",
+    password: ""
   },
   resetpassword: {
     email: ""
   },
 
   signup: {
-    name: "Odiagbe Samson",
+    name: "",
     email: "",
     username: "",
     bank: "Select your bank",
     account_number: "",
-    password: "Samson1@",
-    confirm_password: "Samson1@"
+    password: "",
+    confirm_password: ""
   }
 };
 

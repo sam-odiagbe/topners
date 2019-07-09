@@ -137,6 +137,7 @@ button:disabled {
   color: rgb(241, 37, 37);
   font-size: 0.8em;
   margin: 5px 0;
+  text-align: center;
 }
 
 /* dashboar */

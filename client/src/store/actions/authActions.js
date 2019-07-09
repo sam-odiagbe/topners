@@ -32,8 +32,6 @@ export const createUserAccount = data => {
 };
 
 export const logUserIn = data => {
-  console.log(data);
-  console.log("loggin user in");
   return dispatch => {
     axios
       .post(`${url}/auth/login`, data, { withCredentials: true })
