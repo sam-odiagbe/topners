@@ -34,6 +34,7 @@ class Login extends Component {
     console.log(logingin);
     const { email, password } = login_input_data;
     const { email: validEmail, validfield } = validation;
+    console.log("logging: ", logingin);
     const { error: loginError } = error;
     const loginButton = logingin ? (
       <button className="tp-auth-btn" disabled={true}>
