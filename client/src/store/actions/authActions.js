@@ -49,6 +49,7 @@ export const logUserIn = data => {
             type: "LOGIN-ERROR",
             payload: { error }
           });
+          dispatch(logingin(false));
         } else {
           let user = jwt.verify(success.auth, "posiedonathenazeuskratoshydra");
           dispatch({ type: "SET-ACTIVE-USER", payload: { user: user.auth } });
