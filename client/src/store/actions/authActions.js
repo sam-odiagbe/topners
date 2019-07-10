@@ -2,13 +2,13 @@ import axios from "axios";
 import { logingin, signingup } from "../actions/componentActions";
 import * as jwt from "jsonwebtoken";
 
-const url = "https://topner.herokuapp.com/";
+const url = "http://localhost:5000/";
 
 export const createUserAccount = data => {
   return dispatch => {
     dispatch(signingup(true));
     axios
-      .post(`${url}auth/signup`, data)
+      .post(`${url}auth/signup`, data, { withCredentials: true })
       .then(res => {
         console.log(res.data);
         const { error, success } = res.data;

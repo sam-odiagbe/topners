@@ -1,34 +1,55 @@
 import React from "react";
 import { connect } from "react-redux";
 import { logout } from "../../store/actions/authActions";
+import { Link } from "react-router-dom";
+import { openDropDown } from "../../store/actions/componentActions";
 
-const SignedInLink = ({ user, loguserout }) => {
+const SignedInLink = ({ user, loguserout, dropdown, openDropdown }) => {
   return (
     <React.Fragment>
       <li>
-        <div className="tp-initials">
+        <div className="tp-initials" onClick={openDropdown}>
           <span>{user.username[0]}</span>
+          <div className={`tp-drop-down ${dropdown ? "tp-open" : ""}`}>
+            <ul>
+              <li>
+                <Link to="/profile">Update profile</Link>
+              </li>
+              <li>
+                <Link to="/complaint">Send a Complaint</Link>
+              </li>
+
+              <li>
+                <a href="javascript:void(0)" onClick={loguserout}>
+                  logout
+                </a>
+              </li>
+            </ul>
+          </div>
         </div>
-      </li>
-      <li>
-        <a href="javascript:void(0)" onClick={loguserout}>
-          logout
-        </a>
       </li>
     </React.Fragment>
   );
 };
 
+const mapStateToProps = state => {
+  return {
+    dropdown: state.components.dropdownopen
+  };
+};
 const mapDispatchToProps = dispatch => {
   return {
     loguserout: e => {
       e.preventDefault();
       return dispatch(logout());
+    },
+    openDropdown: () => {
+      return dispatch(openDropDown());
     }
   };
 };
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(SignedInLink);

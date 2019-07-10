@@ -1,14 +1,10 @@
 const mongoose = require("mongoose");
 const db = mongoose.connection;
 
-//
-mongoose.connect(
-  process.env.MONGODB_URI ||
-    "mongodb://sammyodiagbe:DjAckGFb7P7zuar@ds347367.mlab.com:47367/heroku_86xxvb3j",
-  {
-    useNewUrlParser: true
-  }
-);
+// mongodb://sammyodiagbe:DjAckGFb7P7zuar@ds347367.mlab.com:47367/heroku_86xxvb3j
+mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/topten", {
+  useNewUrlParser: true
+});
 
 db.on("error", () => {
   console.log("something went wrong");

@@ -12,3 +12,11 @@ export const signingup = value => {
     payload: value
   };
 };
+
+export const openDropDown = () => {
+  console.log("opening drop down action ");
+  return {
+    type: "DROP-COMP",
+    payload: null
+  };
+};

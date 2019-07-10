@@ -1,6 +1,7 @@
 const initState = {
   logingin: false,
-  signingup: false
+  signingup: false,
+  dropdownopen: false
 };
 
 const componentReducer = (state = initState, action) => {
@@ -11,6 +12,9 @@ const componentReducer = (state = initState, action) => {
     case "SIGNING-UP-COMP":
       state = { ...state, signingup: action.payload };
       break;
+    case "DROP-COMP":
+      let drop = state.dropdownopen ? false : true;
+      state = { ...state, dropdownopen: drop };
     default:
       break;
   }
