@@ -20,6 +20,7 @@ const errorReducer = (state = initState, action) => {
       console.log(error);
       const login = { error };
       state = { ...state, login };
+      break;
     default:
       break;
   }

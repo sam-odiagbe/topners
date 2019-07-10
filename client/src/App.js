@@ -11,7 +11,6 @@ import Loader from "./components/layout/loading";
 import Notification from "./components/comps/notificationSnackbar";
 
 function App({ loading, user, notification }) {
-  console.log(notification);
   if (loading) {
     return <Loader />;
   } else {

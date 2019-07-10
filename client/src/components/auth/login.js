@@ -30,12 +30,10 @@ class Login extends Component {
   }
 
   render() {
-    const { login_input_data, validation, auth, error, logingin } = this.props;
-    console.log(logingin);
+    const { login_input_data, validation, auth, logingin } = this.props;
+
     const { email, password } = login_input_data;
-    const { email: validEmail, validfield } = validation;
-    console.log("logging: ", logingin);
-    const { error: loginError } = error;
+    const { email: validEmail } = validation;
     const loginButton = logingin ? (
       <button className="tp-auth-btn" disabled={true}>
         <i className="fas fa-circle-notch fa-spin" /> Loging in...

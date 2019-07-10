@@ -6,7 +6,6 @@ const initState = {
 };
 
 const componentReducer = (state = initState, action) => {
-  console.log(action.type);
   switch (action.type) {
     case "LOGING-IN-COMP":
       state = { ...state, logingin: action.payload };

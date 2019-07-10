@@ -114,7 +114,7 @@ export const verifyAuthentication = () => {
 export const logout = () => {
   return dispatch => {
     axios.post(`${url}auth/logout`, {}, { withCredentials: true }).then(res => {
-      const { error, success } = res.data;
+      const { error } = res.data;
       if (error) {
       } else {
         dispatch({

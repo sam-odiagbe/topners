@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 import { signupInputAction } from "../../store/actions/inputActions";
 import { signupValidation } from "../../store/actions/validationActins";
 import { createUserAccount } from "../../store/actions/authActions";
-import { stat } from "fs";
 import { Redirect } from "react-router-dom";
 
 class Signup extends Component {
@@ -31,13 +30,7 @@ class Signup extends Component {
   }
 
   render() {
-    const {
-      signup_input_data,
-      validation,
-      error,
-      auth,
-      signingup
-    } = this.props;
+    const { signup_input_data, validation, auth, signingup } = this.props;
     const {
       name,
       email,
@@ -54,11 +47,8 @@ class Signup extends Component {
       password: validPassword,
       bank: validBank,
       account_number: validAccount,
-      confirm_password: validConfirmPassword,
-      validField
+      confirm_password: validConfirmPassword
     } = validation;
-    const { error: signupError } = error;
-    const validform = validField.includes(false);
     const signupButton = signingup ? (
       <button className="tp-auth-btn" disabled={true}>
         <i className="fas fa-circle-notch fa-spin" /> Creating account...

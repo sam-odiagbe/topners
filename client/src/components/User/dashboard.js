@@ -2,18 +2,20 @@ import React, { Component } from "react";
 import "./userstyle.css";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
-
+import Question from "../layout/question";
 class Dashboard extends Component {
   constructor() {
     super();
-
+    this.state = {};
     //
   }
   render() {
     let number = 500;
-    const { user } = this.props;
-    const { username, id } = user ? user : {};
-    console.log(user);
+    const { user, game } = this.props;
+    console.log(game);
+    const { username } = user ? user : {};
+    const { question } = game;
+
     if (!user) {
       return <Redirect to="/auth/login" />;
     } else {
@@ -27,10 +29,14 @@ class Dashboard extends Component {
             </div>
           </div>
           <div className="tp-question-container">
-            <p className="tp-form-note">
-              ! When you are signed up for a game, and question is available for
-              answering , it will appear here
-            </p>
+            {question ? (
+              <Question question={question} />
+            ) : (
+              <p className="tp-form-note">
+                ! When you are signed up for a game, and question is available
+                for answering , it will appear here
+              </p>
+            )}
           </div>
           <div className="tp-card-container">
             <div className="tp-card">
@@ -60,7 +66,8 @@ class Dashboard extends Component {
 
 const mapStateToProps = state => {
   return {
-    user: state.auth.user
+    user: state.auth.user,
+    game: state.game
   };
 };
 

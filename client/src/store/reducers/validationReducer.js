@@ -45,6 +45,7 @@ const validationReducer = (state = initState, action) => {
         validfield: valid
       };
       state = { ...state, passwordreset };
+      break;
     default:
       break;
   }
