@@ -2,7 +2,7 @@ import axios from "axios";
 import { logingin, signingup, notify } from "../actions/componentActions";
 import * as jwt from "jsonwebtoken";
 
-const url = "http://localhost:5000/";
+const url = "https://topner.herokuapp.com/";
 
 export const createUserAccount = data => {
   return dispatch => {
