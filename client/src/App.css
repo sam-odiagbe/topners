@@ -215,7 +215,7 @@ button:disabled {
   box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
 }
 .tp-card-top {
-  background: #117ab8;
+  background: #0adba7;
   color: #fff;
   border-radius: 5px 5px 0 0;
   height: 200px;
@@ -429,7 +429,7 @@ button:disabled {
   left: 0;
   height: 25px;
   width: 25px;
-  background-color: #eee;
+  background-color: #bbb;
   border-radius: 50%;
 }
 
