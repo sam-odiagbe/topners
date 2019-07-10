@@ -10,7 +10,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 const corsOption = {
-  origin: "https://topner.herokuapp.com",
+  origin: "http://localhost:3000",
   credentials: true
 };
 app.use(cors(corsOption));

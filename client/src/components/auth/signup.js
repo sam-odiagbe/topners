@@ -74,7 +74,6 @@ class Signup extends Component {
     return (
       <div className="tp-auth-container">
         <h2 className="tp-auth-title">Sign up</h2>
-        {signupError && <p className="tp-field-error">{signupError}</p>}
         <form onSubmit={this.createUserAccount}>
           <div>
             <label htmlFor="name">Fullname</label>

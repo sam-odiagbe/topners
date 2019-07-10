@@ -14,6 +14,7 @@ html {
   position: relative;
   background: #0f3877;
   height: 100vh;
+  z-index: 10;
 }
 .App::after {
   content: "";
@@ -304,27 +305,6 @@ button:disabled {
 }
 
 /* snackbar animation */
-@keyframes fadein {
-  from {
-    bottom: -100px;
-    opacity: 0;
-  }
-  to {
-    bottom: 100px;
-    opacity: 1;
-  }
-}
-
-@keyframes fadeout {
-  from {
-    bottom: 100px;
-    opacity: 1;
-  }
-  to {
-    bottom: -100px;
-    opacity: 0;
-  }
-}
 
 .tp-drop-down ul li a {
   color: #555;
@@ -370,4 +350,50 @@ button:disabled {
 .tp-open {
   visibility: visible;
   opacity: 1;
+}
+/* notification snackbar */
+
+.tp-notification-snackbar {
+  position: absolute;
+  width: 300px;
+  height: 50px;
+  padding: 5px 10px;
+  border-radius: 5px;
+  top: -116px;
+  opacity: 0;
+  background: #555;
+  color: #fff;
+  animation: fadein 2s, fadeout 1s 3.5s;
+  left: 50%;
+  margin-left: -150px;
+  z-index: 1000 !important;
+  animation-fill-mode: forwards;
+  box-shadow: 0 0 10px 3px rgba(0, 0, 0, 0.2), 0 0 10px 3px rgba(0, 0, 0, 0.2);
+}
+
+.tp-notification-snackbar p {
+  font-size: 0.8em;
+}
+
+/* notification snackbar animation */
+@keyframes fadein {
+  from {
+    top: -100px;
+    opacity: 0;
+  }
+  to {
+    top: 110px;
+    opacity: 1;
+  }
+}
+
+@keyframes fadeout {
+  from {
+    top: 110px;
+    opacity: 1;
+  }
+  to {
+    top: -110px;
+    opacity: 0;
+  }
 }

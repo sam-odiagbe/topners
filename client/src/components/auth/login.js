@@ -51,7 +51,6 @@ class Login extends Component {
     return (
       <div className="tp-auth-container">
         <h2 className="tp-auth-title">Login</h2>
-        {loginError && <p className="tp-field-error">{loginError}</p>}
         <form onSubmit={this.logUserIn}>
           <div>
             <label htmlFor="email">Email</label>

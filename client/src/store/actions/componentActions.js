@@ -20,3 +20,10 @@ export const openDropDown = () => {
     payload: null
   };
 };
+
+export const notify = (dispatch, data) => {
+  dispatch({ type: "NOTIFICATION", payload: data });
+  setTimeout(() => {
+    dispatch({ type: "NOTIFICATION", payload: null });
+  }, 5000);
+};

@@ -1,10 +1,12 @@
 const initState = {
   logingin: false,
   signingup: false,
-  dropdownopen: false
+  dropdownopen: false,
+  notification: null
 };
 
 const componentReducer = (state = initState, action) => {
+  console.log(action.type);
   switch (action.type) {
     case "LOGING-IN-COMP":
       state = { ...state, logingin: action.payload };
@@ -15,6 +17,12 @@ const componentReducer = (state = initState, action) => {
     case "DROP-COMP":
       let drop = state.dropdownopen ? false : true;
       state = { ...state, dropdownopen: drop };
+      break;
+    case "NOTIFICATION":
+      console.log("doing notification");
+      let notification = action.payload;
+      state = { ...state, notification };
+      break;
     default:
       break;
   }

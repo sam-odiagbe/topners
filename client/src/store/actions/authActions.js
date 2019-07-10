@@ -1,8 +1,8 @@
 import axios from "axios";
-import { logingin, signingup } from "../actions/componentActions";
+import { logingin, signingup, notify } from "../actions/componentActions";
 import * as jwt from "jsonwebtoken";
 
-const url = "https://topner.herokuapp.com/";
+const url = "http://localhost:5000/";
 
 export const createUserAccount = data => {
   return dispatch => {
@@ -10,17 +10,23 @@ export const createUserAccount = data => {
     axios
       .post(`${url}auth/signup`, data, { withCredentials: true })
       .then(res => {
-        console.log(res.data);
         const { error, success } = res.data;
         if (error) {
           dispatch({
             type: "SIGNUP-ERROR",
             payload: { error: error.message, success: null }
           });
+          dispatch(signingup(false));
+          notify(dispatch, { type: "Signup error", message: error.message });
         } else {
           dispatch({
             type: "SIGNUP-SUCCESS",
             payload: { error: null, success: success.message }
+          });
+
+          notify(dispatch, {
+            type: "Account created",
+            message: success.message
           });
         }
 
@@ -33,6 +39,7 @@ export const createUserAccount = data => {
         });
 
         dispatch(signingup(false));
+        notify(dispatch, { type: "Signup error", message: err.message });
       });
   };
 };
@@ -50,6 +57,10 @@ export const logUserIn = data => {
             payload: { error }
           });
           dispatch(logingin(false));
+          notify(dispatch, {
+            type: "Login error",
+            message: "Invalid credentials, try again"
+          });
         } else {
           let user = jwt.verify(success.auth, "posiedonathenazeuskratoshydra");
           dispatch({ type: "SET-ACTIVE-USER", payload: { user: user.auth } });
@@ -63,6 +74,10 @@ export const logUserIn = data => {
           payload: { error: "Invalid credentials provided" }
         });
         dispatch(logingin(false));
+        notify(dispatch, {
+          type: "Login error",
+          message: "Invalid Credentials try again"
+        });
       });
   };
 };
@@ -75,7 +90,6 @@ export const verifyAuthentication = () => {
       })
       .then(res => {
         const { error, success } = res.data;
-        console.log(res.data);
         if (error) {
           dispatch({
             type: "AUTHENTICATION-END",

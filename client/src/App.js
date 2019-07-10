@@ -8,14 +8,17 @@ import Navigation from "./components/layout/navigation";
 import Dashboard from "./components/User/dashboard";
 import { connect } from "react-redux";
 import Loader from "./components/layout/loading";
+import Notification from "./components/comps/notificationSnackbar";
 
-function App({ loading, user }) {
+function App({ loading, user, notification }) {
+  console.log(notification);
   if (loading) {
     return <Loader />;
   } else {
     return (
       <Router>
         <div className="App">
+          {notification ? <Notification data={notification} /> : ""}
           <Navigation user={user} />
           <Switch>
             <Route path="/auth/signup" exact component={Signup} />
@@ -36,7 +39,8 @@ function App({ loading, user }) {
 const mapStateToProps = state => {
   return {
     loading: state.auth.loading,
-    user: state.auth.user
+    user: state.auth.user,
+    notification: state.components.notification
   };
 };
 
