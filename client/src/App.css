@@ -359,7 +359,7 @@ button:disabled {
   height: 50px;
   padding: 5px 10px;
   border-radius: 5px;
-  top: -116px;
+  bottom: -116px;
   opacity: 0;
   background: #555;
   color: #fff;
@@ -378,22 +378,22 @@ button:disabled {
 /* notification snackbar animation */
 @keyframes fadein {
   from {
-    top: -100px;
+    bottom: -100px;
     opacity: 0;
   }
   to {
-    top: 110px;
+    bottom: 110px;
     opacity: 1;
   }
 }
 
 @keyframes fadeout {
   from {
-    top: 110px;
+    bottom: 110px;
     opacity: 1;
   }
   to {
-    top: -110px;
+    bottom: -110px;
     opacity: 0;
   }
 }
