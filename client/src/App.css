@@ -8,7 +8,24 @@
 
 body,
 html {
+}
+
+.App {
+  position: relative;
   background: #0f3877;
+  height: 100vh;
+}
+.App::after {
+  content: "";
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  z-index: 1;
+  background: #fff;
+  top: 250px;
+  right: 0;
+  transform-origin: top left;
+  transform: skewY(20deg);
 }
 a {
   text-decoration: none;
@@ -38,13 +55,16 @@ select {
 }
 
 .tp-auth-container {
-  padding: 2em 0.5em;
-  margin: 10px 0.8em;
+  position: relative;
+  padding: 1em 0.5em;
+  margin: 0 1.5em;
   margin-top: 30px;
+  margin-bottom: 15px;
   background: #fff;
-  box-shadow: 10px 10px 10px 10px rgba(87, 85, 85, 0.4);
+  box-shadow: 0 0 30px 5px rgba(87, 85, 85, 0.4),
+    0px 0px 10px 5px rgba(87, 85, 85, 0.4);
   border-radius: 10px;
-  z-index: 5;
+  z-index: 100 !important;
 }
 
 label {
@@ -304,3 +324,5 @@ button:disabled {
     opacity: 0;
   }
 }
+
+/* testing */
