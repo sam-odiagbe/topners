@@ -61,8 +61,8 @@ select {
   margin-top: 30px;
   margin-bottom: 15px;
   background: #fff;
-  box-shadow: 0 0 30px 5px rgba(87, 85, 85, 0.4),
-    0px 0px 10px 5px rgba(87, 85, 85, 0.4);
+  box-shadow: 0 0 30px 5px rgba(87, 85, 85, 0.2),
+    0px 0px 10px 5px rgba(87, 85, 85, 0.2);
   border-radius: 10px;
   z-index: 100 !important;
 }
