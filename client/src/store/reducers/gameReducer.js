@@ -1,6 +1,6 @@
 const initState = {
   question: {
-    question: "Who is the president of Nigeria",
+    question: "Who is the president of Nigeria ?",
     options: [
       "Mohammadu Buhari",
       "Jayjay Okocha",
