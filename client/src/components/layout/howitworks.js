@@ -35,12 +35,21 @@ const Howitworks = () => {
       </div>
 
       <div className="tp-step">
-        <h4>Step 1</h4>
+        <h4>Step 4</h4>
         <h5>I won , time to get paid</h5>
         <p>
           The best part, payments are made during the following week after
           previous game, please note that payments are made into the provided
           account number
+        </p>
+      </div>
+
+      <div className="tp-step">
+        <h4 style={{ color: "red" }}>Note</h4>
+        <p>
+          Questions are removed 10 minutes after they have been posted, in other
+          words you have the first ten minutes after the question has been
+          posted to answer them
         </p>
       </div>
     </div>
