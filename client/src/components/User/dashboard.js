@@ -3,6 +3,8 @@ import "./userstyle.css";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 import Question from "../layout/question";
+import Howitworks from "../layout/howitworks";
+
 class Dashboard extends Component {
   constructor() {
     super();
@@ -58,6 +60,7 @@ class Dashboard extends Component {
               </div>
             </div>
           </div>
+          <Howitworks />
         </div>
       );
     }

@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css?family=Bahianita&display=swap");
+
 *,
 *::after,
 *::before {
@@ -8,6 +10,7 @@
 
 body {
   position: relative;
+  font-family: "Bahianita", cursive;
 }
 
 .App {
@@ -471,4 +474,18 @@ button:disabled {
 
 .tp-question-head {
   padding: 1em 0;
+}
+
+.tp-step {
+  padding: 1em 0;
+}
+
+.tp-step h4,
+.tp-step h5 {
+  padding: 5px 0;
+}
+
+.tp-step p {
+  font-size: 0.9em;
+  line-height: 1.1em;
 }
