@@ -8,7 +8,8 @@ const Howitworks = () => {
         <h5>Deposit into your accout</h5>
         <p>
           The very first step is to pay money into your account, account with
-          amount less than 100 would be blocked out of joining games
+          amount less than 100 would be blocked out of joining games, be rest
+          assured that paying with us is very safe and secure
         </p>
       </div>
 

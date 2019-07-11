@@ -1,5 +1,4 @@
-@import url("https://fonts.googleapis.com/css?family=Bahianita&display=swap");
-
+@import url("https://fonts.googleapis.com/css?family=Ubuntu&display=swap");
 *,
 *::after,
 *::before {
@@ -10,7 +9,7 @@
 
 body {
   position: relative;
-  font-family: "Bahianita", cursive;
+  font-family: "Ubuntu";
 }
 
 .App {
@@ -487,5 +486,5 @@ button:disabled {
 
 .tp-step p {
   font-size: 0.9em;
-  line-height: 1.1em;
+  line-height: 1.4em;
 }
