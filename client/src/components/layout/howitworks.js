@@ -3,6 +3,7 @@ import React from "react";
 const Howitworks = () => {
   return (
     <div className="tp-how-it-works">
+      <h2 className="tp-how">How it works ?</h2>
       <div className="tp-step">
         <h4>Step 1</h4>
         <h5>Deposit into your accout</h5>

@@ -493,3 +493,7 @@ button:disabled {
   font-size: 0.9em;
   line-height: 1.4em;
 }
+
+.tp-how {
+  padding: 8px 0;
+}
