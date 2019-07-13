@@ -6,7 +6,7 @@ import { getGame } from "./gameAction";
 const url = "https://topner.herokuapp.com/";
 
 export const createUserAccount = data => {
-  return dispatch => {
+  return (dispatch, getState) => {
     dispatch(signingup(true));
     axios
       .post(`${url}auth/signup`, data, { withCredentials: true })
@@ -40,7 +40,11 @@ export const createUserAccount = data => {
         });
 
         dispatch(signingup(false));
-        notify(dispatch, { type: "Signup error", message: err.message });
+        notify(
+          dispatch,
+          { type: "Signup error", message: err.message },
+          getState
+        );
       });
   };
 };
