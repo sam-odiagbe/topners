@@ -497,3 +497,42 @@ button:disabled {
 .tp-how {
   padding: 8px 0;
 }
+
+.tp-notification {
+  background: #fc1359;
+  padding: 0 1em;
+  color: #fff;
+  opacity: 0;
+  height: 0;
+  transition: all 0.5s;
+  transition-delay: 0.4s;
+  animation: notify_in 0.5s, notify_out 0.5s 1.5s;
+  animation-fill-mode: forwards;
+  overflow: hidden;
+}
+
+@keyframes notify_in {
+  from {
+    opacity: 0;
+    height: 0;
+    padding: 0 1em;
+  }
+  to {
+    opacity: 1;
+    height: auto;
+    padding: 1.2em 1em;
+  }
+}
+
+@keyframes notify_out {
+  from {
+    opacity: 1;
+    height: auto;
+    padding: 1.2em 1em;
+  }
+  to {
+    opacity: 0;
+    height: 0;
+    padding: 0 1em;
+  }
+}

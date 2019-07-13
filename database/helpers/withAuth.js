@@ -1,14 +1,12 @@
 const jwt = require("jsonwebtoken");
 const JWT_SECRET_KEY = require("../../config").JWT_SECRET_KEY;
+const User = require("../models/User");
 const withAuth = (req, res, next) => {
-  console.log(req.cookies);
   const token =
     req.body.poseidon_auth_urs ||
     req.query.poseidon_auth_urs ||
     req.headers["x-access-poseidon_auth_urs"] ||
     req.cookies.poseidon_auth_urs;
-
-  console.log(token);
   if (!token) {
     res.json({
       error: {

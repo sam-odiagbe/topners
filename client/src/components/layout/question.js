@@ -1,21 +1,30 @@
 import React from "react";
 
-const Question = ({ question }) => {
-  let options_ = question.options.map(value => {
+const Question = ({ question, submitAnswer, blockedout }) => {
+  let options_ = question.option.map((value, ind) => {
     return (
-      <label className="tp-radio-container">
+      <label className="tp-radio-container" key={ind}>
         {value}
-        <input type="radio" name="answer" />
-        <span class="tp-checkmark" />
+        <input
+          type="radio"
+          name="answer"
+          onChange={submitAnswer}
+          value={value}
+        />
+        <span className="tp-checkmark" />
       </label>
     );
   });
   return (
     <React.Fragment>
       <h3 className="tp-question-head">{question.question}</h3>
-      <form>
-        <div>{options_}</div>
-      </form>
+      {!blockedout ? (
+        <form>
+          <div>{options_}</div>
+        </form>
+      ) : (
+        <h2 style={{ color: "red" }}>Blocked out</h2>
+      )}
     </React.Fragment>
   );
 };

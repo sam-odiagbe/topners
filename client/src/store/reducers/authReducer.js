@@ -8,7 +8,7 @@ const authReducer = (state = initState, action) => {
   const { loading, user } = action.payload ? action.payload : {};
   switch (action.type) {
     case "AUTHENTICATION-END":
-      state = { ...state, loading, user };
+      state = { ...state, loading };
       break;
     case "SET-ACTIVE-USER":
       console.log(user);

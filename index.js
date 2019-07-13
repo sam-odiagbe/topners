@@ -5,12 +5,16 @@ const path = require("path");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const connection = require("./database/connect");
+// const cron = require("./database/helpers/cronjobs");
+const http = require("http").createServer(app);
+const io = require("./IO/socket")(http);
+const socketacitons = require("./IO/actions")(io);
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 const corsOption = {
-  origin: "https://topner.herokuapp.com",
+  origin: "http://localhost:3000",
   credentials: true
 };
 app.use(cors(corsOption));
@@ -18,6 +22,8 @@ app.use(cookieParser());
 
 // routes
 app.use("/auth", require("./routes/authRoutes"));
+app.use(require("./routes/gameRoutes"));
+app.use(require("./routes/adminRoutes"));
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static("client/build"));
@@ -27,6 +33,6 @@ if (process.env.NODE_ENV === "production") {
   });
 }
 
-app.listen(PORT, () => {
+http.listen(PORT, () => {
   console.log(`App is listening on ${PORT}`);
 });

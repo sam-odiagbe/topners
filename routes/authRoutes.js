@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const User = require("../database/models/User");
 const {
   createnewuser,
   loguserin,
@@ -25,12 +26,14 @@ router.post("/reset_password", (req, res, next) => {
 });
 
 router.get("/verify_authentication", withAuth, (req, res, next) => {
-  res.json({
-    error: null,
-    success: {
-      message: "Autheticated",
-      auth: req.auth
-    }
+  const { _id } = req.auth;
+  User.findOne({ _id }, (err, user) => {
+    res.json({
+      success: {
+        message: "hello",
+        auth: user
+      }
+    });
   });
 });
 

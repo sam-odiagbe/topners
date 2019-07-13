@@ -15,7 +15,7 @@ const JWT_SECRET_KEY = require("../../config").JWT_SECRET_KEY;
 
 module.exports = {
   createnewuser: async (req, res) => {
-    const { name, email, password, username, bank, account_balance } = req.body;
+    const { name, email, password, username, bank } = req.body;
 
     try {
       // validate incoming req body
@@ -46,11 +46,11 @@ module.exports = {
                   name,
                   email,
                   username,
-                  bank,
-                  account_balance
+                  bank
                 });
 
                 user.totalAmountWon = 0;
+                user.account_balance = 10000;
                 user.verified = false;
                 user.signupForNextGameShow = false;
                 user.password = user.hashPassword(password);
@@ -106,20 +106,16 @@ module.exports = {
             if (validPassword) {
               const token = jwt.sign(
                 {
-                  auth: {
-                    id: user.id,
-                    username: user.username,
-                    balance: user.balance
-                  }
+                  auth: user
                 },
                 JWT_SECRET_KEY,
                 {
-                  expiresIn: "1d"
+                  expiresIn: "3d"
                 }
               );
               res
                 .cookie("poseidon_auth_urs", token, {
-                  expires: new Date(Date.now() + 900000),
+                  expires: new Date(Date.now() + 259000000),
                   httpOnly: true
                 })
                 .json({

@@ -1,8 +1,9 @@
 import axios from "axios";
 import { logingin, signingup, notify } from "../actions/componentActions";
 import * as jwt from "jsonwebtoken";
+import { getGame } from "./gameAction";
 
-const url = "https://topner.herokuapp.com/";
+const url = "http://localhost:5000/";
 
 export const createUserAccount = data => {
   return dispatch => {
@@ -45,7 +46,7 @@ export const createUserAccount = data => {
 };
 
 export const logUserIn = data => {
-  return dispatch => {
+  return (dispatch, getState) => {
     dispatch(logingin(true));
     axios
       .post(`${url}auth/login`, data, { withCredentials: true })
@@ -57,10 +58,14 @@ export const logUserIn = data => {
             payload: { error }
           });
           dispatch(logingin(false));
-          notify(dispatch, {
-            type: "Login error",
-            message: "Invalid credentials, try again"
-          });
+          notify(
+            dispatch,
+            {
+              type: "Login error",
+              message: "Invalid credentials, try again"
+            },
+            getState
+          );
         } else {
           let user = jwt.verify(success.auth, "posiedonathenazeuskratoshydra");
           dispatch({ type: "SET-ACTIVE-USER", payload: { user: user.auth } });
@@ -74,10 +79,14 @@ export const logUserIn = data => {
           payload: { error: "Invalid credentials provided" }
         });
         dispatch(logingin(false));
-        notify(dispatch, {
-          type: "Login error",
-          message: "Invalid Credentials try again"
-        });
+        notify(
+          dispatch,
+          {
+            type: "Login error",
+            message: "Invalid Credentials try again"
+          },
+          getState
+        );
       });
   };
 };
@@ -93,19 +102,21 @@ export const verifyAuthentication = () => {
         if (error) {
           dispatch({
             type: "AUTHENTICATION-END",
-            payload: { loading: false, user: null }
+            payload: { loading: false }
           });
         } else {
           dispatch({
             type: "AUTHENTICATION-END",
-            payload: { loading: false, user: success.auth }
+            payload: { loading: false }
           });
+          dispatch(setActiveUser(success.auth));
+          dispatch(getGame());
         }
       })
       .catch(err => {
         dispatch({
           type: "AUTHENTICATION-END",
-          payload: { loading: false, user: null }
+          payload: { loading: false }
         });
       });
   };
@@ -117,11 +128,15 @@ export const logout = () => {
       const { error } = res.data;
       if (error) {
       } else {
-        dispatch({
-          type: "SET-ACTIVE-USER",
-          payload: { user: null }
-        });
+        dispatch(setActiveUser(null));
       }
     });
+  };
+};
+
+export const setActiveUser = user => {
+  return {
+    type: "SET-ACTIVE-USER",
+    payload: { user }
   };
 };

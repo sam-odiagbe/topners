@@ -3,7 +3,6 @@ import SignoutLinks from "./signoutlinks";
 import SignedInLink from "./signinlinks";
 
 const Navigation = ({ user }) => {
-  console.log(user);
   const link = user ? <SignedInLink user={user} /> : <SignoutLinks />;
   return (
     <nav className="tp-navigation">

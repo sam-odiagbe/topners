@@ -18,7 +18,6 @@ const componentReducer = (state = initState, action) => {
       state = { ...state, dropdownopen: drop };
       break;
     case "NOTIFICATION":
-      console.log("doing notification");
       let notification = action.payload;
       state = { ...state, notification };
       break;

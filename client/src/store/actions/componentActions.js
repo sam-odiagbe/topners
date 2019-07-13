@@ -21,9 +21,16 @@ export const openDropDown = () => {
   };
 };
 
-export const notify = (dispatch, data) => {
+export const notify = (dispatch, data, state) => {
+  const c = data.c ? "green" : "red";
+  data.c = c;
+  const notification = state().components.notification;
+  if (notification) {
+    dispatch({ type: "NOTIFICATION", payload: null });
+  }
   dispatch({ type: "NOTIFICATION", payload: data });
+
   setTimeout(() => {
     dispatch({ type: "NOTIFICATION", payload: null });
-  }, 5000);
+  }, 4500);
 };

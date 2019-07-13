@@ -1,18 +1,18 @@
 const initState = {
-  question: {
-    question: "Who is the president of Nigeria ?",
-    options: [
-      "Mohammadu Buhari",
-      "Jayjay Okocha",
-      "Desmond elliot",
-      "none of the above"
-    ]
-  }
+  game: null,
+  blockout: false
 };
 
 const gameReducer = (state = initState, action) => {
   switch (action.type) {
-    case "RESET-QUESTION":
+    case "SET-GAME-OBJECT":
+      state = { ...state, game: action.payload.game };
+      break;
+    case "WRONG-OR-RIGHT":
+      state = { ...state, correct: action.payload, wrong: !action.payload };
+      break;
+    case "BLOCK-OUT":
+      state = { ...state, blockout: action.payload };
       break;
     default:
       break;
