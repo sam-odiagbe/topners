@@ -3,7 +3,7 @@ import { logingin, signingup, notify } from "../actions/componentActions";
 import * as jwt from "jsonwebtoken";
 import { getGame } from "./gameAction";
 
-const url = "https://topner.herokuapp.com";
+const url = "https://topner.herokuapp.com/";
 
 export const createUserAccount = data => {
   return dispatch => {
