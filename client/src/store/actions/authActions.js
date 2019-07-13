@@ -18,17 +18,21 @@ export const createUserAccount = data => {
             payload: { error: error.message, success: null }
           });
           dispatch(signingup(false));
-          notify(dispatch, { type: "Signup error", message: error.message });
+          notify(dispatch, { message: error.message, c: false }, getState);
         } else {
           dispatch({
             type: "SIGNUP-SUCCESS",
             payload: { error: null, success: success.message }
           });
 
-          notify(dispatch, {
-            type: "Account created",
-            message: success.message
-          });
+          notify(
+            dispatch,
+            {
+              c: true,
+              message: success.message
+            },
+            getState
+          );
         }
 
         dispatch(signingup(false));
