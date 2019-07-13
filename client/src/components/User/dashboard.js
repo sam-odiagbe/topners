@@ -60,7 +60,7 @@ class Dashboard extends Component {
 
   render() {
     const { user, game } = this.props;
-    const { username, account_balance } = user ? user : {};
+    const { username, account_balance = 0 } = user ? user : {};
     const { game: theGame, correct, wrong, blockout } = game;
     if (!user) {
       return <Redirect to="/auth/login" />;
