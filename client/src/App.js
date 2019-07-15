@@ -10,6 +10,8 @@ import { connect } from "react-redux";
 import Loader from "./components/layout/loading";
 import Notification from "./components/layout/notification";
 import IO from "./components/layout/iolistener";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App({ loading, user, notification, socket }) {
   if (loading) {
@@ -18,12 +20,7 @@ function App({ loading, user, notification, socket }) {
     return (
       <Router>
         <div className="App">
-          {notification && (
-            <Notification
-              message={notification.message}
-              color={notification.c}
-            />
-          )}
+          <ToastContainer />
           <Navigation user={user} />
           <Switch>
             <Route path="/auth/signup" exact component={Signup} />
@@ -39,7 +36,7 @@ function App({ loading, user, notification, socket }) {
               component={ResetPassword}
             />
           </Switch>
-          <IO />
+          <IO toast={toast} />
         </div>
       </Router>
     );

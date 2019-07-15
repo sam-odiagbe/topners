@@ -23,12 +23,7 @@ class Dashboard extends Component {
 
   signUpForGame() {
     // dispatch auth action that allows user to signup for game
-    const user = this.props.user;
-    const { signupForNextGameShow } = user;
-    if (signupForNextGameShow) {
-      console.log("Already signed up");
-      return;
-    }
+
     return this.props.signupForGame();
   }
 

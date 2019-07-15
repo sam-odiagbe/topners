@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { setGameObject } from "../../store/actions/gameAction";
 import { setActiveUser } from "../../store/actions/authActions";
 import actions from "../../io/actions";
-
+import { cssTransition } from "react-toastify";
 const {
   error,
   success,
@@ -15,22 +15,56 @@ const {
   totalwinnersreached
 } = actions;
 class Io extends Component {
+  componentWillMount() {
+    const { toast } = this.props;
+    toast.configure({
+      autoClose: false
+    });
+  }
   componentDidMount() {
     const Socket = this.props.Socket;
-    Socket.on("ERROR", response => {
-      console.log(response);
-    });
-
+    const { toast } = this.props;
     Socket.on(error, response => {
-      console.log(response);
+      const id = 1;
+      if (toast.isActive(id)) {
+        toast.dismiss(id);
+        toast(response, {
+          toastId: id,
+          delay: 5000,
+          type: toast.TYPE.INFO
+        });
+      }
+
+      toast(response, {
+        toastId: id,
+        delay: 10,
+        type: toast.TYPE.INFO,
+        className: "tp-toast-error"
+      });
     });
 
     Socket.on(success, response => {
-      console.log(response);
+      const id = 2;
+      if (toast.isActive(id)) {
+        toast.dismiss(id);
+        toast(response, {
+          toastId: id,
+          delay: 5000,
+          type: toast.TYPE.INFO
+        });
+      }
     });
 
     Socket.on(setuser, user => {
-      this.props.setActiveUser(user);
+      const id = 3;
+      if (toast.isActive(id)) {
+        toast.dismiss(id);
+        toast("User has been set", {
+          toastId: id,
+          delay: 5000,
+          type: toast.TYPE.INFO
+        });
+      }
     });
 
     Socket.on(setgameobject, game => {
@@ -38,7 +72,15 @@ class Io extends Component {
     });
 
     Socket.on(blockout, response => {
-      console.log(response);
+      const id = 4;
+      if (toast.isActive(id)) {
+        toast.dismiss(id);
+        toast.update("Blocked out", {
+          toastId: id,
+          delay: 5000,
+          type: toast.TYPE.INFO
+        });
+      }
     });
 
     Socket.on(totalwinnersreached, response => {
