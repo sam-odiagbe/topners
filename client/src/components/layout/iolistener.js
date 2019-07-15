@@ -30,17 +30,17 @@ class Io extends Component {
         toast.dismiss(id);
         toast(response, {
           toastId: id,
-          delay: 5000,
+          delay: 50,
           type: toast.TYPE.INFO
         });
+      } else {
+        toast(response, {
+          toastId: id,
+          delay: 50,
+          type: toast.TYPE.INFO,
+          className: "tp-toast-error"
+        });
       }
-
-      toast(response, {
-        toastId: id,
-        delay: 10,
-        type: toast.TYPE.INFO,
-        className: "tp-toast-error"
-      });
     });
 
     Socket.on(success, response => {
