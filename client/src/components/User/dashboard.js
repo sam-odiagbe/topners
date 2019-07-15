@@ -45,7 +45,8 @@ class Dashboard extends Component {
     const { username, account_balance, signupForNextGameShow } = user
       ? user
       : {};
-    const { game: theGame, correct, wrong, blockout, gameison } = game;
+    const { game: theGame, correct, wrong, blockout } = game;
+    const { gameison } = theGame;
     console.log(theGame);
     if (!user) {
       return <Redirect to="/auth/login" />;
