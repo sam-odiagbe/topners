@@ -1,19 +1,25 @@
-const { getGame, signupForGame, submitAnswer } = require("./gameio");
+const { getGame, signupForGame, submitAnswer, sendGame } = require("./gameio");
+const {
+  signuserupforgame,
+  getgameobject,
+  submitanswer
+} = require("./emitters");
 
 module.exports = io => {
   io.on("connection", socket => {
-    socket.on("sendGame", () => {
+    socket.on(getgameobject, () => {
       const game = getGame();
       game.then(game => {
-        socket.emit("getGame", game);
+        sendGame(game, socket);
       });
     });
 
-    socket.on("signupforgame", data => {
+    socket.on(signuserupforgame, data => {
+      console.log("signing up for game");
       signupForGame(data, socket);
     });
 
-    socket.on("submitAnswer", data => {
+    socket.on(submitanswer, data => {
       submitAnswer(data, socket);
     });
   });

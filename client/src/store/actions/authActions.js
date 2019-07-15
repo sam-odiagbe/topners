@@ -1,7 +1,6 @@
 import axios from "axios";
 import { logingin, signingup, notify } from "../actions/componentActions";
 import * as jwt from "jsonwebtoken";
-import { getGame } from "./gameAction";
 
 const url = "https://topner.herokuapp.com/";
 
@@ -118,7 +117,6 @@ export const verifyAuthentication = () => {
             payload: { loading: false }
           });
           dispatch(setActiveUser(success.auth));
-          dispatch(getGame());
         }
       })
       .catch(err => {

@@ -16,7 +16,7 @@ const Question = ({ question, submitAnswer, blockedout }) => {
     );
   });
   return (
-    <React.Fragment>
+    <div className="tp-question">
       <h3 className="tp-question-head">{question.question}</h3>
       {!blockedout ? (
         <form>
@@ -25,7 +25,7 @@ const Question = ({ question, submitAnswer, blockedout }) => {
       ) : (
         <h2 style={{ color: "red" }}>Blocked out</h2>
       )}
-    </React.Fragment>
+    </div>
   );
 };
 

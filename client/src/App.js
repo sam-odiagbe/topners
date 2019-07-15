@@ -9,6 +9,7 @@ import Dashboard from "./components/User/dashboard";
 import { connect } from "react-redux";
 import Loader from "./components/layout/loading";
 import Notification from "./components/layout/notification";
+import IO from "./components/layout/iolistener";
 
 function App({ loading, user, notification, socket }) {
   if (loading) {
@@ -38,6 +39,7 @@ function App({ loading, user, notification, socket }) {
               component={ResetPassword}
             />
           </Switch>
+          <IO />
         </div>
       </Router>
     );

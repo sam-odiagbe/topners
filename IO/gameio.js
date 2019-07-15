@@ -1,6 +1,16 @@
 const Game = require("../database/models/game");
 const User = require("../database/models/User");
 const Winner = require("../database/models/Winner");
+const {
+  error,
+  success,
+  setuser,
+  setgameobject,
+  winner: youwin,
+  totalwinnersreached,
+  wronganswer,
+  blockout
+} = require("./emitters");
 
 module.exports = {
   getGame: () => {
@@ -14,23 +24,24 @@ module.exports = {
     // check for that user
     User.findOne({ _id }, (err, user) => {
       if (err) {
-        Socket.emit("err", "Something went wrong");
+        Socket.emit(error, "Something went wrong");
       }
 
       if (user) {
         // get the user balance
         if (user.account_balance < 100 || user.signupForNextGameShow) {
-          Socket.emit("err", "Insufficient Balance or Already Signed up");
+          Socket.emit(error, "Insufficient Balance or Already Signed up");
         } else {
           // check to see if game is on
           Game.findOne({}, (err, game) => {
             if (err) {
+              Socket.emit(error, "Something went wrong, try again");
             }
 
             if (game) {
               // check if there is an ongoing game
               if (game.gameison) {
-                Socket.emit("err", "Game is on wait until next session");
+                Socket.emit(error, "Game is on wait until next session");
               } else {
                 // now we can sign user up for next session
                 const newBalance = user.account_balance - 100;
@@ -45,10 +56,10 @@ module.exports = {
                   { new: true },
                   (err, doc) => {
                     if (err) {
-                      Socket.emit("err", "Couldn't Join game, try again");
+                      Socket.emit(error, "Couldn't Join game, try again");
                     }
-                    Socket.emit("joinsuccessful");
-                    Socket.emit("setuser", { ...doc._doc, password: null });
+                    Socket.emit(success, "You have successfully signed up");
+                    Socket.emit(setuser, { ...doc._doc, password: null });
                   }
                 );
               }
@@ -59,49 +70,60 @@ module.exports = {
     });
   },
 
-  submitAnswer: (data, Socket) => {
+  submitAnswer: ({ user, checkanswer, totalNumberOfWinners }, Socket) => {
     // check if the user is already blockedout
-    Winner.findOne({}, (err, winner) => {
-      if (winner) {
-        if (
-          winner.winners.includes(data._id) ||
-          winner.blockedOut.includes(data._id)
-        ) {
-          if (winner.blockedOut.includes(data._id)) {
-            Socket.emit("blockedOut", true);
-          }
-          if (winner.winners.includes(data._id)) {
-            Socket.emit("WinnerAlready", {
-              message: "Already a winner",
-              c: true
-            });
+    // check if the answer is correct
+    if (checkanswer) {
+      Winner.findOne({}, (err, winner) => {
+        // check if there is a winner object
+        if (winner) {
+          // check if the total winners has been reached
+          if (totalNumberOfWinners === winner.winners.length) {
+            Socket.emit(totalwinnersreached, "Oops, correct but too slow");
+          } else {
+            // total number not  reached
+            if (
+              winner.winners.includes(user._id) ||
+              winner.blockedOut.includes(user._id)
+            ) {
+              // if (winner.blockedOut.includes(user._id)) {
+              // }
+              if (winner.winners.includes(user._id)) {
+                console.log("already a winner");
+                Socket.emit(youwin, "Already a winner");
+              }
+            } else {
+              winner.winners.push(user);
+              winner.blockedOut.push(user);
+              winner.save();
+
+              Socket.emit(youwin, {
+                message: "Hurray, you made it",
+                c: true
+              });
+            }
           }
         } else {
-          winner.winners.push(data);
-          winner.blockedOut.push(data);
-          winner.save();
-          Socket.emit("blockedOut", true);
-          Socket.emit("Winner", {
-            message: "You have been lined up for payment",
-            c: true
+          const winner = new Winner({
+            totalWinners: 0
           });
+
+          winner.totalWinners = winner.totalWinners + 1;
+          winner.winners.push(user);
+          winner.blockedOut.push(user);
+
+          winner.save();
+          Socket.emit(youwin, "Hurray, you are in");
         }
-      } else {
-        const winner = new Winner({
-          totalWinners: 0
-        });
+      });
+    } else {
+      // block the user out
 
-        winner.totalWinners = winner.totalWinners + 1;
-        winner.winners.push(data);
-        winner.blockedOut.push(data);
-
-        winner.save();
-        Socket.emit("blockedOut", true);
-        Socket.emit("Winner", {
-          message: "You have been lined up for payment",
-          c: true
-        });
-      }
-    });
+      Socket.emit(wronganswer, "Oops, that is wrong!!");
+    }
+    Socket.emit(blockout, true);
+  },
+  sendGame: (data, Socket) => {
+    Socket.emit(setgameobject, data);
   }
 };

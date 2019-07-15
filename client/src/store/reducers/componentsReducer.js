@@ -2,7 +2,8 @@ const initState = {
   logingin: false,
   signingup: false,
   dropdownopen: false,
-  notification: null
+  notification: null,
+  Socket: null
 };
 
 const componentReducer = (state = initState, action) => {
@@ -21,6 +22,9 @@ const componentReducer = (state = initState, action) => {
       let notification = action.payload;
       state = { ...state, notification };
       break;
+    case "CREATE-SOCKET-CONNECTION":
+      let Socket = action.payload;
+      state = { ...state, Socket };
     default:
       break;
   }

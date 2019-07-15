@@ -6,12 +6,9 @@ import Question from "../layout/question";
 import Howitworks from "../layout/howitworks";
 import {
   signupForGame,
-  submitAnswer,
-  setGameObject
+  getGameObject,
+  submitAnswer
 } from "../../store/actions/gameAction";
-import { setActiveUser } from "../../store/actions/authActions";
-import Socket from "../../io/index";
-import { notify } from "../../store/actions/componentActions";
 
 class Dashboard extends Component {
   constructor() {
@@ -27,41 +24,34 @@ class Dashboard extends Component {
   signUpForGame() {
     // dispatch auth action that allows user to signup for game
     const user = this.props.user;
-    Socket.emit("signupforgame", user);
+    const { signupForNextGameShow } = user;
+    if (signupForNextGameShow) {
+      console.log("Already signed up");
+      return;
+    }
+    return this.props.signupForGame();
   }
 
   submitAnswer(e) {
     if (e.target.checked) {
       // submit answer
-      this.props.submitAnswer(e.target.value, Socket);
+      return this.props.submitAnswer(e.target.value);
     }
   }
 
+  componentWillMount() {}
+
   componentDidMount() {
-    Socket.emit("sendGame");
-    Socket.on("getGame", game => {
-      this.props.setGameObject(game, Socket);
-    });
-    Socket.on("err", data => {});
-
-    Socket.on("joinshow", data => {
-      console.log(data);
-    });
-
-    Socket.on("joinsuccessful", data => {
-      console.log(data);
-    });
-
-    Socket.on("setuser", data => {
-      console.log(data);
-      this.props.setActiveUser(data);
-    });
+    this.props.getGameObject();
   }
 
   render() {
     const { user, game } = this.props;
-    const { username, account_balance = 0 } = user ? user : {};
-    const { game: theGame, correct, wrong, blockout } = game;
+    const { username, account_balance, signupForNextGameShow } = user
+      ? user
+      : {};
+    const { game: theGame, correct, wrong, blockout, gameison } = game;
+    console.log(theGame);
     if (!user) {
       return <Redirect to="/auth/login" />;
     } else {
@@ -75,7 +65,7 @@ class Dashboard extends Component {
             </div>
           </div>
           <div className="tp-question-container">
-            {theGame ? (
+            {theGame && gameison && signupForNextGameShow ? (
               <Question
                 question={theGame.question}
                 submitAnswer={this.submitAnswer}
@@ -116,18 +106,14 @@ class Dashboard extends Component {
 
 const mapDispatchToProps = dispatch => {
   return {
-    signuserupforgame: () => {
+    signupForGame: () => {
       return dispatch(signupForGame());
     },
-    submitAnswer: (value, Socket) => {
-      return dispatch(submitAnswer(value, Socket));
+    getGameObject: () => {
+      return dispatch(getGameObject());
     },
-    setGameObject: data => {
-      return dispatch(setGameObject(data, Socket));
-    },
-
-    setActiveUser: data => {
-      return dispatch(setActiveUser(data));
+    submitAnswer: answer => {
+      return dispatch(submitAnswer(answer));
     }
   };
 };

@@ -1,3 +1,7 @@
+import actions from "../../io/actions";
+
+const { setgameobject } = actions;
+console.log(setgameobject);
 const initState = {
   game: null,
   blockout: false
@@ -13,6 +17,10 @@ const gameReducer = (state = initState, action) => {
       break;
     case "BLOCK-OUT":
       state = { ...state, blockout: action.payload };
+      break;
+    case setgameobject:
+      console.log("dispatched an action");
+      state = { ...state, game: action.payload };
       break;
     default:
       break;

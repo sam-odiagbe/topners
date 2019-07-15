@@ -13,6 +13,10 @@ const store = createStore(rootReducer, applyMiddleware(thunk));
 
 // somehow check if the user is logged in
 store.dispatch(verifyAuthentication());
+const socket = store.getState().components.Socket;
+if (!socket) {
+  store.dispatch({ type: "CREATE-SOCKET-CONNECTION", payload: Socket });
+}
 
 ReactDOM.render(
   <Provider store={store}>
