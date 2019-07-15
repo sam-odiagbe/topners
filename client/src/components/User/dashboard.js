@@ -46,7 +46,7 @@ class Dashboard extends Component {
       ? user
       : {};
     const { game: theGame, correct, wrong, blockout } = game;
-    const { gameison } = theGame;
+    const { gameison } = theGame ? theGame : {};
     console.log(theGame);
     if (!user) {
       return <Redirect to="/auth/login" />;
