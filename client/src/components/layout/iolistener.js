@@ -94,7 +94,23 @@ class Io extends Component {
     });
 
     Socket.on(wronganswer, response => {
-      console.log(response);
+      const id = 6;
+      if (toast.isActive(id)) {
+        toast.dismiss(id);
+        toast(response, {
+          toastId: id,
+          delay: 50,
+          type: toast.TYPE.INFO,
+          className: "tp-toast-error"
+        });
+      } else {
+        toast(response, {
+          toastId: id,
+          delay: 50,
+          type: toast.TYPE.INFO,
+          className: "tp-toast-error"
+        });
+      }
     });
   }
   render() {
