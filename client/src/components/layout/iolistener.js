@@ -31,7 +31,8 @@ class Io extends Component {
         toast(response, {
           toastId: id,
           delay: 50,
-          type: toast.TYPE.INFO
+          type: toast.TYPE.INFO,
+          className: "tp-toast-error"
         });
       } else {
         toast(response, {
