@@ -12,8 +12,9 @@ import Notification from "./components/layout/notification";
 import IO from "./components/layout/iolistener";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Spinner from "./components/comps/loader";
 
-function App({ loading, user, notification, socket }) {
+function App({ loading, user, doingAsync, socket }) {
   if (loading) {
     return <Loader />;
   } else {
@@ -22,6 +23,7 @@ function App({ loading, user, notification, socket }) {
         <div className="App">
           <ToastContainer />
           <Navigation user={user} />
+          {doingAsync && <Spinner />}
           <Switch>
             <Route path="/auth/signup" exact component={Signup} />
             <Route path="/auth/login" exact component={Login} />
@@ -47,7 +49,7 @@ const mapStateToProps = state => {
   return {
     loading: state.auth.loading,
     user: state.auth.user,
-    notification: state.components.notification
+    doingAsync: state.components.doingAsync
   };
 };
 

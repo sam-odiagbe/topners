@@ -6,7 +6,7 @@ module.exports = {
   getgameobject: "GET-GAME",
   setgameobject: "SET-GAME",
   blockout: "BLOCK-OUT",
-  winner: "WIN",
+  youwin: "WIN",
   totalwinnersreached: "TOTAL-WINNERS-REACHED",
   wronganswer: "WRONG-ANSWER",
   submitanswer: "SUBMIT-ANSWER"

@@ -34,3 +34,10 @@ export const notify = (dispatch, data, state) => {
     dispatch({ type: "NOTIFICATION", payload: null });
   }, 4500);
 };
+
+export const doingAsync = done => {
+  return {
+    type: "DOING-ASYNC",
+    payload: done
+  };
+};

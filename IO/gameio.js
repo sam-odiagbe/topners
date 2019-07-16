@@ -6,7 +6,7 @@ const {
   success,
   setuser,
   setgameobject,
-  winner: youwin,
+  youwin,
   totalwinnersreached,
   wronganswer,
   blockout
@@ -88,19 +88,12 @@ module.exports = {
             ) {
               // if (winner.blockedOut.includes(user._id)) {
               // }
-              if (winner.winners.includes(user._id)) {
-                console.log("already a winner");
-                Socket.emit(youwin, "Already a winner");
-              }
             } else {
               winner.winners.push(user);
               winner.blockedOut.push(user);
               winner.save();
 
-              Socket.emit(youwin, {
-                message: "Hurray, you made it",
-                c: true
-              });
+              Socket.emit(youwin, "You were Correct and on time");
             }
           }
         } else {
@@ -121,6 +114,18 @@ module.exports = {
 
       Socket.emit(wronganswer, "Oops, that is wrong!!");
     }
+    User.findOneAndUpdate(
+      { _id: user._id },
+      { $set: { signupForNextGameShow: false } },
+      { new: true },
+      (err, usr) => {
+        if (err) {
+          console.log(err);
+        } else {
+          Socket.emit(setuser, { ...usr._doc, password: null });
+        }
+      }
+    );
     Socket.emit(blockout, true);
   },
   sendGame: (data, Socket) => {

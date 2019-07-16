@@ -10,6 +10,9 @@ import {
   submitAnswer
 } from "../../store/actions/gameAction";
 
+import { doingAsync } from "../../store/actions/componentActions";
+import { toast } from "react-toastify";
+
 class Dashboard extends Component {
   constructor() {
     super();
@@ -23,13 +26,25 @@ class Dashboard extends Component {
 
   signUpForGame() {
     // dispatch auth action that allows user to signup for game
+    const { signupForNextGameShow } = this.props.user;
 
+    if (signupForNextGameShow) {
+      const id = 1;
+      return toast("You are already signed up for next game..", {
+        toastId: id,
+        delay: 5000,
+        type: toast.TYPE.INFO,
+        className: "tp-toast-error"
+      });
+    }
+    this.props.doingAsync(true);
     return this.props.signupForGame();
   }
 
   submitAnswer(e) {
     if (e.target.checked) {
       // submit answer
+      this.props.doingAsync(true);
       return this.props.submitAnswer(e.target.value);
     }
   }
@@ -110,6 +125,9 @@ const mapDispatchToProps = dispatch => {
     },
     submitAnswer: answer => {
       return dispatch(submitAnswer(answer));
+    },
+    doingAsync: done => {
+      return dispatch(doingAsync(done));
     }
   };
 };

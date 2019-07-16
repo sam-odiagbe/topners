@@ -3,7 +3,8 @@ const initState = {
   signingup: false,
   dropdownopen: false,
   notification: null,
-  Socket: null
+  Socket: null,
+  doingAsync: false
 };
 
 const componentReducer = (state = initState, action) => {
@@ -25,6 +26,10 @@ const componentReducer = (state = initState, action) => {
     case "CREATE-SOCKET-CONNECTION":
       let Socket = action.payload;
       state = { ...state, Socket };
+      break;
+    case "DOING-ASYNC":
+      state = { ...state, doingAsync: action.payload };
+      break;
     default:
       break;
   }

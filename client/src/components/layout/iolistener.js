@@ -3,14 +3,14 @@ import { connect } from "react-redux";
 import { setGameObject } from "../../store/actions/gameAction";
 import { setActiveUser } from "../../store/actions/authActions";
 import actions from "../../io/actions";
-import { cssTransition } from "react-toastify";
+import { doingAsync } from "../../store/actions/componentActions";
 const {
   error,
   success,
   setuser,
   setgameobject,
   blockout,
-  winner,
+  youwin,
   wronganswer,
   totalwinnersreached
 } = actions;
@@ -42,30 +42,25 @@ class Io extends Component {
           className: "tp-toast-error"
         });
       }
+      this.props.doingAsync(false);
     });
 
     Socket.on(success, response => {
+      this.props.doingAsync(false);
       const id = 2;
-      if (toast.isActive(id)) {
-        toast.dismiss(id);
-        toast(response, {
-          toastId: id,
-          delay: 5000,
-          type: toast.TYPE.INFO
-        });
-      }
+      toast.dismiss(id);
+      toast(response, {
+        toastId: id,
+        delay: 5000,
+        type: toast.TYPE.INFO,
+        className: "tp-toast-success"
+      });
     });
 
     Socket.on(setuser, user => {
-      const id = 3;
-      if (toast.isActive(id)) {
-        toast.dismiss(id);
-        toast("User has been set", {
-          toastId: id,
-          delay: 5000,
-          type: toast.TYPE.INFO
-        });
-      }
+      console.log("user is emitted");
+      console.log("user: ", user);
+      return this.props.setActiveUser(user);
     });
 
     Socket.on(setgameobject, game => {
@@ -73,24 +68,30 @@ class Io extends Component {
     });
 
     Socket.on(blockout, response => {
-      const id = 4;
-      if (toast.isActive(id)) {
-        toast.dismiss(id);
-        toast.update("Blocked out", {
-          toastId: id,
-          delay: 5000,
-          type: toast.TYPE.INFO
-        });
-      }
+      toast.update("Blocked out", {
+        delay: 5000,
+        type: toast.TYPE.INFO,
+        className: "tp-toast-error"
+      });
     });
 
     Socket.on(totalwinnersreached, response => {
-      console.log(response);
+      this.props.doingAsync(false);
+      return toast(response, {
+        delay: 50,
+        type: toast.TYPE.INFO,
+        className: "tp-toast-success"
+      });
     });
 
-    Socket.on(winner, response => {
-      console.log("hey");
-      console.log(response);
+    Socket.on(youwin, response => {
+      console.log("i win");
+      this.props.doingAsync(false);
+      return toast(response, {
+        delay: 50,
+        type: toast.TYPE.INFO,
+        className: "tp-toast-success"
+      });
     });
 
     Socket.on(wronganswer, response => {
@@ -125,6 +126,9 @@ const mapDispatchToProps = dispatch => {
     },
     setActiveUser: user => {
       return dispatch(setActiveUser(user));
+    },
+    doingAsync: done => {
+      return dispatch(doingAsync(done));
     }
   };
 };
