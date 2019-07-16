@@ -46,15 +46,15 @@ class Io extends Component {
     });
 
     Socket.on(success, response => {
-      this.props.doingAsync(false);
       const id = 2;
       toast.dismiss(id);
       toast(response, {
         toastId: id,
-        delay: 5000,
+        delay: 50,
         type: toast.TYPE.INFO,
         className: "tp-toast-success"
       });
+      this.props.doingAsync(false);
     });
 
     Socket.on(setuser, user => {
