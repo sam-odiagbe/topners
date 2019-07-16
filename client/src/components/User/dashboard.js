@@ -32,7 +32,7 @@ class Dashboard extends Component {
       const id = 1;
       return toast("You are already signed up for next game..", {
         toastId: id,
-        delay: 5000,
+        delay: 50,
         type: toast.TYPE.INFO,
         className: "tp-toast-error"
       });
