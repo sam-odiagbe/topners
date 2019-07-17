@@ -10,13 +10,6 @@ module.exports = {
     email: JOI.string()
       .email()
       .required(),
-    bank: JOI.string()
-      .required()
-      .trim(),
-    account_number: JOI.string()
-      .trim()
-      .required()
-      .regex(/^[0-9]{10}$/),
     password: JOI.string()
       .trim()
       .required()

@@ -13,6 +13,7 @@ import IO from "./components/layout/iolistener";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Spinner from "./components/comps/loader";
+import UpdateProfile from "./components/User/profile";
 
 function App({ loading, user, doingAsync, socket }) {
   if (loading) {
@@ -36,6 +37,11 @@ function App({ loading, user, doingAsync, socket }) {
               path="/auth/password-reset"
               exact
               component={ResetPassword}
+            />
+            <Route
+              path="/update_profile"
+              exact
+              render={props => <UpdateProfile {...props} user={user} />}
             />
           </Switch>
           <IO toast={toast} />

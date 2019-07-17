@@ -1,14 +1,15 @@
 import React from "react";
 import SignoutLinks from "./signoutlinks";
 import SignedInLink from "./signinlinks";
+import { Link } from "react-router-dom";
 
 const Navigation = ({ user }) => {
   const link = user ? <SignedInLink user={user} /> : <SignoutLinks />;
   return (
     <nav className="tp-navigation">
-      <a href="#default" className="tp-brand">
+      <Link to="/dashboard" className="tp-brand">
         Topners
-      </a>
+      </Link>
       <ul>{link}</ul>
     </nav>
   );

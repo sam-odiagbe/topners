@@ -9,5 +9,6 @@ module.exports = {
   youwin: "WIN",
   totalwinnersreached: "TOTAL-WINNERS-REACHED",
   wronganswer: "WRONG-ANSWER",
-  submitanswer: "SUBMIT-ANSWER"
+  submitanswer: "SUBMIT-ANSWER",
+  updateuserprofile: "UPDATE-PROFILE"
 };

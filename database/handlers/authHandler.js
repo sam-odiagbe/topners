@@ -15,8 +15,8 @@ const JWT_SECRET_KEY = require("../../config").JWT_SECRET_KEY;
 
 module.exports = {
   createnewuser: async (req, res) => {
-    const { name, email, password, username, bank } = req.body;
-
+    const { name, email, password, username } = req.body;
+    console.log(req.body);
     try {
       // validate incoming req body
       const validateRequestBody = await validateIncomingSignupReqBody(req.body);
@@ -45,8 +45,7 @@ module.exports = {
                 let user = new User({
                   name,
                   email,
-                  username,
-                  bank
+                  username
                 });
 
                 user.totalAmountWon = 0;
@@ -79,6 +78,7 @@ module.exports = {
         });
       }
     } catch (err) {
+      console.log(err);
       res.json({
         error: {
           message: "Invalid Credentials"

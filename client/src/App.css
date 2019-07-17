@@ -596,10 +596,12 @@ button:disabled {
   background: #ff3d4e !important;
   font-size: 0.8em;
   font-weight: bold;
+  color: #fff !important;
 }
 
 .tp-toast-success {
   background: #0adba7 !important;
+  color: #fff !important;
   font-size: 0.8em;
   font-weight: bold;
 }

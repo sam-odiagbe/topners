@@ -1,6 +1,10 @@
 import axios from "axios";
 import { logingin, signingup, notify } from "../actions/componentActions";
 import * as jwt from "jsonwebtoken";
+import { toast } from "react-toastify";
+import actions from "../../io/actions";
+
+const { updateprofile } = actions;
 
 const url = "https://topner.herokuapp.com/";
 
@@ -17,21 +21,20 @@ export const createUserAccount = data => {
             payload: { error: error.message, success: null }
           });
           dispatch(signingup(false));
-          notify(dispatch, { message: error.message, c: false }, getState);
+          toast(error.message, {
+            delay: 50,
+            className: "tp-toast-error"
+          });
         } else {
           dispatch({
             type: "SIGNUP-SUCCESS",
             payload: { error: null, success: success.message }
           });
 
-          notify(
-            dispatch,
-            {
-              c: true,
-              message: success.message
-            },
-            getState
-          );
+          toast("Account created successfully, you can login now", {
+            delay: 50,
+            className: "tp-toast-success"
+          });
         }
 
         dispatch(signingup(false));
@@ -43,11 +46,10 @@ export const createUserAccount = data => {
         });
 
         dispatch(signingup(false));
-        notify(
-          dispatch,
-          { type: "Signup error", message: err.message },
-          getState
-        );
+        toast(err.message, {
+          delay: 50,
+          className: "tp-toast-error"
+        });
       });
   };
 };
@@ -65,14 +67,10 @@ export const logUserIn = data => {
             payload: { error }
           });
           dispatch(logingin(false));
-          notify(
-            dispatch,
-            {
-              type: "Login error",
-              message: "Invalid credentials, try again"
-            },
-            getState
-          );
+          toast("Invalid credentials provided", {
+            delay: 50,
+            className: "tp-toast-error"
+          });
         } else {
           let user = jwt.verify(success.auth, "posiedonathenazeuskratoshydra");
           dispatch({ type: "SET-ACTIVE-USER", payload: { user: user.auth } });
@@ -86,14 +84,10 @@ export const logUserIn = data => {
           payload: { error: "Invalid credentials provided" }
         });
         dispatch(logingin(false));
-        notify(
-          dispatch,
-          {
-            type: "Login error",
-            message: "Invalid Credentials try again"
-          },
-          getState
-        );
+        toast(err.message, {
+          delay: 50,
+          className: "tp-toast-error"
+        });
       });
   };
 };
@@ -144,5 +138,13 @@ export const setActiveUser = user => {
   return {
     type: "SET-ACTIVE-USER",
     payload: { user }
+  };
+};
+
+export const updateUserProfile = data => {
+  return (dispatch, getState) => {
+    const socket = getState().components.Socket;
+    const _id = getState().auth.user;
+    socket.emit(updateprofile, { data, _id });
   };
 };

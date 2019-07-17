@@ -79,9 +79,6 @@ class Signup extends Component {
               onChange={this.handleInputChange}
               onBlur={this.validateField}
             />
-            <p className="tp-form-note">
-              * Name must match the name in your bank account
-            </p>
             {!validName && (
               <p className="tp-field-error">*field is not valid</p>
             )}
@@ -124,55 +121,6 @@ class Signup extends Component {
             {!validUsername && (
               <p className="tp-field-error">
                 *Username can contain only letters and _
-              </p>
-            )}
-          </div>
-          <div>
-            <label htmlFor="bank">Bank Name</label>
-            <select
-              id="bank"
-              className={`tp-input-field ${
-                validBank ? "" : "tp-invalid-field"
-              }`}
-              required
-              value={bank}
-              onChange={this.handleInputChange}
-              onBlur={this.validateField}
-            >
-              <option disabled>Select your bank</option>
-              <option>Firstbank</option>
-              <option>UBA</option>
-              <option>Access Bank</option>
-              <option>Polaris Bank</option>
-              <option>Fidelity Bank</option>
-              <option>GTB</option>
-              <option>Eco Bank</option>
-            </select>
-            {!validBank && (
-              <p className="tp-field-error">*field is not valid</p>
-            )}
-          </div>
-          <div>
-            <label htmlFor="account_number">Account Number</label>
-            <input
-              type="text"
-              className={`tp-input-field ${
-                validAccount ? "" : "tp-invalid-field"
-              }`}
-              placeholder="Account Number"
-              id="account_number"
-              required
-              value={account_number}
-              onChange={this.handleInputChange}
-              onBlur={this.validateField}
-            />
-            <p className="tp-form-note">
-              * Name in account must match name provided above
-            </p>
-            {!validAccount && (
-              <p className="tp-field-error">
-                * Account should be numbers and not more or less than ten in
-                length
               </p>
             )}
           </div>

@@ -9,6 +9,7 @@ const UserSchema = new Schema({
   password: String,
   bank: String,
   account_balance: Number,
+  account_number: String,
   totalAmountWon: Number,
   signupForNextGameShow: Boolean,
   verified: Boolean

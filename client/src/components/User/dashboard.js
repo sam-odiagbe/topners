@@ -57,9 +57,13 @@ class Dashboard extends Component {
 
   render() {
     const { user, game } = this.props;
-    const { username, account_balance, signupForNextGameShow } = user
-      ? user
-      : {};
+    const {
+      username,
+      account_balance,
+      account_number,
+      bank,
+      signupForNextGameShow
+    } = user ? user : {};
     const { game: theGame, correct, wrong, blockout } = game;
     const { gameison } = theGame ? theGame : {};
     console.log(theGame);
@@ -75,6 +79,14 @@ class Dashboard extends Component {
               <button className="tp-top-up-account">Deposit</button>
             </div>
           </div>
+          {!account_balance || !bank ? (
+            <p className="tp-form-note">
+              You have not provided an account number or bank name, please
+              update your profile
+            </p>
+          ) : (
+            ""
+          )}
           <div className="tp-question-container">
             {theGame && gameison && signupForNextGameShow ? (
               <Question

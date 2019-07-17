@@ -11,10 +11,13 @@ const initState = {
     name: "",
     email: "",
     username: "",
-    bank: "Select your bank",
-    account_number: "",
     password: "",
     confirm_password: ""
+  },
+  updateProfile: {
+    name: "Odiagbe Osaro",
+    bank: "Select your bank",
+    account_number: ""
   }
 };
 
@@ -32,6 +35,11 @@ const inputReducer = (state = initState, action) => {
     case "PASSWORD_RESET_INPUT":
       let resetpassword = { ...state.resetpassword, [id]: value };
       state = { ...state, resetpassword };
+      break;
+
+    case "UPDATE-PROFILE-INPUT":
+      let updateProfile = { ...state.updateProfile, [id]: value };
+      state = { ...state, updateProfile };
       break;
     default:
       break;

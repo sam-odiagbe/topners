@@ -9,3 +9,7 @@ export const loginInputAction = data => {
 export const passwordResetInputAction = data => {
   return { type: "PASSWORD_RESET_INPUT", payload: data };
 };
+
+export const updateProfileInputAction = data => {
+  return { type: "UPDATE-PROFILE-INPUT", payload: data };
+};

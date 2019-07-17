@@ -130,5 +130,18 @@ module.exports = {
   },
   sendGame: (data, Socket) => {
     Socket.emit(setgameobject, data);
+  },
+
+  updateUserProfile(payload, Socket) {
+    console.log(payload);
+    const { _id, data } = payload;
+    // find user with the above id
+    User.findOneAndUpdate({ _id }, { ...data }, { new: true }, (err, user) => {
+      if (err) {
+        Socket.emit(error, "Couldn' update profile, try again");
+      }
+      Socket.emit(setuser, { ...user._doc, password: null });
+      Socket.emit(success, "Profile update was successful");
+    });
   }
 };

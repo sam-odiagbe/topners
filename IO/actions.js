@@ -1,8 +1,15 @@
-const { getGame, signupForGame, submitAnswer, sendGame } = require("./gameio");
+const {
+  getGame,
+  signupForGame,
+  submitAnswer,
+  sendGame,
+  updateUserProfile
+} = require("./gameio");
 const {
   signuserupforgame,
   getgameobject,
-  submitanswer
+  submitanswer,
+  updateuserprofile
 } = require("./emitters");
 
 module.exports = io => {
@@ -21,6 +28,10 @@ module.exports = io => {
 
     socket.on(submitanswer, data => {
       submitAnswer(data, socket);
+    });
+
+    socket.on(updateuserprofile, data => {
+      updateUserProfile(data, socket);
     });
   });
 };

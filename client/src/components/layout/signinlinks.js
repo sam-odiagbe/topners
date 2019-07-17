@@ -13,7 +13,7 @@ const SignedInLink = ({ user, loguserout, dropdown, openDropdown }) => {
           <div className={`tp-drop-down ${dropdown ? "tp-open" : ""}`}>
             <ul>
               <li>
-                <Link to="/complaint">Send a Complaint</Link>
+                <Link to="/update_profile">Update profile</Link>
               </li>
 
               <li>

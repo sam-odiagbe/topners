@@ -10,7 +10,8 @@ const actions = {
   youwin: "WIN",
   totalwinnersreached: "TOTAL-WINNERS-REACHED",
   wronganswer: "WRONG-ANSWER",
-  submitanswer: "SUBMIT-ANSWER"
+  submitanswer: "SUBMIT-ANSWER",
+  updateprofile: "UPDATE-PROFILE"
 };
 
 export default actions;
