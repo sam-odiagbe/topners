@@ -5,7 +5,7 @@ sgMail.setApiKey(
 
 const msg = {
   to: "odiagbesamsonosaro@gmail.com",
-  from: "app138750920@heroku.com",
+  from: "noreply@heroku.com",
   subject: "Verify your email address",
   text: "please verify your email address"
 };

@@ -9,6 +9,7 @@ const connection = require("./database/connect");
 const http = require("http").createServer(app);
 const io = require("./IO/socket")(http);
 const socketacitons = require("./IO/actions")(io);
+const sgmail = require("./database/helpers/mailer");
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());

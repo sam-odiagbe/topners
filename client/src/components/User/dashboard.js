@@ -12,6 +12,7 @@ import {
 
 import { doingAsync } from "../../store/actions/componentActions";
 import { toast } from "react-toastify";
+import { Link } from "react-router-dom";
 
 class Dashboard extends Component {
   constructor() {
@@ -76,7 +77,12 @@ class Dashboard extends Component {
             <h4>hi, {username}</h4>
             <div>
               <h4>&#8358; {account_balance.toFixed(1)}</h4>
-              <button className="tp-top-up-account">Deposit</button>
+              <a
+                href="https://paystack.com/pay/topner"
+                className="tp-top-up-account"
+              >
+                Deposit
+              </a>
             </div>
           </div>
           {!account_balance || !bank ? (
