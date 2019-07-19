@@ -66,7 +66,10 @@ module.exports = {
                       { totalNumberSubmitted: totalNumberSubmitted + 1 },
                       { new: true },
                       (err, game) => {
-                        Socket.emit(newuserjoined, game.totalNumberSubmitted);
+                        Socket.broadcast(
+                          newuserjoined,
+                          game.totalNumberSubmitted
+                        );
                       }
                     );
                   }
@@ -160,7 +163,7 @@ module.exports = {
       { gameison: turnon },
       { new: true },
       (err, game) => {
-        Socket.emit(setgameobject, game);
+        Socket.broadcast(setgameobject, game);
       }
     );
   },
@@ -180,6 +183,7 @@ module.exports = {
       { question, kickoftime, gameison, totalNumberOfWinners },
       { new: true },
       (err, game) => {
+        Socket.broadcast.emit(setgameobject, game);
         Socket.emit(setgameobject, game);
       }
     );
