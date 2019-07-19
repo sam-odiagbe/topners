@@ -14,8 +14,19 @@ const socketacitons = require("./IO/actions")(io);
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
+const allowedOrigins = [
+  "https://topner.herokuapp.com",
+  "https://poseidonzeus.herokuapp.com"
+];
+
 const corsOption = {
-  origin: "https://topner.herokuapp.com",
+  origin: (origin, callback) => {
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.indexOf(orgin) === -1) {
+      return callback(new Error("not allowed hoss"), false);
+    }
+    return callback(null, true);
+  },
   credentials: true
 };
 app.use(cors(corsOption));
