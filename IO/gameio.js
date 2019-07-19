@@ -163,7 +163,8 @@ module.exports = {
       { gameison: turnon },
       { new: true },
       (err, game) => {
-        Socket.broadcast(setgameobject, game);
+        Socket.broadcast.emit(setgameobject, game);
+        Socket.emit(setgameobject, game);
       }
     );
   },
