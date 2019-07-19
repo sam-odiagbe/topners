@@ -9,13 +9,13 @@ const connection = require("./database/connect");
 const http = require("http").createServer(app);
 const io = require("./IO/socket")(http);
 const socketacitons = require("./IO/actions")(io);
-const sgmail = require("./database/helpers/mailer");
+//const sgmail = require("./database/helpers/mailer");
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 const corsOption = {
-  origin: "https://topner.herokuapp.com",
+  origin: "http://localhost:3000",
   credentials: true
 };
 app.use(cors(corsOption));

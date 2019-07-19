@@ -3,13 +3,17 @@ const {
   signupForGame,
   submitAnswer,
   sendGame,
-  updateUserProfile
+  updateUserProfile,
+  turnGameOnOrOff,
+  updateGameObject
 } = require("./gameio");
 const {
   signuserupforgame,
   getgameobject,
   submitanswer,
-  updateuserprofile
+  updateuserprofile,
+  turngameonoroff,
+  updategameobject
 } = require("./emitters");
 
 module.exports = io => {
@@ -32,6 +36,15 @@ module.exports = io => {
 
     socket.on(updateuserprofile, data => {
       updateUserProfile(data, socket);
+    });
+
+    socket.on(turngameonoroff, data => {
+      turnGameOnOrOff(data, socket);
+    });
+
+    socket.on(updategameobject, data => {
+      console.log("updating game object");
+      updateGameObject(data, socket);
     });
   });
 };

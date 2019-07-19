@@ -11,7 +11,8 @@ const actions = {
   totalwinnersreached: "TOTAL-WINNERS-REACHED",
   wronganswer: "WRONG-ANSWER",
   submitanswer: "SUBMIT-ANSWER",
-  updateprofile: "UPDATE-PROFILE"
+  updateprofile: "UPDATE-PROFILE",
+  turngameonoroff: "TURN-ON-OFF"
 };
 
 export default actions;

@@ -9,7 +9,8 @@ const {
   youwin,
   totalwinnersreached,
   wronganswer,
-  blockout
+  blockout,
+  newuserjoined
 } = require("./emitters");
 
 module.exports = {
@@ -60,6 +61,14 @@ module.exports = {
                     }
                     Socket.emit(success, "You have successfully signed up");
                     Socket.emit(setuser, { ...doc._doc, password: null });
+                    Game.findOneAndUpdate(
+                      {},
+                      { totalNumberSubmitted: totalNumberSubmitted + 1 },
+                      { new: true },
+                      (err, game) => {
+                        Socket.emit(newuserjoined, game.totalNumberSubmitted);
+                      }
+                    );
                   }
                 );
               }
@@ -132,7 +141,7 @@ module.exports = {
     Socket.emit(setgameobject, data);
   },
 
-  updateUserProfile(payload, Socket) {
+  updateUserProfile: (payload, Socket) => {
     console.log(payload);
     const { _id, data } = payload;
     // find user with the above id
@@ -143,5 +152,36 @@ module.exports = {
       Socket.emit(setuser, { ...user._doc, password: null });
       Socket.emit(success, "Profile update was successful");
     });
+  },
+
+  turnGameOnOrOff: (turnon, Socket) => {
+    Game.findOneAndUpdate(
+      {},
+      { gameison: turnon },
+      { new: true },
+      (err, game) => {
+        Socket.emit(setgameobject, game);
+      }
+    );
+  },
+
+  updateGameObject: (data, Socket) => {
+    const question = {};
+    const option = data.options.split(",");
+
+    const kickoftime = data.data;
+    question.question = data.question;
+    question.option = option;
+    question.answer = data.answer;
+    const gameison = false;
+    const totalNumberOfWinners = data.totalWinners;
+    Game.findOneAndUpdate(
+      {},
+      { question, kickoftime, gameison, totalNumberOfWinners },
+      { new: true },
+      (err, game) => {
+        Socket.emit(setgameobject, game);
+      }
+    );
   }
 };
