@@ -20,13 +20,7 @@ const allowedOrigins = [
 ];
 
 const corsOption = {
-  origin: (origin, callback) => {
-    if (allowedOrigins.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      callback(new Error("Blocked by cors"));
-    }
-  },
+  origin: "https://topner.herokuapp.com",
   credentials: true
 };
 app.use(cors(corsOption));
