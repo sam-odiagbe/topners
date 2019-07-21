@@ -14,6 +14,8 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Spinner from "./components/comps/loader";
 import UpdateProfile from "./components/User/profile";
+import Verify from "./components/auth/verify";
+import NewPassword from "./components/auth/newpassword";
 
 function App({ loading, user, doingAsync, socket }) {
   if (loading) {
@@ -43,7 +45,18 @@ function App({ loading, user, doingAsync, socket }) {
               exact
               render={props => <UpdateProfile {...props} user={user} />}
             />
+            <Route
+              path="/verify_email/:email/:token"
+              exact
+              component={Verify}
+            />
+            <Route
+              path="/password_reset/:email/:token"
+              exact
+              component={NewPassword}
+            />
           </Switch>
+
           <IO toast={toast} />
         </div>
       </Router>

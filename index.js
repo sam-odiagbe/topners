@@ -15,16 +15,17 @@ app.use(express.json());
 
 const allowedOrigins = [
   "https://topner.herokuapp.com",
-  "https://poseidonzeus.herokuapp.com"
+  "https://poseidonzeus.herokuapp.com",
+  "http://localhost:3000"
 ];
 
 const corsOption = {
   origin: (origin, callback) => {
-    if (!origin) return callback(null, true);
-    if (allowedOrigins.indexOf(orgin) === -1) {
-      return callback(new Error("not allowed hoss"), false);
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error("Blocked by cors"));
     }
-    return callback(null, true);
   },
   credentials: true
 };

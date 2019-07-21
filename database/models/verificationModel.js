@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const verificationShema = {
   user: { type: Schema.Types.ObjectId, ref: "User" },
-  verificationtoken: String
+  token: String
 };
 
 module.exports = mongoose.model("Verification", verificationShema);

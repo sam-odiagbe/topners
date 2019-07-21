@@ -1,6 +1,9 @@
 const Game = require("../database/models/game");
 const User = require("../database/models/User");
 const Winner = require("../database/models/Winner");
+const Verification = require("../database/models/verificationModel");
+const sendEmail = require("../database/helpers/mailer");
+const BCRYPT = require("bcrypt");
 const {
   error,
   success,
@@ -188,5 +191,76 @@ module.exports = {
         Socket.emit(setgameobject, game);
       }
     );
+  },
+
+  verifyUserAccount: (data, Socket) => {
+    const { email, token } = data;
+    Verification.findOneAndDelete({ token }, (err, doc) => {
+      if (err) {
+        Socket.emit(error, "Couldn't verify your account, try again");
+      }
+      if (doc) {
+        User.findOneAndUpdate({ email }, { verified: true }, (err, doc) => {
+          if (err) {
+            Socket.emit(error, "Something went wrong, try again");
+          } else {
+            Socket.emit(success, "Your account has been verified");
+          }
+        });
+      } else {
+        Socket.emit(error, "Invalid token supplied");
+      }
+    });
+  },
+
+  sendPasswordReset: (email, Socket) => {
+    User.findOne({ email }, (err, user) => {
+      if (err) {
+        Socket.emit(error, "Something went wrong, please try again");
+      }
+      if (user) {
+        // do the neccessary stuff
+        sendEmail({ type: "PASSWORDRESET", email: user.email, _id: user._id });
+        Socket.emit(success, `Reset email has been sent to ${email}`);
+      } else {
+        Socket.emit(error, `No account found for ${email}, try signing up`);
+      }
+    });
+  },
+
+  verifyResetToken: (data, Socket) => {
+    const { token, email, password } = data;
+    // check to see if there is a token already assigned to the user
+    Verification.findOne({ token }, (err, verify) => {
+      if (err) {
+        Socket.emit(error, "Something went wrong, please try again");
+      }
+      if (verify) {
+        const newPassword = BCRYPT.hashSync(password, 10);
+        User.findOneAndUpdate(
+          { email },
+          { $set: { password: newPassword } },
+          (err, user) => {
+            if (err) {
+              Socket.emit(error, "Something went wrong, please try again");
+            }
+            if (user) {
+              //deleteVerification
+              Verification.findOneAndDelete({ email }, (err, done) => {
+                if (err) {
+                  Socket.emit(error, "Something went wrong, please try again");
+                }
+                Socket.emit(
+                  success,
+                  "Your have successfully reset your password"
+                );
+              });
+            }
+          }
+        );
+      } else {
+        Socket.emit(error, "Invalid token provided");
+      }
+    });
   }
 };

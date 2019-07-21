@@ -13,5 +13,8 @@ module.exports = {
   submitanswer: "SUBMIT-ANSWER",
   updateuserprofile: "UPDATE-PROFILE",
   turngameonoroff: "TURN-ON-OFF",
-  updategameobject: "UPDATE-GAME-OBJECT"
+  updategameobject: "UPDATE-GAME-OBJECT",
+  verifyaccount: "VERIFY",
+  passwordreset: "PASSWORDRESET",
+  verifyreset: "VERIFYRESET"
 };

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { requestPasswordReset } from "../../store/actions/authActions";
 import { passwordResetInputAction } from "../../store/actions/inputActions";
 import { passwordResetValidation } from "../../store/actions/validationActins";
 
@@ -7,18 +8,21 @@ class ResetPassword extends Component {
   constructor() {
     super();
     this.handleInputChange = this.handleInputChange.bind(this);
-    this.validateField = this.validateField.bind(this);
+    this.requestPasswordReset = this.requestPasswordReset.bind(this);
   }
 
   handleInputChange(e) {
     const { id, value } = e.target;
     this.props.passwordResetInputAction({ id, value });
-    this.props.passwordResetValidation(value);
   }
 
-  validateField(e) {
-    this.props.passwordResetValidation(e.target.value);
+  requestPasswordReset(e) {
+    e.preventDefault();
+    const { email } = this.props.resetpassword_input_data;
+    console.log("requesting password reset now");
+    this.props.requestPasswordReset(email);
   }
+
   render() {
     const { validation, resetpassword_input_data } = this.props;
     const { email } = resetpassword_input_data;
@@ -26,7 +30,7 @@ class ResetPassword extends Component {
     return (
       <div className="tp-auth-container">
         <h2 className="tp-auth-title">Password Reset</h2>
-        <form>
+        <form onSubmit={this.requestPasswordReset}>
           <div>
             <label htmlFor="email">Email</label>
             <input
@@ -39,16 +43,10 @@ class ResetPassword extends Component {
               }`}
               value={email}
               onChange={this.handleInputChange}
-              onBlur={this.validateField}
             />
-            {!validEmail && (
-              <p className="tp-field-error">* email is not valid</p>
-            )}
           </div>
           <div>
-            <button className="tp-auth-btn" disabled={!validfield}>
-              Send reset link
-            </button>
+            <button className="tp-auth-btn">Send reset link</button>
           </div>
         </form>
       </div>
@@ -70,6 +68,9 @@ const mapDispatchToProps = dispatch => {
     },
     passwordResetValidation: data => {
       dispatch(passwordResetValidation(data));
+    },
+    requestPasswordReset: email => {
+      dispatch(requestPasswordReset(email));
     }
   };
 };

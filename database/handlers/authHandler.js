@@ -67,7 +67,12 @@ module.exports = {
                       }
                     });
                     // create verification token  for user
-
+                    // email verification to user
+                    sendEmail({
+                      type: "VERIFICATION",
+                      email: user.email,
+                      _id: user._id
+                    });
                     // sendEmailVerification(doc.email);
                     // res.send("Account Created");
                   }

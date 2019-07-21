@@ -12,7 +12,10 @@ const actions = {
   wronganswer: "WRONG-ANSWER",
   submitanswer: "SUBMIT-ANSWER",
   updateprofile: "UPDATE-PROFILE",
-  turngameonoroff: "TURN-ON-OFF"
+  turngameonoroff: "TURN-ON-OFF",
+  verifyaccount: "VERIFY",
+  passwordreset: "PASSWORDRESET",
+  verifyreset: "VERIFYRESET"
 };
 
 export default actions;

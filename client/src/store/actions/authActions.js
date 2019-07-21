@@ -1,10 +1,10 @@
 import axios from "axios";
-import { logingin, signingup, notify } from "../actions/componentActions";
+import { logingin, signingup, doingAsync } from "../actions/componentActions";
 import * as jwt from "jsonwebtoken";
 import { toast } from "react-toastify";
 import actions from "../../io/actions";
 
-const { updateprofile } = actions;
+const { updateprofile, verifyaccount, passwordreset, verifyreset } = actions;
 
 const url = "https://topner.herokuapp.com/";
 
@@ -146,5 +146,30 @@ export const updateUserProfile = data => {
     const socket = getState().components.Socket;
     const _id = getState().auth.user;
     socket.emit(updateprofile, { data, _id });
+  };
+};
+
+export const verifyAccount = data => {
+  return (dispatch, getState) => {
+    console.log("verify");
+    const Socket = getState().components.Socket;
+    console.log(Socket);
+    Socket.emit(verifyaccount, data);
+  };
+};
+
+export const requestPasswordReset = email => {
+  return (dispatch, getState) => {
+    dispatch(doingAsync(true));
+    const Socket = getState().components.Socket;
+    Socket.emit(passwordreset, email);
+  };
+};
+
+export const validateResetToken = data => {
+  return (dispatch, getState) => {
+    dispatch(doingAsync(true));
+    const Socket = getState().components.Socket;
+    Socket.emit(verifyreset, data);
   };
 };

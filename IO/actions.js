@@ -5,7 +5,10 @@ const {
   sendGame,
   updateUserProfile,
   turnGameOnOrOff,
-  updateGameObject
+  updateGameObject,
+  verifyUserAccount,
+  sendPasswordReset,
+  verifyResetToken
 } = require("./gameio");
 const {
   signuserupforgame,
@@ -13,7 +16,10 @@ const {
   submitanswer,
   updateuserprofile,
   turngameonoroff,
-  updategameobject
+  updategameobject,
+  verifyaccount,
+  passwordreset,
+  verifyreset
 } = require("./emitters");
 
 module.exports = io => {
@@ -45,6 +51,18 @@ module.exports = io => {
     socket.on(updategameobject, data => {
       console.log("updating game object");
       updateGameObject(data, socket);
+    });
+
+    socket.on(verifyaccount, data => {
+      verifyUserAccount(data, socket);
+    });
+
+    socket.on(passwordreset, email => {
+      sendPasswordReset(email, socket);
+    });
+
+    socket.on(verifyreset, data => {
+      verifyResetToken(data, socket);
     });
   });
 };
