@@ -54,6 +54,7 @@ class Dashboard extends Component {
 
   componentDidMount() {
     this.props.getGameObject();
+    //
   }
 
   render() {
@@ -67,7 +68,6 @@ class Dashboard extends Component {
     } = user ? user : {};
     const { game: theGame, correct, wrong, blockout } = game;
     const { gameison } = theGame ? theGame : {};
-    console.log(theGame);
     if (!user) {
       return <Redirect to="/auth/login" />;
     } else {

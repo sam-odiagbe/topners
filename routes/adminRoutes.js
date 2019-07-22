@@ -1,4 +1,5 @@
 const express = require("express");
+const randomString = require("crypto-random-string");
 
 const router = express.Router();
 const Game = require("../database/models/game");
@@ -9,8 +10,7 @@ router.post("/createGame", (req, res, next) => {
     ...gameBody,
     kickofftime: new Date() + 8000000,
     gameison: false,
-    totalNumberOfWinners: 50,
-    totalNumberSubmitted: 0
+    totalNumberOfWinners: 50
   });
   game.save((err, doc) => {
     if (err) {

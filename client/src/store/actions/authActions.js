@@ -3,10 +3,11 @@ import { logingin, signingup, doingAsync } from "../actions/componentActions";
 import * as jwt from "jsonwebtoken";
 import { toast } from "react-toastify";
 import actions from "../../io/actions";
+import { URL } from "../../config/config";
 
 const { updateprofile, verifyaccount, passwordreset, verifyreset } = actions;
 
-const url = "https://topner.herokuapp.com/";
+const url = `${URL}/`;
 
 export const createUserAccount = data => {
   return (dispatch, getState) => {

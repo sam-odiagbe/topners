@@ -13,11 +13,6 @@ const gameSchema = new Schema({
     type: Number,
     required: true,
     default: 0
-  },
-  totalNumberSubmitted: {
-    type: Number,
-    required: true,
-    default: 0
   }
 });
 

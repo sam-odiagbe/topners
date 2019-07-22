@@ -1,6 +1,6 @@
 import * as IO from "socket.io-client";
+import { URL } from "../config/config";
 
-const endPoint = "https://topner.herokuapp.com";
-const Socket = IO(endPoint);
+const Socket = IO(URL);
 
 export default Socket;

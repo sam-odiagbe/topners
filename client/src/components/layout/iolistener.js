@@ -85,10 +85,6 @@ class Io extends Component {
         className: "tp-toast-success"
       });
     });
-
-    Socket.on(resetuser, () => {
-      this.props.updateUserProfile({ signupForNextGameShow: false });
-    });
   }
   render() {
     return null;

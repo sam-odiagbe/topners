@@ -31,8 +31,7 @@ export const getGameObject = () => {
 };
 
 export const setGameObject = data => {
-  console.log(data);
-  return dispatch => {
+  return (dispatch, getState) => {
     dispatch({
       type: setgameobject,
       payload: data

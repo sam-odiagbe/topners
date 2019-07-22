@@ -47,7 +47,6 @@ module.exports = {
                   email,
                   username
                 });
-
                 user.totalAmountWon = 0;
                 user.account_balance = 10000;
                 user.verified = false;

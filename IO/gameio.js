@@ -4,6 +4,7 @@ const Winner = require("../database/models/Winner");
 const Verification = require("../database/models/verificationModel");
 const sendEmail = require("../database/helpers/mailer");
 const BCRYPT = require("bcrypt");
+const randomString = require("crypto-random-string");
 const {
   error,
   success,
@@ -174,7 +175,7 @@ module.exports = {
   updateGameObject: (data, Socket) => {
     const question = {};
     const option = data.options.split(",");
-
+    const uniqueId = randomString({ length: 10 });
     const kickoftime = data.data;
     question.question = data.question;
     question.option = option;
@@ -183,7 +184,7 @@ module.exports = {
     const totalNumberOfWinners = data.totalWinners;
     Game.findOneAndUpdate(
       {},
-      { question, kickoftime, gameison, totalNumberOfWinners },
+      { question, kickoftime, uniqueId, gameison, totalNumberOfWinners },
       { new: true },
       (err, game) => {
         Socket.broadcast.emit(setgameobject, game);
@@ -264,6 +265,18 @@ module.exports = {
   },
 
   resetUser: Socket => {
+    User.update(
+      { signupForNextGameShow: true },
+      { signupForNextGameShow: false },
+      { multi: true },
+      (err, done) => {
+        if (err) {
+          console.log("error");
+        } else {
+          console.log("updated");
+        }
+      }
+    );
     Socket.broadcast.emit(resetuser);
   }
 };
