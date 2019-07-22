@@ -17,7 +17,7 @@ module.exports = data => {
   let message = "";
   switch (type) {
     case "VERIFICATION":
-      url = `http://localhost:3000/verify_email/${email}/${token}`;
+      url = `https://topner.herokuapp.com/verify_email/${email}/${token}`;
       subject = "Verify your Topner account";
       html = `
                 <div style="padding: 1em; width: 300px;
@@ -30,7 +30,7 @@ module.exports = data => {
             `;
       break;
     case "PASSWORDRESET":
-      url = `http://localhost:3000/password_reset/${email}/${token}`;
+      url = `https://topner.herokuapp.com/password_reset/${email}/${token}`;
       subject = "Reset Your Password";
       html = `
                 <div style="padding: 1em; width: 300px;
