@@ -27,17 +27,6 @@ class Dashboard extends Component {
 
   signUpForGame() {
     // dispatch auth action that allows user to signup for game
-    const { signupForNextGameShow } = this.props.user;
-
-    if (signupForNextGameShow) {
-      const id = 1;
-      return toast("You are already signed up for next game..", {
-        toastId: id,
-        delay: 50,
-        type: toast.TYPE.INFO,
-        className: "tp-toast-error"
-      });
-    }
     this.props.doingAsync(true);
     return this.props.signupForGame();
   }
