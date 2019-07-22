@@ -49,6 +49,7 @@ module.exports = {
               } else {
                 // now we can sign user up for next session
                 const newBalance = user.account_balance - 100;
+                const totalNumberSubmitted = game.totalNumberSubmitted + 1;
                 User.findOneAndUpdate(
                   { _id },
                   {
@@ -66,7 +67,7 @@ module.exports = {
                     Socket.emit(setuser, { ...doc._doc, password: null });
                     Game.findOneAndUpdate(
                       {},
-                      { totalNumberSubmitted: totalNumberSubmitted + 1 },
+                      { totalNumberSubmitted },
                       { new: true },
                       (err, game) => {
                         Socket.broadcast(
@@ -94,7 +95,7 @@ module.exports = {
         if (winner) {
           // check if the total winners has been reached
           if (totalNumberOfWinners === winner.winners.length) {
-            Socket.emit(totalwinnersreached, "Oops, correct but too slow");
+            Socket.emit(error, "Oops, correct but too slow");
           } else {
             // total number not  reached
             if (
@@ -108,7 +109,7 @@ module.exports = {
               winner.blockedOut.push(user);
               winner.save();
 
-              Socket.emit(youwin, "You were Correct and on time");
+              Socket.emit(success, "You were Correct and on time");
             }
           }
         } else {
@@ -121,13 +122,13 @@ module.exports = {
           winner.blockedOut.push(user);
 
           winner.save();
-          Socket.emit(youwin, "Hurray, you are in");
+          Socket.emit(succes, "You are correct and on time");
         }
       });
     } else {
       // block the user out
 
-      Socket.emit(wronganswer, "Oops, that is wrong!!");
+      Socket.emit(error, "Oops, that is wrong!!");
     }
     User.findOneAndUpdate(
       { _id: user._id },
