@@ -16,5 +16,6 @@ module.exports = {
   updategameobject: "UPDATE-GAME-OBJECT",
   verifyaccount: "VERIFY",
   passwordreset: "PASSWORDRESET",
-  verifyreset: "VERIFYRESET"
+  verifyreset: "VERIFYRESET",
+  resetuser: "RESETUSER"
 };

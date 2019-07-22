@@ -8,7 +8,8 @@ const {
   updateGameObject,
   verifyUserAccount,
   sendPasswordReset,
-  verifyResetToken
+  verifyResetToken,
+  resetUser
 } = require("./gameio");
 const {
   signuserupforgame,
@@ -19,7 +20,8 @@ const {
   updategameobject,
   verifyaccount,
   passwordreset,
-  verifyreset
+  verifyreset,
+  resetuser
 } = require("./emitters");
 
 module.exports = io => {
@@ -63,6 +65,10 @@ module.exports = io => {
 
     socket.on(verifyreset, data => {
       verifyResetToken(data, socket);
+    });
+
+    socket.on(resetuser, () => {
+      resetUser(socket);
     });
   });
 };

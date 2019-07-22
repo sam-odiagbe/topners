@@ -9,9 +9,7 @@ const {
   success,
   setuser,
   setgameobject,
-  youwin,
-  totalwinnersreached,
-  wronganswer,
+  resetuser,
   blockout,
   newuserjoined
 } = require("./emitters");
@@ -150,7 +148,6 @@ module.exports = {
   },
 
   updateUserProfile: (payload, Socket) => {
-    console.log(payload);
     const { _id, data } = payload;
     // find user with the above id
     User.findOneAndUpdate({ _id }, { ...data }, { new: true }, (err, user) => {
@@ -264,5 +261,9 @@ module.exports = {
         Socket.emit(error, "Invalid token provided");
       }
     });
+  },
+
+  resetUser: (_id, Socket) => {
+    Socket.emit(resetuser);
   }
 };

@@ -15,7 +15,8 @@ const actions = {
   turngameonoroff: "TURN-ON-OFF",
   verifyaccount: "VERIFY",
   passwordreset: "PASSWORDRESET",
-  verifyreset: "VERIFYRESET"
+  verifyreset: "VERIFYRESET",
+  resetuser: "RESETUSER"
 };
 
 export default actions;

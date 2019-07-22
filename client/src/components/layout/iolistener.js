@@ -12,7 +12,8 @@ const {
   blockout,
   youwin,
   wronganswer,
-  totalwinnersreached
+  totalwinnersreached,
+  resetuser
 } = actions;
 class Io extends Component {
   componentWillMount() {
@@ -58,8 +59,6 @@ class Io extends Component {
     });
 
     Socket.on(setuser, user => {
-      console.log("user is emitted");
-      console.log("user: ", user);
       return this.props.setActiveUser(user);
     });
 
@@ -84,34 +83,8 @@ class Io extends Component {
       });
     });
 
-    Socket.on(youwin, response => {
-      console.log("i win");
-      this.props.doingAsync(false);
-      return toast(response, {
-        delay: 50,
-        type: toast.TYPE.INFO,
-        className: "tp-toast-success"
-      });
-    });
-
-    Socket.on(wronganswer, response => {
-      const id = 6;
-      if (toast.isActive(id)) {
-        toast.dismiss(id);
-        toast(response, {
-          toastId: id,
-          delay: 50,
-          type: toast.TYPE.INFO,
-          className: "tp-toast-error"
-        });
-      } else {
-        toast(response, {
-          toastId: id,
-          delay: 50,
-          type: toast.TYPE.INFO,
-          className: "tp-toast-error"
-        });
-      }
+    Socket.on(resetuser, () => {
+      this.props.updateUserProfile({ signupForNextGameShow: false });
     });
   }
   render() {
