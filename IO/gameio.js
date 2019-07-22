@@ -263,7 +263,7 @@ module.exports = {
     });
   },
 
-  resetUser: (_id, Socket) => {
+  resetUser: Socket => {
     Socket.emit(resetuser);
   }
 };
