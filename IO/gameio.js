@@ -70,7 +70,7 @@ module.exports = {
                       { totalNumberSubmitted },
                       { new: true },
                       (err, game) => {
-                        Socket.broadcast(
+                        Socket.broadcast.emit(
                           newuserjoined,
                           game.totalNumberSubmitted
                         );
