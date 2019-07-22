@@ -148,6 +148,7 @@ module.exports = {
   },
 
   updateUserProfile: (payload, Socket) => {
+    console.log(payload);
     const { _id, data } = payload;
     // find user with the above id
     User.findOneAndUpdate({ _id }, { ...data }, { new: true }, (err, user) => {
@@ -264,6 +265,6 @@ module.exports = {
   },
 
   resetUser: Socket => {
-    Socket.emit(resetuser);
+    Socket.broadcast.emit(resetuser);
   }
 };

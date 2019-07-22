@@ -35,7 +35,11 @@ app.use(function(req, res, next) {
   // Website you wish to allow to connect
   res.setHeader("Access-Control-Allow-Origin", [
     "https://topner.herokuapp.com",
-    "https://poseidonzeus.herokuapp.com"
+    "https://poseidonzeus.herokuapp.com",
+    "http://localhost:3000",
+    "http://topner.herokuapp.com",
+    "topner.herokuapp.com",
+    "poseidonzeus.herokuapp.com"
   ]);
 
   // Request methods you wish to allow

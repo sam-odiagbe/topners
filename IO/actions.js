@@ -68,6 +68,7 @@ module.exports = io => {
     });
 
     socket.on(resetuser, () => {
+      console.log("reseting user");
       resetUser(socket);
     });
   });

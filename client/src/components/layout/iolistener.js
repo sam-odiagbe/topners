@@ -1,7 +1,10 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { setGameObject } from "../../store/actions/gameAction";
-import { setActiveUser } from "../../store/actions/authActions";
+import {
+  setActiveUser,
+  updateUserProfile
+} from "../../store/actions/authActions";
 import actions from "../../io/actions";
 import { doingAsync } from "../../store/actions/componentActions";
 const {
@@ -102,6 +105,9 @@ const mapDispatchToProps = dispatch => {
     },
     doingAsync: done => {
       return dispatch(doingAsync(done));
+    },
+    updateUserProfile: data => {
+      return dispatch(updateUserProfile(data));
     }
   };
 };
