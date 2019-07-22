@@ -112,6 +112,7 @@ module.exports = {
               Socket.emit(success, "You were Correct and on time");
             }
           }
+          Socket.emit(success, "You were Correct and on time");
         } else {
           const winner = new Winner({
             totalWinners: 0
