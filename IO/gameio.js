@@ -347,7 +347,6 @@ module.exports = {
                 { new: true },
                 (err, doc) => {
                   if (err) {
-                    console.log(err);
                     Socket.emit(error, err.message);
                   } else {
                     Socket.emit(setuser, { ...user, password: null });
