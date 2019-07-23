@@ -209,8 +209,8 @@ button:disabled {
 }
 
 .tp-card {
-  box-shadow: 0 0 10px 4px rgba(49, 245, 82, 0.9),
-    0 0 10px 4px rgba(49, 245, 82, 0.9);
+  box-shadow: 0 0 20px 5px rgba(49, 245, 82, 0.9),
+    0 0 20px 5px rgba(49, 245, 82, 0.9);
   transition: 0.3s;
   margin-bottom: 15px;
   z-index: 150;
@@ -220,9 +220,6 @@ button:disabled {
   margin-top: 20px;
 }
 
-.tp-card:hover {
-  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
-}
 .tp-card-top {
   background: #fff;
   border-radius: 5px 5px 0 0;
