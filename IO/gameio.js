@@ -341,12 +341,21 @@ module.exports = {
             if (user) {
               console.log(user);
               let newBalance = user.account_balance + amount;
-              user.account_balance = newBalance;
-              user.save();
-              Socket.emit(setuser, { ...user, password: null });
-              Socket.emit(
-                success,
-                "You have successfully topped up your account"
+              User.findOneAndUpdate(
+                { email },
+                { $set: { account_balance: newBalance } },
+                { new: true },
+                (err, doc) => {
+                  if (err) {
+                    Socket.emit(error, "Something went wrong");
+                  } else {
+                    Socket.emit(setuser, { ...user, password: null });
+                    Socket.emit(
+                      success,
+                      "You have successfully topped up your account"
+                    );
+                  }
+                }
               );
             }
           }
