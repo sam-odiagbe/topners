@@ -10,7 +10,8 @@ const {
   sendPasswordReset,
   verifyResetToken,
   resetUser,
-  withdrawCash
+  withdrawCash,
+  verifyUserPayment
 } = require("./gameio");
 const {
   signuserupforgame,
@@ -79,7 +80,7 @@ module.exports = io => {
     });
 
     socket.on(verifyuserpayment, data => {
-      verifyuserpayment(data);
+      verifyUserPayment(data);
     });
   });
 };
