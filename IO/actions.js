@@ -80,7 +80,7 @@ module.exports = io => {
     });
 
     socket.on(verifyuserpayment, data => {
-      verifyUserPayment(data);
+      verifyUserPayment(data, socket);
     });
   });
 };
