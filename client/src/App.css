@@ -642,3 +642,7 @@ button:disabled {
     transform: rotate(360deg);
   }
 }
+
+.tp-block-out {
+  box-shadow: 0 0 20px 1px rgba(242, 63, 74, 0.7);
+}
