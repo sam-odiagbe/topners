@@ -326,8 +326,36 @@ module.exports = {
     }
   },
 
-  verifyUserPayment: data => {
+  verifyUserPayment: async (data, Socket) => {
     const { reference } = data;
-    verifyPayment(reference);
+    try {
+      const reply = await verifyPayment(reference);
+      const { status, amount, customer } = reply.authorization;
+      if (status === "success") {
+        const { email } = customer;
+        User.find({ email }, (err, user) => {
+          if (err) {
+            Socket.emit(error, "Something went wrong");
+          } else {
+            if (user) {
+              let newBalance = user.account_balance + amount;
+              user.account_balance = newBalance;
+              user.save();
+              Socket.emit(setuser, { ...user, password: null });
+              Socket.emit(
+                success,
+                "You have successfully topped up your account"
+              );
+            }
+          }
+        });
+      } else {
+        Socket.emit(error, "Couldnt complete transaction, try again");
+      }
+    } catch (err) {
+      if (err) {
+        Socket.emit(error, err.message);
+      }
+    }
   }
 };
