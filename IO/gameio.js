@@ -338,6 +338,7 @@ module.exports = {
             Socket.emit(error, "Something went wrong");
           } else {
             if (user) {
+              console.log(user);
               let newBalance = user.account_balance + amount;
               user.account_balance = newBalance;
               user.save();
