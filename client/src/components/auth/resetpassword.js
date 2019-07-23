@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { requestPasswordReset } from "../../store/actions/authActions";
 import { passwordResetInputAction } from "../../store/actions/inputActions";
 import { passwordResetValidation } from "../../store/actions/validationActins";
+import { Redirect } from "react-router-dom";
 
 class ResetPassword extends Component {
   constructor() {
@@ -19,14 +20,16 @@ class ResetPassword extends Component {
   requestPasswordReset(e) {
     e.preventDefault();
     const { email } = this.props.resetpassword_input_data;
-    console.log("requesting password reset now");
     this.props.requestPasswordReset(email);
   }
 
   render() {
-    const { validation, resetpassword_input_data } = this.props;
+    const { validation, resetpassword_input_data, user } = this.props;
     const { email } = resetpassword_input_data;
     const { email: validEmail, validfield } = validation;
+    if (user) {
+      return <Redirect to="/dashboard" />;
+    }
     return (
       <div className="tp-auth-container">
         <h2 className="tp-auth-title">Password Reset</h2>
@@ -57,7 +60,8 @@ class ResetPassword extends Component {
 const mapStateToProps = state => {
   return {
     resetpassword_input_data: state.input.resetpassword,
-    validation: state.validation.passwordreset
+    validation: state.validation.passwordreset,
+    user: state.auth.user
   };
 };
 

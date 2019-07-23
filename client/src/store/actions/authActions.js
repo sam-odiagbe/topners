@@ -5,7 +5,13 @@ import { toast } from "react-toastify";
 import actions from "../../io/actions";
 import { URL } from "../../config/config";
 
-const { updateprofile, verifyaccount, passwordreset, verifyreset } = actions;
+const {
+  updateprofile,
+  verifyaccount,
+  passwordreset,
+  verifyreset,
+  withdrawcash
+} = actions;
 
 const url = `${URL}/`;
 
@@ -172,5 +178,14 @@ export const validateResetToken = data => {
     dispatch(doingAsync(true));
     const Socket = getState().components.Socket;
     Socket.emit(verifyreset, data);
+  };
+};
+
+export const requestWithdrawal = amount => {
+  return (dispatch, getState) => {
+    dispatch(doingAsync(true));
+    const Socket = getState().components.Socket;
+    const user = getState().auth.user;
+    Socket.emit(withdrawcash, { user, amount });
   };
 };

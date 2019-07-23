@@ -9,11 +9,7 @@ class Verify extends Component {
   }
   // verify user token
   render() {
-    return (
-      <div>
-        <h1>hello there</h1>
-      </div>
-    );
+    return null;
   }
 }
 

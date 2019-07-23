@@ -16,7 +16,8 @@ const actions = {
   verifyaccount: "VERIFY",
   passwordreset: "PASSWORDRESET",
   verifyreset: "VERIFYRESET",
-  resetuser: "RESETUSER"
+  resetuser: "RESETUSER",
+  withdrawcash: "WITHDRAW-CASH"
 };
 
 export default actions;

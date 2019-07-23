@@ -67,7 +67,7 @@ class Dashboard extends Component {
             <div>
               <h4>&#8358; {account_balance.toFixed(1)}</h4>
               <a
-                href="https://paystack.com/pay/topner"
+                href="https://paystack.com/pay/topnerz"
                 className="tp-top-up-account"
               >
                 Deposit

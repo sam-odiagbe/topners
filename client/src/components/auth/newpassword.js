@@ -2,12 +2,13 @@ import React, { Component } from "react";
 import { validateResetToken } from "../../store/actions/authActions";
 import { connect } from "react-redux";
 import { toast } from "react-toastify";
+import { Redirect } from "react-router-dom";
 
 class NewPassword extends Component {
   constructor() {
     super();
     this.state = {
-      valid: false,
+      valid: true,
       checked: false,
       input: {
         password: "Samson1@",
@@ -38,16 +39,39 @@ class NewPassword extends Component {
     e.preventDefault();
     const { password, confirm_password } = this.state.input;
     const { email, token } = this.props.match.params;
+    let passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$^+=!*()@%&]).{8,30}$/;
     if (password !== confirm_password) {
       return toast("Passwords do not match", {
         delay: 50,
         className: "tp-toast-error"
       });
+    } else if (
+      !passwordRegex.test(password) ||
+      !passwordRegex.test(confirm_password)
+    ) {
+      this.setState({
+        valid: false
+      });
+      return toast(
+        "Password/Confirm-password must contain uppercase, lowercase, numbers, and symbols",
+        {
+          delay: 50,
+          className: "tp-toast-error"
+        }
+      );
     }
+    this.setState({
+      valid: true
+    });
     return this.props.validateResetToken({ password, email, token });
   }
   render() {
+    const { user } = this.props;
     const { password, confirm_password } = this.state.input;
+    const { valid } = this.state;
+    if (user) {
+      return <Redirect to="/dashboard" />;
+    }
     return (
       <div className="tp-auth-container">
         <form onSubmit={this.resetPassword}>
@@ -55,7 +79,7 @@ class NewPassword extends Component {
             Password
             <input
               type="password"
-              className="tp-input-field"
+              className={`tp-input-field ${!valid && "tp-invalid-field"}`}
               placeholder="Confirm password"
               value={password}
               id="password"
@@ -67,7 +91,7 @@ class NewPassword extends Component {
             Password
             <input
               type="password"
-              className="tp-input-field"
+              className={`tp-input-field ${!valid && "tp-invalid-field"}`}
               placeholder="Password"
               id="confirm_password"
               value={confirm_password}
@@ -84,6 +108,12 @@ class NewPassword extends Component {
   }
 }
 
+const mapStateToProps = state => {
+  return {
+    user: state.auth.user
+  };
+};
+
 const mapDispatchToProps = dispatch => {
   return {
     validateResetToken: data => {
@@ -93,6 +123,6 @@ const mapDispatchToProps = dispatch => {
 };
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(NewPassword);

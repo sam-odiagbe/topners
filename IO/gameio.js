@@ -2,6 +2,7 @@ const Game = require("../database/models/game");
 const User = require("../database/models/User");
 const Winner = require("../database/models/Winner");
 const Verification = require("../database/models/verificationModel");
+const Withdrawal = require("../database/models/withdraw");
 const sendEmail = require("../database/helpers/mailer");
 const BCRYPT = require("bcrypt");
 const randomString = require("crypto-random-string");
@@ -278,5 +279,49 @@ module.exports = {
       }
     );
     Socket.broadcast.emit(resetuser);
+  },
+
+  withdrawCash(data, Socket) {
+    const { user, amount } = data;
+    if (amount >= 1000 && amount <= 20000) {
+      User.findOne({ _id: user._id }, (err, usr) => {
+        if (err) {
+          Socket.emit(error, "Something went wrong, please try again");
+        } else {
+          if (usr) {
+            if (usr.account_balance >= amount) {
+              const newBalance = user.account_balance - amount;
+              User.findOneAndUpdate(
+                { _id: usr._id },
+                { $set: { account_balance: newBalance } },
+                { new: true },
+                (err, doc) => {
+                  if (err) {
+                    Socket.emit(error, "Something went wrong, try again");
+                  } else {
+                    if (doc) {
+                      const newWithdrawal = new Withdrawal({
+                        user: doc._id,
+                        amount
+                      });
+                      newWithdrawal.save();
+                      Socket.emit(
+                        success,
+                        `Withdrawal request of ${amount} was successfully made`
+                      );
+                      Socket.emit(setuser, { ...doc._doc, password: null });
+                    }
+                  }
+                }
+              );
+            } else {
+              Socket.emit(error, "Insufficient Balance");
+            }
+          }
+        }
+      });
+    } else {
+      Socket.emit(error, "Amount needs to be above 1000 and below 20000");
+    }
   }
 };

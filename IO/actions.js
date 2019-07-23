@@ -9,7 +9,8 @@ const {
   verifyUserAccount,
   sendPasswordReset,
   verifyResetToken,
-  resetUser
+  resetUser,
+  withdrawCash
 } = require("./gameio");
 const {
   signuserupforgame,
@@ -21,7 +22,8 @@ const {
   verifyaccount,
   passwordreset,
   verifyreset,
-  resetuser
+  resetuser,
+  withdrawcash
 } = require("./emitters");
 
 module.exports = io => {
@@ -68,8 +70,11 @@ module.exports = io => {
     });
 
     socket.on(resetuser, () => {
-      console.log("reseting user");
       resetUser(socket);
+    });
+
+    socket.on(withdrawcash, data => {
+      withdrawCash(data, socket);
     });
   });
 };

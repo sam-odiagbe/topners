@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { updateUserProfile } from "../../store/actions/authActions";
 import { updateProfileInputAction } from "../../store/actions/inputActions";
+import { toast } from "react-toastify";
+import { Redirect } from "react-router-dom";
 
 class UpdateProfile extends Component {
   constructor() {
@@ -17,8 +19,37 @@ class UpdateProfile extends Component {
   }
   updateUserProfile(e) {
     const { input_data } = this.props;
+    const { name, bank, account_number } = input_data;
     e.preventDefault();
-    this.props.updateUserProfile(input_data);
+    let accountNumberRegex = /^[0-9]{10}$/;
+    let nameRegex = /^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/;
+    let banks = [
+      "Firstbank",
+      "GTB",
+      "Polaris Bank",
+      "Access Bank",
+      "UBA",
+      "Fidelity Bank",
+      "Eco Bank"
+    ];
+    if (!accountNumberRegex.test(account_number)) {
+      return toast("Invalid account number", {
+        delay: 50,
+        className: "tp-toast-error"
+      });
+    } else if (!nameRegex.test(name)) {
+      return toast("Invalid name provided", {
+        delay: 50,
+        className: "tp-toast-error"
+      });
+    } else if (!banks.includes(bank)) {
+      return toast("Invalid bank name provided", {
+        delay: 50,
+        className: "tp-toast-error"
+      });
+    }
+
+    return this.props.updateUserProfile(input_data);
   }
   render() {
     const { user, input_data } = this.props;
@@ -28,14 +59,17 @@ class UpdateProfile extends Component {
       bank: bankInputName,
       account_number: accountNumber
     } = input_data;
+    if (!user) {
+      return <Redirect to="/auth/login" />;
+    }
     return (
       <div className="tp-updateprofile-container">
         <div className="tp-updateprofile-user" />
         <div className="tp-auth-container">
           <h2 className="tp-auth-title">Update profile</h2>
           <form onSubmit={this.updateUserProfile}>
-            <h5>{name}</h5>
-            <label for="name" className="tp-label">
+            <h5>Name: {name}</h5>
+            <label htmlFor="name" className="tp-label">
               Name
               <input
                 type="text"
@@ -48,7 +82,7 @@ class UpdateProfile extends Component {
               />
             </label>
             <div>
-              <h5>{bank}</h5>
+              <h5>Bankname: {bank}</h5>
               <label htmlFor="bank">Bank Name</label>
               <select
                 id="bank"
@@ -67,7 +101,7 @@ class UpdateProfile extends Component {
               </select>
             </div>
             <div>
-              <h5>{account_number}</h5>
+              <h5>Account number: {account_number}</h5>
               <label htmlFor="account_number">Account number</label>
               <input
                 type="text"
@@ -78,7 +112,7 @@ class UpdateProfile extends Component {
               />
             </div>
             <div>
-              <button class="tp-auth-btn">Save Changes</button>
+              <button className="tp-auth-btn">Save Changes</button>
             </div>
           </form>
         </div>

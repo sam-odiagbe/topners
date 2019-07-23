@@ -16,6 +16,8 @@ import Spinner from "./components/comps/loader";
 import UpdateProfile from "./components/User/profile";
 import Verify from "./components/auth/verify";
 import NewPassword from "./components/auth/newpassword";
+import Withdraw from "./components/User/withdraw";
+import VerifyPayment from "./components/User/verifypayment";
 
 function App({ loading, user, doingAsync, socket }) {
   if (loading) {
@@ -30,6 +32,7 @@ function App({ loading, user, doingAsync, socket }) {
           <Switch>
             <Route path="/auth/signup" exact component={Signup} />
             <Route path="/auth/login" exact component={Login} />
+            <Route path="/" exact component={Dashboard} />
             <Route
               path="/dashboard"
               exact
@@ -55,6 +58,8 @@ function App({ loading, user, doingAsync, socket }) {
               exact
               component={NewPassword}
             />
+            <Route path="/withdrawal" exact component={Withdraw} />
+            <Route path="/payment/verify" exact component={VerifyPayment} />
           </Switch>
 
           <IO toast={toast} />

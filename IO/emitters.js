@@ -17,5 +17,6 @@ module.exports = {
   verifyaccount: "VERIFY",
   passwordreset: "PASSWORDRESET",
   verifyreset: "VERIFYRESET",
-  resetuser: "RESETUSER"
+  resetuser: "RESETUSER",
+  withdrawcash: "WITHDRAW-CASH"
 };
