@@ -23,7 +23,8 @@ const {
   passwordreset,
   verifyreset,
   resetuser,
-  withdrawcash
+  withdrawcash,
+  verifyuserpayment
 } = require("./emitters");
 
 module.exports = io => {
@@ -75,6 +76,10 @@ module.exports = io => {
 
     socket.on(withdrawcash, data => {
       withdrawCash(data, socket);
+    });
+
+    socket.on(verifyuserpayment, data => {
+      verifyuserpayment(data);
     });
   });
 };

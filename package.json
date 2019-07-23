@@ -21,6 +21,7 @@
     "node-cron": "^2.0.3",
     "nodemailer": "^6.2.1",
     "nodemailer-mailgun-transport": "^1.4.0",
+    "paystack": "^2.0.1",
     "socket.io": "^2.2.0"
   }
 }

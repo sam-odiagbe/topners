@@ -1,6 +1,12 @@
 import actions from "../../io/actions";
 import axios from "axios";
-const { signupforgame, submitanswer, getgameobject, setgameobject } = actions;
+const {
+  signupforgame,
+  submitanswer,
+  getgameobject,
+  setgameobject,
+  verifyuserpayment
+} = actions;
 export const signupForGame = () => {
   return (dispatch, getState) => {
     const user = getState().auth.user;
@@ -41,14 +47,8 @@ export const setGameObject = data => {
 
 export const verifyUserPaymentAndUpdateUserBalance = reference => {
   return (dispatch, getState) => {
-    const url = `https://api.paystack.co/transaction/verify/${reference}`;
-    axios
-      .get(url)
-      .then(res => {
-        console.log(res.data);
-      })
-      .catch(err => {
-        console.log(err.message);
-      });
+    const Socket = getState().components.Socket;
+    const user = getState().auth.user;
+    Socket.emit(verifyuserpayment, { user, reference });
   };
 };

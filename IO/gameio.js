@@ -6,6 +6,7 @@ const Withdrawal = require("../database/models/withdraw");
 const sendEmail = require("../database/helpers/mailer");
 const BCRYPT = require("bcrypt");
 const randomString = require("crypto-random-string");
+const verifyPayment = require("../database/helpers/verifyPaystackpayments");
 const {
   error,
   success,
@@ -323,5 +324,10 @@ module.exports = {
     } else {
       Socket.emit(error, "Amount needs to be above 1000 and below 20000");
     }
+  },
+
+  verifyUserPayment: data => {
+    const { reference } = data;
+    verifyPayment(reference);
   }
 };
