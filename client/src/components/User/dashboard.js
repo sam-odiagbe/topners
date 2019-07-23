@@ -100,8 +100,8 @@ class Dashboard extends Component {
           </div>
           <div className="tp-card-container">
             <div
-              className={`tp-card ${gameison ||
-                (signupForNextGameShow && "tp-block-out")}`}
+              className={`tp-card ${(gameison || signupForNextGameShow) &&
+                "tp-block-out"}`}
               onClick={this.signUpForGame}
             >
               <div className="tp-card-top">

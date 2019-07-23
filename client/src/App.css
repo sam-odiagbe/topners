@@ -209,8 +209,8 @@ button:disabled {
 }
 
 .tp-card {
-  box-shadow: 0 0 20px 5px rgba(49, 245, 82, 0.9),
-    0 0 20px 5px rgba(49, 245, 82, 0.9);
+  box-shadow: 0 0 20px 5px rgba(49, 245, 82, 0.7),
+    0 0 20px 5px rgba(49, 245, 82, 0.7);
   transition: 0.3s;
   margin-bottom: 15px;
   z-index: 150;
@@ -222,6 +222,7 @@ button:disabled {
 
 .tp-card-top {
   background: #fff;
+  color: #222;
   border-radius: 5px 5px 0 0;
   height: 200px;
   text-align: center;
@@ -642,5 +643,5 @@ button:disabled {
 }
 
 .tp-block-out {
-  box-shadow: 0 0 20px 5px rgba(242, 63, 74, 0.9);
+  box-shadow: 0 0 20px 5px rgba(242, 63, 74, 0.7);
 }
