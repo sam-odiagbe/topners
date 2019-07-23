@@ -347,7 +347,7 @@ module.exports = {
                 { new: true },
                 (err, doc) => {
                   if (err) {
-                    Socket.emit(error, "Something went wrong");
+                    Socket.emit(error, err.message);
                   } else {
                     Socket.emit(setuser, { ...user, password: null });
                     Socket.emit(
