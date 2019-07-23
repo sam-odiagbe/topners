@@ -330,9 +330,9 @@ module.exports = {
     const { reference } = data;
     try {
       const reply = await verifyPayment(reference);
-      console.log(reply);
-      const { status, amount, customer } = reply.authorization;
+      const { status, data } = reply;
       if (status === "success") {
+        const { amount, customer } = data;
         const { email } = customer;
         User.find({ email }, (err, user) => {
           if (err) {
