@@ -152,6 +152,7 @@ button:disabled {
 .tp-form-note {
   background: #fcff5e;
   padding: 8px 0.4em;
+  padding-top: 10px;
   font-size: 0.7em;
 }
 
@@ -208,7 +209,8 @@ button:disabled {
 }
 
 .tp-card {
-  box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.2), 0 0 10px 0 rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0 10px 4px rgba(49, 245, 82, 0.9),
+    0 0 10px 4px rgba(49, 245, 82, 0.9);
   transition: 0.3s;
   margin-bottom: 15px;
   z-index: 150;
@@ -222,8 +224,7 @@ button:disabled {
   box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
 }
 .tp-card-top {
-  background: #0adba7;
-  color: #fff;
+  background: #fff;
   border-radius: 5px 5px 0 0;
   height: 200px;
   text-align: center;
@@ -644,5 +645,5 @@ button:disabled {
 }
 
 .tp-block-out {
-  box-shadow: 0 0 20px 1px rgba(242, 63, 74, 0.7);
+  box-shadow: 0 0 20px 5px rgba(242, 63, 74, 0.9);
 }

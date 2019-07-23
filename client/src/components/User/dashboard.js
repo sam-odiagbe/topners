@@ -105,7 +105,11 @@ class Dashboard extends Component {
               onClick={this.signUpForGame}
             >
               <div className="tp-card-top">
-                <h1>Bronze</h1>
+                <h1>Fastsmart</h1>
+                {gameison ||
+                  (signupForNextGameShow && (
+                    <h3 style={{ color: "red" }}>Closed</h3>
+                  ))}
               </div>
               <div className="tp-card-bottom">
                 <div className="tp-entrance-fee">
