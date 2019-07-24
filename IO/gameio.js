@@ -330,6 +330,7 @@ module.exports = {
     const { reference } = data;
     try {
       const reply = await verifyPayment(reference);
+      console.log(reply);
       const { data } = reply;
       if (data.status === "success") {
         const { amount, customer } = data;
