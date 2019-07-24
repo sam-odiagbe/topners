@@ -7,6 +7,7 @@ import {
 } from "../../store/actions/authActions";
 import actions from "../../io/actions";
 import { doingAsync } from "../../store/actions/componentActions";
+import { Redirect } from "react-router-dom";
 const {
   error,
   success,
@@ -16,7 +17,8 @@ const {
   youwin,
   wronganswer,
   totalwinnersreached,
-  resetuser
+  resetuser,
+  paymentsuccessful
 } = actions;
 class Io extends Component {
   componentWillMount() {
@@ -84,6 +86,12 @@ class Io extends Component {
         type: toast.TYPE.INFO,
         className: "tp-toast-success"
       });
+    });
+
+    Socket.on(paymentsuccessful, () => {
+      setTimeout(() => {
+        return <Redirect to="/dashboard" />;
+      }, 3500);
     });
   }
   render() {

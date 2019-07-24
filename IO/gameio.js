@@ -14,7 +14,8 @@ const {
   setgameobject,
   resetuser,
   blockout,
-  newuserjoined
+  newuserjoined,
+  paymentsuccessful
 } = require("./emitters");
 
 module.exports = {
@@ -350,6 +351,7 @@ module.exports = {
                     Socket.emit(error, err.message);
                   } else {
                     Socket.emit(setuser, { ...doc._doc, password: null });
+                    Socket.emit(paymentsuccessful);
                     Socket.emit(
                       success,
                       "You have successfully topped up your account"

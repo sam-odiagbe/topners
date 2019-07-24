@@ -18,7 +18,8 @@ const actions = {
   verifyreset: "VERIFYRESET",
   resetuser: "RESETUSER",
   withdrawcash: "WITHDRAW-CASH",
-  verifyuserpayment: "VERIFY-USER-PAYMENT"
+  verifyuserpayment: "VERIFY-USER-PAYMENT",
+  paymentsuccessful: "PAYMENT-SUCCESSFUL"
 };
 
 export default actions;
