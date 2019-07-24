@@ -341,7 +341,7 @@ module.exports = {
             Socket.emit(error, "Something went wrong");
           } else {
             if (user) {
-              let newBalance = user.account_balance + amount;
+              let newBalance = user.account_balance + amount / 100;
               User.findOneAndUpdate(
                 { email },
                 { $set: { account_balance: newBalance } },
