@@ -104,9 +104,7 @@ class Io extends Component {
   render() {
     const { redirect } = this.state;
     if (redirect) {
-      return setTimeout(() => {
-        return <Redirect to="/dashboard" />;
-      }, 2500);
+      return <Redirect to="/dashboard" />;
     }
     return null;
   }
