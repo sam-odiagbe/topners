@@ -334,7 +334,7 @@ module.exports = {
       if (data.status === "success") {
         const { amount, customer } = data;
         const { email } = customer;
-        User.findOnes({ email }, (err, user) => {
+        User.findOne({ email }, (err, user) => {
           if (err) {
             Socket.emit(error, "Something went wrong");
           } else {
