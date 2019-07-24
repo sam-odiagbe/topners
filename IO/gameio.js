@@ -334,15 +334,12 @@ module.exports = {
       if (data.status === "success") {
         const { amount, customer } = data;
         const { email } = customer;
-        User.find({ email }, (err, user) => {
+        User.findOnes({ email }, (err, user) => {
           if (err) {
             Socket.emit(error, "Something went wrong");
           } else {
             if (user) {
-              console.log(user, " ", typeof amount);
               let newBalance = user.account_balance + amount;
-              console.log(newBalance);
-              console.log(user.account_balance);
               User.findOneAndUpdate(
                 { email },
                 { $set: { account_balance: newBalance } },
