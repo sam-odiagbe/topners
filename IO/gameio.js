@@ -339,7 +339,7 @@ module.exports = {
             Socket.emit(error, "Something went wrong");
           } else {
             if (user) {
-              console.log(user);
+              console.log(user, " ", typeof amount);
               let newBalance = user.account_balance + amount;
               User.findOneAndUpdate(
                 { email },
