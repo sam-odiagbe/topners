@@ -21,6 +21,13 @@ const {
   paymentsuccessful
 } = actions;
 class Io extends Component {
+  constructor() {
+    super();
+
+    this.state = {
+      redirect: false
+    };
+  }
   componentWillMount() {
     const { toast } = this.props;
     toast.configure({
@@ -89,12 +96,18 @@ class Io extends Component {
     });
 
     Socket.on(paymentsuccessful, () => {
-      setTimeout(() => {
-        return <Redirect to="/dashboard" />;
-      }, 3500);
+      this.setState({
+        redirect: true
+      });
     });
   }
   render() {
+    const { redirect } = this.state;
+    if (redirect) {
+      return setTimeout(() => {
+        return <Redirect to="/dashboard" />;
+      }, 2500);
+    }
     return null;
   }
 }
