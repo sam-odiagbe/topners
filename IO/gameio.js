@@ -349,7 +349,7 @@ module.exports = {
                   if (err) {
                     Socket.emit(error, err.message);
                   } else {
-                    Socket.emit(setuser, { ...user, password: null });
+                    Socket.emit(setuser, { ...doc._doc, password: null });
                     Socket.emit(
                       success,
                       "You have successfully topped up your account"
