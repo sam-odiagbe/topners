@@ -341,6 +341,8 @@ module.exports = {
             if (user) {
               console.log(user, " ", typeof amount);
               let newBalance = user.account_balance + amount;
+              console.log(newBalance);
+              console.log(user.account_balance);
               User.findOneAndUpdate(
                 { email },
                 { $set: { account_balance: newBalance } },
