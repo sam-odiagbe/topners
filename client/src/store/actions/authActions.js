@@ -28,7 +28,7 @@ export const createUserAccount = data => {
             type: "SIGNUP-ERROR",
             payload: { error: error.message, success: null }
           });
-          dispatch(signingup(false));
+          dispatch(doingAsync(false));
           toast(error.message, {
             delay: 50,
             className: "tp-toast-error"
@@ -38,14 +38,12 @@ export const createUserAccount = data => {
             type: "SIGNUP-SUCCESS",
             payload: { error: null, success: success.message }
           });
-
+          dispatch(doingAsync(false));
           toast("Account created successfully, you can login now", {
             delay: 50,
             className: "tp-toast-success"
           });
         }
-
-        dispatch(signingup(false));
       })
       .catch(err => {
         dispatch({
@@ -53,7 +51,7 @@ export const createUserAccount = data => {
           payload: err.message
         });
 
-        dispatch(signingup(false));
+        dispatch(doingAsync(false));
         toast(err.message, {
           delay: 50,
           className: "tp-toast-error"
