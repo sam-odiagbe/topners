@@ -345,7 +345,7 @@ module.exports = {
           try {
             const verify = await verifyPayment(reference);
             const { data } = verify;
-            if (data.success === "success") {
+            if (data.status === "success") {
               const { amount } = data;
               const newBalance = user.account_balance + amount / 100;
               User.findOneAndUpdate(
