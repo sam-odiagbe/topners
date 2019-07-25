@@ -2,12 +2,14 @@ import React, { Component } from "react";
 import queryString from "query-string";
 import { verifyUserPaymentAndUpdateUserBalance } from "../../store/actions/gameAction";
 import { connect } from "react-redux";
+import { doingAsync } from "../../store/actions/componentActions";
 class VerifyPayment extends Component {
   componentDidMount() {
     const query = this.props.location.search;
     const values = queryString.parse(query);
 
     const { reference } = values;
+    this.props.doingAsync();
     this.props.verifyPaymentAndUpdateUserBalance(reference);
   }
   render() {
@@ -19,6 +21,9 @@ const mapDispatchToProps = dispatch => {
   return {
     verifyPaymentAndUpdateUserBalance: reference => {
       return dispatch(verifyUserPaymentAndUpdateUserBalance(reference));
+    },
+    doingAsync: () => {
+      return dispatch(doingAsync(true));
     }
   };
 };
