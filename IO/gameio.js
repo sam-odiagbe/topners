@@ -379,10 +379,7 @@ module.exports = {
               );
             }
           } catch (err) {
-            Socket.emit(
-              error,
-              "Something went wrong while trying to top up your account, please try again"
-            );
+            Socket.emit(error, err.message);
           }
         }
       }
