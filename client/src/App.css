@@ -655,13 +655,13 @@ button:disabled {
   filter: blur(1.5px);
   position: fixed;
   z-index: 1000;
+  margin: 0;
 }
 
 .lds-spinner {
   color: official;
   display: inline-block;
   position: relative;
-  background: #000;
   padding-top: 50%;
   padding-left: 50%;
   margin-left: -32px;

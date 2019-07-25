@@ -167,6 +167,7 @@ export const setActiveUser = user => {
 
 export const updateUserProfile = data => {
   return (dispatch, getState) => {
+    dispatch(doingAsync(true));
     const socket = getState().components.Socket;
     const _id = getState().auth.user;
     socket.emit(updateprofile, { data, _id });
