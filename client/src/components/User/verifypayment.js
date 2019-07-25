@@ -9,7 +9,6 @@ class VerifyPayment extends Component {
     const values = queryString.parse(query);
 
     const { reference } = values;
-    this.props.doingAsync();
     this.props.verifyPaymentAndUpdateUserBalance(reference);
   }
   render() {
@@ -21,9 +20,6 @@ const mapDispatchToProps = dispatch => {
   return {
     verifyPaymentAndUpdateUserBalance: reference => {
       return dispatch(verifyUserPaymentAndUpdateUserBalance(reference));
-    },
-    doingAsync: () => {
-      return dispatch(doingAsync(true));
     }
   };
 };
