@@ -329,9 +329,9 @@ module.exports = {
     }
   },
 
-  verifyUserPayment: async (data, Socket) => {
+  verifyUserPayment: (data, Socket) => {
     const { reference, user } = data;
-    Reference.findOne({ reference }, (err, ref) => {
+    Reference.findOne({ reference }, async (err, ref) => {
       if (err) {
         Socket.emit(error, "Couldn't top up your account, please try again");
       } else {
@@ -345,34 +345,47 @@ module.exports = {
           try {
             const verify = await verifyPayment(reference);
             const { data } = verify;
-            if(data.success) {
+            if (data.success) {
               const { amount } = data;
               const newBalance = user.account_balance + amount / 100;
-              User.findOneAndUpdate({_id:user._id}, {  $set: {account_balance : newBalance}}, {new:true},(err,doc) => {
-                if(err) {
-                  // need to think about this alright
-                  Socket.emit(retrypayment, reference);
-                  //emit a retry payment
-                }else {
-                  const newReference = new Reference({
-                    reference
-                  });
+              User.findOneAndUpdate(
+                { _id: user._id },
+                { $set: { account_balance: newBalance } },
+                { new: true },
+                (err, doc) => {
+                  if (err) {
+                    // need to think about this alright
+                    Socket.emit(retrypayment, reference);
+                    //emit a retry payment
+                  } else {
+                    const newReference = new Reference({
+                      reference
+                    });
 
-                  newReference.save();
-                  Socket.emit(setuser, {...doc._doc, password: null});
-                  Socket.emit(paymentsuccessful);
-                  Socket.emit(success, `Your account has been successfully topped up with ${amount} naira`);
-                  
+                    newReference.save();
+                    Socket.emit(setuser, { ...doc._doc, password: null });
+                    Socket.emit(paymentsuccessful);
+                    Socket.emit(
+                      success,
+                      `Your account has been successfully topped up with ${amount} naira`
+                    );
+                  }
                 }
-              })
-            }else {
-              Socket.emit(error, 'Something went wrong while trying to top up your account, please try again');
+              );
+            } else {
+              Socket.emit(
+                error,
+                "Something went wrong while trying to top up your account, please try again"
+              );
             }
-          }catch(err) {
-            Socket.emit(error, 'Something went wrong while trying to top up your account, please try again');
+          } catch (err) {
+            Socket.emit(
+              error,
+              "Something went wrong while trying to top up your account, please try again"
+            );
           }
         }
       }
     });
-  } 
+  }
 };
