@@ -206,13 +206,19 @@ module.exports = {
         Socket.emit(error, "Couldn't verify your account, try again");
       }
       if (doc) {
-        User.findOneAndUpdate({ email }, { verified: true }, (err, doc) => {
-          if (err) {
-            Socket.emit(error, "Something went wrong, try again");
-          } else {
-            Socket.emit(success, "Your account has been verified");
+        User.findOneAndUpdate(
+          { email },
+          { verified: true },
+          { new: true },
+          (err, doc) => {
+            if (err) {
+              Socket.emit(error, "Something went wrong, try again");
+            } else {
+              Socket.emit(success, "Your account has been verified");
+              Socket.emit(setuser, { ...doc._doc, password: null });
+            }
           }
-        });
+        );
       } else {
         Socket.emit(error, "Invalid token supplied");
       }
