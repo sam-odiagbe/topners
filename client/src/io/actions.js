@@ -19,7 +19,8 @@ const actions = {
   resetuser: "RESETUSER",
   withdrawcash: "WITHDRAW-CASH",
   verifyuserpayment: "VERIFY-USER-PAYMENT",
-  paymentsuccessful: "PAYMENT-SUCCESSFUL"
+  paymentsuccessful: "PAYMENT-SUCCESSFUL",
+  retrypayment: "RETRY-PAYMENT"
 };
 
 export default actions;

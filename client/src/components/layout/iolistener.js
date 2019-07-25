@@ -1,6 +1,9 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { setGameObject } from "../../store/actions/gameAction";
+import {
+  setGameObject,
+  verifyUserPaymentAndUpdateUserBalance
+} from "../../store/actions/gameAction";
 import {
   setActiveUser,
   updateUserProfile
@@ -18,7 +21,8 @@ const {
   wronganswer,
   totalwinnersreached,
   resetuser,
-  paymentsuccessful
+  paymentsuccessful,
+  retrypayment
 } = actions;
 class Io extends Component {
   constructor() {
@@ -100,6 +104,17 @@ class Io extends Component {
         redirect: true
       });
     });
+
+    Socket.on(retrypayment, reference => {
+      toast(
+        `Retrying payment for ${reference}, please hold on and don\'t leave this page, you will be redirected when payment is successful`,
+        {
+          delay: 50,
+          className: "tp-toast-error"
+        }
+      );
+      this.props.verifyUserPaymentAndUpdateUserBalance(reference);
+    });
   }
   render() {
     const { redirect } = this.state;
@@ -123,6 +138,9 @@ const mapDispatchToProps = dispatch => {
     },
     updateUserProfile: data => {
       return dispatch(updateUserProfile(data));
+    },
+    verifyUserPaymentAndUpdateUserBalance: reference => {
+      return dispatch(verifyUserPaymentAndUpdateUserBalance(reference));
     }
   };
 };

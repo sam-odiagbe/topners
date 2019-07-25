@@ -7,6 +7,7 @@ const sendEmail = require("../database/helpers/mailer");
 const BCRYPT = require("bcrypt");
 const randomString = require("crypto-random-string");
 const verifyPayment = require("../database/helpers/verifyPaystackpayments");
+const Reference = require("../database/models/reference");
 const {
   error,
   success,
@@ -15,7 +16,8 @@ const {
   resetuser,
   blockout,
   newuserjoined,
-  paymentsuccessful
+  paymentsuccessful,
+  retrypayment
 } = require("./emitters");
 
 module.exports = {
@@ -328,47 +330,49 @@ module.exports = {
   },
 
   verifyUserPayment: async (data, Socket) => {
-    const { reference } = data;
-    try {
-      const reply = await verifyPayment(reference);
-      console.log(reply);
-      const { data } = reply;
-      if (data.status === "success") {
-        const { amount, customer } = data;
-        const { email } = customer;
-        User.findOne({ email }, (err, user) => {
-          if (err) {
-            Socket.emit(error, "Something went wrong");
-          } else {
-            if (user) {
-              let newBalance = user.account_balance + amount / 100;
-              User.findOneAndUpdate(
-                { email },
-                { $set: { account_balance: newBalance } },
-                { new: true },
-                (err, doc) => {
-                  if (err) {
-                    Socket.emit(error, err.message);
-                  } else {
-                    Socket.emit(setuser, { ...doc._doc, password: null });
-                    Socket.emit(paymentsuccessful);
-                    Socket.emit(
-                      success,
-                      "You have successfully topped up your account"
-                    );
-                  }
-                }
-              );
-            }
-          }
-        });
-      } else {
-        Socket.emit(error, "Couldnt complete transaction, try again");
-      }
-    } catch (err) {
+    const { reference, user } = data;
+    Reference.findOne({ reference }, (err, ref) => {
       if (err) {
-        Socket.emit(error, err.message);
+        Socket.emit(error, "Couldn't top up your account, please try again");
+      } else {
+        if (ref) {
+          Socket.emit(
+            error,
+            "The reference reciept you have provided has been settled "
+          );
+        } else {
+          // no referece has been saved
+          try {
+            const verify = await verifyPayment(reference);
+            const { data } = verify;
+            if(data.success) {
+              const { amount } = data;
+              const newBalance = user.account_balance + amount / 100;
+              User.findOneAndUpdate({_id:user._id}, {  $set: {account_balance : newBalance}}, {new:true},(err,doc) => {
+                if(err) {
+                  // need to think about this alright
+                  Socket.emit(retrypayment, reference);
+                  //emit a retry payment
+                }else {
+                  const newReference = new Reference({
+                    reference
+                  });
+
+                  newReference.save();
+                  Socket.emit(setuser, {...doc._doc, password: null});
+                  Socket.emit(paymentsuccessful);
+                  Socket.emit(success, `Your account has been successfully topped up with ${amount} naira`);
+                  
+                }
+              })
+            }else {
+              Socket.emit(error, 'Something went wrong while trying to top up your account, please try again');
+            }
+          }catch(err) {
+            Socket.emit(error, 'Something went wrong while trying to top up your account, please try again');
+          }
+        }
       }
-    }
-  }
+    });
+  } 
 };
