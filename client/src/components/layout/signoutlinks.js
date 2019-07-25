@@ -5,20 +5,12 @@ const SignedOutLinks = () => {
   return (
     <React.Fragment>
       <li>
-        <NavLink
-          activeClassName="tp-active-link-class"
-          exact
-          to="/app/auth/login"
-        >
+        <NavLink activeClassName="tp-active-link-class" exact to="/auth/login">
           Login
         </NavLink>
       </li>
       <li>
-        <NavLink
-          activeClassName="tp-active-link-class"
-          exact
-          to="/app/auth/signup"
-        >
+        <NavLink activeClassName="tp-active-link-class" exact to="/auth/signup">
           Signup
         </NavLink>
       </li>
