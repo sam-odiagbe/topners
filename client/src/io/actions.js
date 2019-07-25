@@ -20,7 +20,9 @@ const actions = {
   withdrawcash: "WITHDRAW-CASH",
   verifyuserpayment: "VERIFY-USER-PAYMENT",
   paymentsuccessful: "PAYMENT-SUCCESSFUL",
-  retrypayment: "RETRY-PAYMENT"
+  retrypayment: "RETRY-PAYMENT",
+  paymenterror: "PAYMENT-ERROR",
+  requestverification: "REQUEST-VERIFICATION"
 };
 
 export default actions;

@@ -17,7 +17,8 @@ const {
   blockout,
   newuserjoined,
   paymentsuccessful,
-  retrypayment
+  retrypayment,
+  paymenterror
 } = require("./emitters");
 
 module.exports = {
@@ -293,31 +294,42 @@ module.exports = {
           Socket.emit(error, "Something went wrong, please try again");
         } else {
           if (usr) {
+            // if user is not verified
+            //check the amount the user is requesting
+            // if the amount is greate than 5000 reject request and send message back to user saying there is a limit on their account because they have not verified their account
             if (usr.account_balance >= amount) {
-              const newBalance = user.account_balance - amount;
-              User.findOneAndUpdate(
-                { _id: usr._id },
-                { $set: { account_balance: newBalance } },
-                { new: true },
-                (err, doc) => {
-                  if (err) {
-                    Socket.emit(error, "Something went wrong, try again");
-                  } else {
-                    if (doc) {
-                      const newWithdrawal = new Withdrawal({
-                        user: doc._id,
-                        amount
-                      });
-                      newWithdrawal.save();
-                      Socket.emit(
-                        success,
-                        `Withdrawal request of ${amount} was successfully made`
-                      );
-                      Socket.emit(setuser, { ...doc._doc, password: null });
+              console.log(user.verified);
+              if (amount > 5000 && !usr.verified) {
+                Socket.emit(
+                  error,
+                  "Sorry you have not verified your account so withdrawals are limited to 5000 naira"
+                );
+              } else {
+                const newBalance = user.account_balance - amount;
+                User.findOneAndUpdate(
+                  { _id: usr._id },
+                  { $set: { account_balance: newBalance } },
+                  { new: true },
+                  (err, doc) => {
+                    if (err) {
+                      Socket.emit(error, "Something went wrong, try again");
+                    } else {
+                      if (doc) {
+                        const newWithdrawal = new Withdrawal({
+                          user: doc._id,
+                          amount
+                        });
+                        newWithdrawal.save();
+                        Socket.emit(
+                          success,
+                          `Withdrawal request of ${amount} was successfully made`
+                        );
+                        Socket.emit(setuser, { ...doc._doc, password: null });
+                      }
                     }
                   }
-                }
-              );
+                );
+              }
             } else {
               Socket.emit(error, "Insufficient Balance");
             }
@@ -331,6 +343,7 @@ module.exports = {
 
   verifyUserPayment: (data, Socket) => {
     const { reference, user } = data;
+    const theUser = JSON.parse(user);
     Reference.findOne({ reference }, async (err, ref) => {
       if (err) {
         Socket.emit(error, "Couldn't top up your account, please try again");
@@ -347,42 +360,55 @@ module.exports = {
             const { data } = verify;
             if (data.status === "success") {
               const { amount } = data;
-              const newBalance = user.account_balance + amount / 100;
+              const newBalance = theUser.account_balance + amount / 100;
               User.findOneAndUpdate(
-                { _id: user._id },
+                { _id: theUser._id },
                 { $set: { account_balance: newBalance } },
                 { new: true },
                 (err, doc) => {
                   if (err) {
                     // need to think about this alright
-                    Socket.emit(retrypayment, reference);
+                    Socket.emit(
+                      paymenterror,
+                      `Hi, we noticed that your reference reciept number is valid but something went wrong, please contact support@topner.com`
+                    );
                     //emit a retry payment
                   } else {
                     const newReference = new Reference({
-                      reference
+                      reference,
+                      done: true
                     });
 
                     newReference.save();
                     Socket.emit(setuser, { ...doc._doc, password: null });
-                    Socket.emit(paymentsuccessful);
                     Socket.emit(
-                      success,
-                      `Your account has been successfully topped up with ${amount} naira`
+                      paymentsuccessful,
+                      `Your account has been successfully topped up with ${amount /
+                        100} naira`
                     );
                   }
                 }
               );
             } else {
               Socket.emit(
-                error,
+                paymenterror,
                 "Something went wrong while trying to top up your account, please try again"
               );
             }
           } catch (err) {
-            Socket.emit(error, err.message);
+            Socket.emit(
+              paymenterror,
+              "Something went wrong while trying to top up your account, please try again"
+            );
           }
         }
       }
     });
+  },
+
+  requestVerification: (data, Socket) => {
+    const { user } = data;
+    sendEmail({ type: "VERIFICATION", email: user.email, _id: user._id });
+    Socket.emit(success, `Verification email has been sent to ${user.email}`);
   }
 };

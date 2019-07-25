@@ -29,13 +29,18 @@ class Withdraw extends Component {
   render() {
     const { number } = this.state;
     const { user } = this.props;
-    const { account_balance } = user ? user : {};
+    const { account_balance, verified } = user ? user : {};
     const colors = account_balance < 1000 ? "red" : "green";
     if (!user) {
       return <Redirect to="/auth/login" />;
     }
     return (
       <div className="tp-auth-container">
+        {!verified && (
+          <p className="tp-form-note">
+            Account is not verified, withdrawals are limited to &#8358;5000
+          </p>
+        )}
         <h4>
           your balance is
           <span style={{ color: colors }}> &#8358;{account_balance}</span>

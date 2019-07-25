@@ -22,7 +22,8 @@ const {
   totalwinnersreached,
   resetuser,
   paymentsuccessful,
-  retrypayment
+  retrypayment,
+  paymenterror
 } = actions;
 class Io extends Component {
   constructor() {
@@ -82,14 +83,6 @@ class Io extends Component {
       this.props.setGameObject(game);
     });
 
-    Socket.on(blockout, response => {
-      toast.update("Blocked out", {
-        delay: 5000,
-        type: toast.TYPE.INFO,
-        className: "tp-toast-error"
-      });
-    });
-
     Socket.on(totalwinnersreached, response => {
       this.props.doingAsync(false);
       return toast(response, {
@@ -99,21 +92,26 @@ class Io extends Component {
       });
     });
 
-    Socket.on(paymentsuccessful, () => {
+    Socket.on(paymentsuccessful, response => {
+      toast(response, {
+        delay: 50,
+        className: "tp-toast-success"
+      });
       this.setState({
         redirect: true
       });
+      this.props.doingAsync(false);
     });
 
-    Socket.on(retrypayment, reference => {
-      toast(
-        `Retrying payment for ${reference}, please hold on and don\'t leave this page, you will be redirected when payment is successful`,
-        {
-          delay: 50,
-          className: "tp-toast-error"
-        }
-      );
-      this.props.verifyUserPaymentAndUpdateUserBalance(reference);
+    Socket.on(paymenterror, response => {
+      toast(response, {
+        delay: 50,
+        className: "tp-toast-error"
+      });
+      this.setState({
+        redirect: true
+      });
+      this.props.doingAsync(false);
     });
   }
   render() {

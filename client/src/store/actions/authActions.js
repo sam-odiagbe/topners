@@ -10,14 +10,15 @@ const {
   verifyaccount,
   passwordreset,
   verifyreset,
-  withdrawcash
+  withdrawcash,
+  requestverification
 } = actions;
 
 const url = `${URL}/`;
 
 export const createUserAccount = data => {
   return (dispatch, getState) => {
-    dispatch(signingup(true));
+    dispatch(doingAsync(true));
     axios
       .post(`${url}auth/signup`, data, { withCredentials: true })
       .then(res => {
@@ -63,7 +64,7 @@ export const createUserAccount = data => {
 
 export const logUserIn = data => {
   return (dispatch, getState) => {
-    dispatch(logingin(true));
+    dispatch(doingAsync(true));
     axios
       .post(`${url}auth/login`, data, { withCredentials: true })
       .then(res => {
@@ -73,7 +74,7 @@ export const logUserIn = data => {
             type: "LOGIN-ERROR",
             payload: { error }
           });
-          dispatch(logingin(false));
+          dispatch(doingAsync(false));
           toast("Invalid credentials provided", {
             delay: 50,
             className: "tp-toast-error"
@@ -81,7 +82,7 @@ export const logUserIn = data => {
         } else {
           let user = jwt.verify(success.auth, "posiedonathenazeuskratoshydra");
           dispatch({ type: "SET-ACTIVE-USER", payload: { user: user.auth } });
-          dispatch(logingin(false));
+          dispatch(doingAsync(false));
         }
       })
       .catch(err => {
@@ -90,7 +91,7 @@ export const logUserIn = data => {
           type: "LOGIN-ERROR",
           payload: { error: "Invalid credentials provided" }
         });
-        dispatch(logingin(false));
+        dispatch(doingAsync(false));
         toast(err.message, {
           delay: 50,
           className: "tp-toast-error"
@@ -101,6 +102,7 @@ export const logUserIn = data => {
 
 export const verifyAuthentication = () => {
   return dispatch => {
+    dispatch(doingAsync(true));
     axios
       .get(`${url}auth/verify_authentication`, {
         withCredentials: true
@@ -112,12 +114,18 @@ export const verifyAuthentication = () => {
             type: "AUTHENTICATION-END",
             payload: { loading: false }
           });
+          dispatch(doingAsync(false));
         } else {
           dispatch({
             type: "AUTHENTICATION-END",
             payload: { loading: false }
           });
+          dispatch(doingAsync(false));
           dispatch(setActiveUser(success.auth));
+          localStorage.setItem(
+            "user",
+            JSON.stringify({ ...success.auth, password: null })
+          );
         }
       })
       .catch(err => {
@@ -125,19 +133,28 @@ export const verifyAuthentication = () => {
           type: "AUTHENTICATION-END",
           payload: { loading: false }
         });
+        dispatch(doingAsync(false));
       });
   };
 };
 
 export const logout = () => {
   return dispatch => {
-    axios.post(`${url}auth/logout`, {}, { withCredentials: true }).then(res => {
-      const { error } = res.data;
-      if (error) {
-      } else {
-        dispatch(setActiveUser(null));
-      }
-    });
+    dispatch(doingAsync(true));
+    axios
+      .post(`${url}auth/logout`, {}, { withCredentials: true })
+      .then(res => {
+        const { error } = res.data;
+        if (error) {
+          dispatch(doingAsync(false));
+        } else {
+          dispatch(setActiveUser(null));
+          dispatch(doingAsync(false));
+        }
+      })
+      .catch(err => {
+        dispatch(doingAsync(true));
+      });
   };
 };
 
@@ -158,7 +175,7 @@ export const updateUserProfile = data => {
 
 export const verifyAccount = data => {
   return (dispatch, getState) => {
-    console.log("verify");
+    dispatch(doingAsync(true));
     const Socket = getState().components.Socket;
     console.log(Socket);
     Socket.emit(verifyaccount, data);
@@ -187,5 +204,14 @@ export const requestWithdrawal = amount => {
     const Socket = getState().components.Socket;
     const user = getState().auth.user;
     Socket.emit(withdrawcash, { user, amount });
+  };
+};
+
+export const requestVerification = () => {
+  return (dispatch, getState) => {
+    dispatch(doingAsync(true));
+    const Socket = getState().components.Socket;
+    const user = getState().auth.user;
+    Socket.emit(requestverification, { user });
   };
 };

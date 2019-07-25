@@ -56,19 +56,48 @@ module.exports = data => {
       if (sent) {
         switch (type) {
           case "PASSWORDRESET":
-            const reset = new PasswordReset({
-              token,
-              email
+            PasswordReset.findOne({ email }, (err, found) => {
+              if (err) {
+              } else {
+                if (found) {
+                  PasswordReset.findOneAndUpdate(
+                    { email },
+                    { token },
+                    (err, done) => {}
+                  );
+                } else {
+                  const reset = new PasswordReset({
+                    token,
+                    email
+                  });
+                  reset.save();
+                }
+              }
             });
-            reset.save();
+
             message = `Reset link has been sent to ${email}`;
             break;
           case "VERIFICATION":
-            const verify = new Verification({
-              token,
-              user: _id
+            Verification.findOne({ email }, (err, found) => {
+              if (err) {
+              } else {
+                if (found) {
+                  Verification.findOneAndUpdate(
+                    { email },
+                    { token },
+                    (err, done) => {}
+                  );
+                } else {
+                  const verify = new Verification({
+                    token,
+                    email
+                  });
+
+                  verify.save();
+                }
+              }
             });
-            verify.save();
+
             message = `Verification email has been sent to ${email}`;
             break;
           default:
@@ -76,7 +105,7 @@ module.exports = data => {
         }
       }
     })
-    .catch(err => console.log(err));
+    .catch(err => {});
 };
 
 //generate random string and store in the database

@@ -1,6 +1,9 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { updateUserProfile } from "../../store/actions/authActions";
+import {
+  updateUserProfile,
+  requestVerification
+} from "../../store/actions/authActions";
 import { updateProfileInputAction } from "../../store/actions/inputActions";
 import { toast } from "react-toastify";
 import { Redirect } from "react-router-dom";
@@ -11,6 +14,7 @@ class UpdateProfile extends Component {
 
     this.updateUserProfile = this.updateUserProfile.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
+    this.requestVerification = this.requestVerification.bind(this);
   }
   handleInputChange(e) {
     const { id, value } = e.target;
@@ -51,9 +55,14 @@ class UpdateProfile extends Component {
 
     return this.props.updateUserProfile(input_data);
   }
+
+  requestVerification(e) {
+    e.preventDefault();
+    this.props.requestVerification();
+  }
   render() {
     const { user, input_data } = this.props;
-    const { name, account_number, bank } = user ? user : {};
+    const { name, account_number, bank, verified } = user ? user : {};
     const {
       name: inputName,
       bank: bankInputName,
@@ -64,6 +73,18 @@ class UpdateProfile extends Component {
     }
     return (
       <div className="tp-updateprofile-container">
+        {!verified && (
+          <p className="tp-form-note">
+            Your account is not verified and thereby limited, please verify your
+            account to get full control{" "}
+            <a
+              onClick={this.requestVerification}
+              style={{ color: "red", textDecoration: "underline" }}
+            >
+              Verify Account now
+            </a>
+          </p>
+        )}
         <div className="tp-updateprofile-user" />
         <div className="tp-auth-container">
           <h2 className="tp-auth-title">Update profile</h2>
@@ -134,6 +155,9 @@ const mapDispatchToProps = dispatch => {
     },
     updateProfileInputAction: data => {
       return dispatch(updateProfileInputAction(data));
+    },
+    requestVerification: data => {
+      return dispatch(requestVerification());
     }
   };
 };

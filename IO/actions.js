@@ -11,7 +11,8 @@ const {
   verifyResetToken,
   resetUser,
   withdrawCash,
-  verifyUserPayment
+  verifyUserPayment,
+  requestVerification
 } = require("./gameio");
 const {
   signuserupforgame,
@@ -25,7 +26,8 @@ const {
   verifyreset,
   resetuser,
   withdrawcash,
-  verifyuserpayment
+  verifyuserpayment,
+  requestverification
 } = require("./emitters");
 
 module.exports = io => {
@@ -81,6 +83,11 @@ module.exports = io => {
 
     socket.on(verifyuserpayment, data => {
       verifyUserPayment(data, socket);
+    });
+
+    socket.on(requestverification, data => {
+      console.log(data);
+      requestVerification(data, socket);
     });
   });
 };

@@ -48,7 +48,7 @@ module.exports = {
                   username
                 });
                 user.totalAmountWon = 0;
-                user.account_balance = 10000;
+                user.account_balance = 0;
                 user.verified = false;
                 user.signupForNextGameShow = false;
                 user.password = user.hashPassword(password);
