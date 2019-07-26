@@ -275,38 +275,50 @@ module.exports = {
 
   verifyResetToken: (data, Socket) => {
     const { token, email, password } = data;
+    console.log("reseting the token");
+    console.log(email);
     // check to see if there is a token already assigned to the user
-    Verification.findOne({ token }, (err, verify) => {
-      if (err) {
-        Socket.emit(error, "Something went wrong, please try again");
-      }
-      if (verify) {
-        const newPassword = BCRYPT.hashSync(password, 10);
-        User.findOneAndUpdate(
-          { email },
-          { $set: { password: newPassword } },
-          (err, user) => {
-            if (err) {
-              Socket.emit(error, "Something went wrong, please try again");
-            }
-            if (user) {
-              //deleteVerification
-              Verification.findOneAndDelete({ email }, (err, done) => {
-                if (err) {
-                  Socket.emit(error, "Something went wrong, please try again");
+    const errorMessage =
+      "Something went wrong , please try again or make a new request for a new token";
+    try {
+      PasswordReset.findOne({ email }, (err, found) => {
+        if (err) {
+          throw new Error(err.message);
+        } else {
+          if (found) {
+            // check the token against the token in the database
+            let tokenInDatabase = found.token;
+            let newPassword = BCRYPT.hashSync(password, 10);
+            if (tokenInDatabase === token) {
+              // verify the user e
+              User.findOneAndUpdate(
+                { email },
+                { $set: { password: newPassword } },
+                { new: true },
+                (err, done) => {
+                  if (err) {
+                    throw new Error(errorMessage);
+                  } else {
+                    Socket.emit(success, "Reset was successful");
+                    PasswordReset.findOneAndDelete({ email }, (err, suc) => {
+                      if (err) {
+                      }
+                    });
+                  }
                 }
-                Socket.emit(
-                  success,
-                  "Your have successfully reset your password"
-                );
-              });
+              );
+              Socket.emit(success, "Password reset was successful");
+            } else {
+              throw new Error("Invalid reset token provided");
             }
+          } else {
+            console.log("not found");
           }
-        );
-      } else {
-        Socket.emit(error, "Invalid token provided");
-      }
-    });
+        }
+      });
+    } catch (err) {
+      Socket.emit(error, err.message);
+    }
   },
 
   resetUser: Socket => {

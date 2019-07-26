@@ -88,7 +88,7 @@ class NewPassword extends Component {
             />
           </label>
           <label className="tp-label">
-            Password
+            Confirm password
             <input
               type="password"
               className={`tp-input-field ${!valid && "tp-invalid-field"}`}
