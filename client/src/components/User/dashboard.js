@@ -74,7 +74,7 @@ class Dashboard extends Component {
               </a>
             </div>
           </div>
-          {!account_balance || !bank ? (
+          {!account_number || !bank ? (
             <p className="tp-form-note">
               You have not provided an account number or bank name, please
               update your profile
