@@ -275,13 +275,12 @@ module.exports = {
 
   verifyResetToken: (data, Socket) => {
     const { token, email, password } = data;
-    console.log("reseting the token");
     console.log(email);
     // check to see if there is a token already assigned to the user
     const errorMessage =
       "Something went wrong , please try again or make a new request for a new token";
     try {
-      PasswordReset.findOne({ email }, (err, found) => {
+      PasswordReset.findOne({ token }, (err, found) => {
         if (err) {
           throw new Error(err.message);
         } else {
@@ -312,7 +311,7 @@ module.exports = {
               throw new Error("Invalid reset token provided");
             }
           } else {
-            console.log("not found");
+            throw new Error("Invalid reset token provided");
           }
         }
       });
