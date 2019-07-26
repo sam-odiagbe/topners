@@ -248,6 +248,18 @@ module.exports = {
               }
             }
           );
+        } else {
+          const reset = new PasswordReset({
+            email,
+            token
+          });
+
+          reset.save((err, done) => {
+            if (err) {
+              throw new Error(errorMessage);
+            }
+            Socket.emit(success, `Reset email has been sent to ${email}`);
+          });
         }
       });
       let sendmail = await sendEmail({ type: "PASSWORDRESET", email, token });
