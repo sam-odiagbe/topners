@@ -8,6 +8,7 @@ const BCRYPT = require("bcrypt");
 const randomString = require("crypto-random-string");
 const verifyPayment = require("../database/helpers/verifyPaystackpayments");
 const Reference = require("../database/models/reference");
+const PasswordReset = require("../database/models/passwordResetModel");
 const {
   error,
   success,
@@ -225,19 +226,39 @@ module.exports = {
     });
   },
 
-  sendPasswordReset: (email, Socket) => {
-    User.findOne({ email }, (err, user) => {
-      if (err) {
-        Socket.emit(error, "Something went wrong, please try again");
-      }
-      if (user) {
-        // do the neccessary stuff
-        sendEmail({ type: "PASSWORDRESET", email: user.email, _id: user._id });
+  sendPasswordReset: async (email, Socket) => {
+    const errorMessage =
+      "Something went wrong while trying to send email, please try again";
+    const token = randomString({ length: 40 });
+    try {
+      PasswordReset.findOne({ email }, (err, found) => {
+        if (err) {
+          throw new Error(errorMessage);
+        }
+        if (found) {
+          PasswordReset.findOneAndUpdate(
+            { email },
+            { $set: { token } },
+            (err, done) => {
+              if (err) {
+                throw new Error(errorMessage);
+              }
+              if (!done) {
+                throw new Error(errorMessage);
+              }
+            }
+          );
+        }
+      });
+      let sendmail = await sendEmail({ type: "PASSWORDRESET", email, token });
+      if (sendmail) {
         Socket.emit(success, `Reset email has been sent to ${email}`);
       } else {
-        Socket.emit(error, `No account found for ${email}, try signing up`);
+        throw new Error(errorMessage);
       }
-    });
+    } catch (err) {
+      Socket.emit(error, err.message);
+    }
   },
 
   verifyResetToken: (data, Socket) => {
@@ -412,9 +433,59 @@ module.exports = {
     });
   },
 
-  requestVerification: (data, Socket) => {
+  requestVerification: async (data, Socket) => {
     const { user } = data;
-    sendEmail({ type: "VERIFICATION", email: user.email, _id: user._id });
-    Socket.emit(success, `Verification email has been sent to ${user.email}`);
+    const { email } = user;
+    let token = randomString({ length: 40 });
+    // sendEmail({ type: "VERIFICATION", email: user.email, _id: user._id });
+    // Socket.emit(success, `Verification email has been sent to ${user.email}`);
+    try {
+      Verification.findOne({ email }, (err, found) => {
+        if (err) {
+          throw new Error(
+            "Something went wrong while trying to send verification email"
+          );
+        }
+
+        if (found) {
+          Verification.findOneAndUpdate(
+            { email },
+            { $set: { token } },
+            (err, done) => {
+              if (done) {
+              } else {
+                throw new Error(
+                  "Something went wrong while trying to send verification mail"
+                );
+              }
+            }
+          );
+        } else {
+          const verify = new Verification({
+            token,
+            email
+          });
+          verify.save((err, done) => {
+            if (err) {
+              throw new Error(
+                "Something went wrong while trying to send verification mail"
+              );
+            } else {
+            }
+          });
+        }
+      });
+
+      let sendemail = await sendEmail({ type: "VERIFICATION", token, email });
+      if (sendemail) {
+        Socket.emit(success, `Verification email has been sent to ${email}`);
+      } else {
+        throw new Error(
+          "Sorry could't send verification email, please try again"
+        );
+      }
+    } catch (err) {
+      Socket.emit(error, err.message);
+    }
   }
 };

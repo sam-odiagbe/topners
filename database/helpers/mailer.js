@@ -7,14 +7,12 @@ sgmail.setApiKey(
 );
 
 module.exports = data => {
-  const { type, email, _id } = data;
-  const token = randomString({ length: 20 });
+  const { type, email, token } = data;
   const from = { email: "app138750920@heroku.com", name: "no-reply@Topner" };
   const to = email;
   let url = "";
   let html = "";
   let subject = "";
-  let message = "";
   switch (type) {
     case "VERIFICATION":
       url = `https://topner.herokuapp.com/verify_email/${email}/${token}`;
@@ -32,8 +30,7 @@ module.exports = data => {
     case "PASSWORDRESET":
       url = `https://topner.herokuapp.com/password_reset/${email}/${token}`;
       subject = "Reset Your Password";
-      html = `
-                <div style="padding: 1em; width: 300px;
+      html = ` <div style="padding: 1em; width: 300px;
                 margin: 0 auto; background: #fff; box-shadow: rgba(0,0,0,0.2) 0 0 10px 1px">
                     <h1 style="padding: .8em; padding-left:0; color: dodgerblue;">Reset your password</h1>
                     <p style="font-weight: bold;">Hi, you made a request to reset your password, please follow the link below to reset password, if you didnt make this request please ignore this mail </p>
@@ -45,67 +42,12 @@ module.exports = data => {
       break;
   }
 
-  return sgmail
-    .send({
-      html,
-      to,
-      from,
-      subject
-    })
-    .then(sent => {
-      if (sent) {
-        switch (type) {
-          case "PASSWORDRESET":
-            PasswordReset.findOne({ email }, (err, found) => {
-              if (err) {
-              } else {
-                if (found) {
-                  PasswordReset.findOneAndUpdate(
-                    { email },
-                    { token },
-                    (err, done) => {}
-                  );
-                } else {
-                  const reset = new PasswordReset({
-                    token,
-                    email
-                  });
-                  reset.save();
-                }
-              }
-            });
-
-            message = `Reset link has been sent to ${email}`;
-            break;
-          case "VERIFICATION":
-            Verification.findOne({ email }, (err, found) => {
-              if (err) {
-              } else {
-                if (found) {
-                  Verification.findOneAndUpdate(
-                    { email },
-                    { token },
-                    (err, done) => {}
-                  );
-                } else {
-                  const verify = new Verification({
-                    token,
-                    email
-                  });
-
-                  verify.save();
-                }
-              }
-            });
-
-            message = `Verification email has been sent to ${email}`;
-            break;
-          default:
-            break;
-        }
-      }
-    })
-    .catch(err => {});
+  return sgmail.send({
+    html,
+    to,
+    from,
+    subject
+  });
 };
 
 //generate random string and store in the database
