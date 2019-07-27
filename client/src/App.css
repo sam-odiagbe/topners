@@ -214,6 +214,7 @@ button:disabled {
   transition: 0.3s;
   margin-bottom: 15px;
   z-index: 150;
+  position: relative;
 }
 
 .tp-card-container {
@@ -739,4 +740,22 @@ button:disabled {
   100% {
     opacity: 0;
   }
+}
+
+.tp-indicator {
+  position: absolute;
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  right: 10px;
+  top: 10px;
+  box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.3);
+}
+
+.tp-indicator-close {
+  background: red;
+}
+
+.tp-indicator-open {
+  background: green;
 }

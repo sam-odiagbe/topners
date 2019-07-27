@@ -106,6 +106,14 @@ class Dashboard extends Component {
             >
               <div className="tp-card-top">
                 <h1>Fastsmart</h1>
+                <span
+                  className={`tp-indicator ${
+                    signupForNextGameShow
+                      ? "tp-indicator-open"
+                      : "tp-indicator-close"
+                  }`}
+                  label="Indicates if you are signed up for a game already"
+                />
               </div>
               <div className="tp-card-bottom">
                 <div className="tp-entrance-fee">

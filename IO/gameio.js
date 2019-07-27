@@ -1,6 +1,5 @@
 const Game = require("../database/models/game");
 const User = require("../database/models/User");
-const Winner = require("../database/models/Winner");
 const Verification = require("../database/models/verificationModel");
 const Withdrawal = require("../database/models/withdraw");
 const sendEmail = require("../database/helpers/mailer");
@@ -95,61 +94,60 @@ module.exports = {
   submitAnswer: ({ user, checkanswer, totalNumberOfWinners }, Socket) => {
     // check if the user is already blockedout
     // check if the answer is correct
-    if (checkanswer) {
-      Winner.findOne({}, (err, winner) => {
-        // check if there is a winner object
-        if (winner) {
-          // check if the total winners has been reached
-          if (totalNumberOfWinners === winner.winners.length) {
-            Socket.emit(error, "Oops, correct but too slow");
+    try {
+      //if the answer is correct
+      if (checkanswer) {
+        //answer is correct now check to
+        Game.findOne({}, (err, game) => {
+          if (err) {
+            throw new Error("Something went wrong, please try again");
           } else {
-            // total number not  reached
-            if (
-              winner.winners.includes(user._id) ||
-              winner.blockedOut.includes(user._id)
-            ) {
-              // if (winner.blockedOut.includes(user._id)) {
-              // }
+            const totalSubmitted = game.totalNumberSubmitted;
+            if (totalNumberOfWinners === totalSubmitted) {
+              Socket.emit(
+                success,
+                "You were right but too slow, total number of winners has been reached"
+              );
             } else {
-              winner.winners.push(user);
-              winner.blockedOut.push(user);
-              winner.save();
-
-              Socket.emit(success, "You were Correct and on time");
+              const newBalance = user.account_balance + 1000;
+              User.findOneAndUpdate(
+                { _id: user._id },
+                {
+                  $set: {
+                    signupForNextGameShow: false,
+                    account_balance: newBalance
+                  }
+                },
+                { new: true },
+                (err, done) => {
+                  if (err) {
+                    throw new Error("Sorry, something went wrong");
+                  } else {
+                    Socket.emit(setuser, { ...done._doc, password: null });
+                    Socket.emit(
+                      success,
+                      "Hurray, You were correct and also on time"
+                    );
+                  }
+                }
+              );
             }
           }
-          Socket.emit(success, "You were Correct and on time");
-        } else {
-          const winner = new Winner({
-            totalWinners: 0
-          });
-
-          winner.totalWinners = winner.totalWinners + 1;
-          winner.winners.push(user);
-          winner.blockedOut.push(user);
-
-          winner.save();
-          Socket.emit(succes, "You are correct and on time");
-        }
-      });
-    } else {
-      // block the user out
-
-      Socket.emit(error, "Oops, that is wrong!!");
-    }
-    User.findOneAndUpdate(
-      { _id: user._id },
-      { $set: { signupForNextGameShow: false } },
-      { new: true },
-      (err, usr) => {
-        if (err) {
-          console.log(err);
-        } else {
-          Socket.emit(setuser, { ...usr._doc, password: null });
-        }
+        });
+      } else {
+        throw new Error("oopsy, that is wrong");
       }
-    );
-    Socket.emit(blockout, true);
+    } catch (err) {
+      Socket.emit(error, err.message);
+      User.findOneAndUpdate(
+        { _id: user._id },
+        { signupForNextGameShow: false },
+        { new: true },
+        (err, done) => {
+          Socket.emit(setuser, { ...done._doc, password: null });
+        }
+      );
+    }
   },
   sendGame: (data, Socket) => {
     Socket.emit(setgameobject, data);
@@ -163,7 +161,7 @@ module.exports = {
         Socket.emit(error, "Couldn' update profile, try again");
       }
       Socket.emit(setuser, { ...user._doc, password: null });
-      Socket.emit(success, "Profile changed");
+      Socket.emit(success, "Profile updated");
     });
   },
 
