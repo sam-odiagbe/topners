@@ -444,10 +444,7 @@ module.exports = {
               );
             }
           } catch (err) {
-            Socket.emit(
-              paymenterror,
-              "Something went wrong while trying to top up your account, please try again"
-            );
+            Socket.emit(paymenterror, err.message);
           }
         }
       }
