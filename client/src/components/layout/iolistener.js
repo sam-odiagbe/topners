@@ -15,15 +15,12 @@ const {
   error,
   success,
   setuser,
+  newuserjoined,
   setgameobject,
-  blockout,
-  youwin,
-  wronganswer,
   totalwinnersreached,
-  resetuser,
   paymentsuccessful,
-  retrypayment,
-  paymenterror
+  paymenterror,
+  modify
 } = actions;
 class Io extends Component {
   constructor() {
@@ -112,6 +109,10 @@ class Io extends Component {
         redirect: true
       });
       this.props.doingAsync(false);
+    });
+
+    Socket.on(newuserjoined, () => {
+      Socket.emit(modify);
     });
   }
   render() {

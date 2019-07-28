@@ -8,16 +8,15 @@ const randomString = require("crypto-random-string");
 const verifyPayment = require("../database/helpers/verifyPaystackpayments");
 const Reference = require("../database/models/reference");
 const PasswordReset = require("../database/models/passwordResetModel");
+const poolCalculation = require("../database/helpers/poolCalculator");
 const {
   error,
   success,
   setuser,
   setgameobject,
   resetuser,
-  blockout,
   newuserjoined,
   paymentsuccessful,
-  retrypayment,
   paymenterror
 } = require("./emitters");
 
@@ -70,16 +69,12 @@ module.exports = {
                     }
                     Socket.emit(success, "You have successfully signed up");
                     Socket.emit(setuser, { ...doc._doc, password: null });
+                    Socket.emit(newuserjoined);
                     Game.findOneAndUpdate(
                       {},
                       { totalNumberSubmitted },
                       { new: true },
-                      (err, game) => {
-                        Socket.broadcast.emit(
-                          newuserjoined,
-                          game.totalNumberSubmitted
-                        );
-                      }
+                      (err, game) => {}
                     );
                   }
                 );
@@ -102,11 +97,12 @@ module.exports = {
           if (err) {
             throw new Error("Something went wrong, please try again");
           } else {
-            const totalSubmitted = game.totalNumberSubmitted;
-            if (totalNumberOfWinners === totalSubmitted) {
+            const totalNumberOfWinners = game.totalNumberOfWinners;
+            const possibleWinners = game.possibleWinners;
+            if (totalNumberOfWinners === possibleWinners) {
               Socket.emit(
                 success,
-                "You were right but too slow, total number of winners has been reached"
+                "You were right but too slow, total number of possible winners has been reached"
               );
             } else {
               const newBalance = user.account_balance + 1000;
@@ -128,6 +124,22 @@ module.exports = {
                       success,
                       "Hurray, You were correct and also on time"
                     );
+                    Game.findOne({}, (err, game) => {
+                      if (err) {
+                      } else {
+                        const totalWinners = game.totalNumberOfWinners + 1;
+                        Game.findOneAndUpdate(
+                          {},
+                          { $set: { totalNumberOfWinners: totalWinners } },
+                          { new: true },
+                          (err, game) => {
+                            Socket.broadcast.emit(setgameobject, {
+                              ...game._doc
+                            });
+                          }
+                        );
+                      }
+                    });
                   }
                 }
               );
@@ -177,6 +189,7 @@ module.exports = {
     );
   },
 
+  // coming back to this one soon
   updateGameObject: (data, Socket) => {
     const question = {};
     const option = data.options.split(",");
@@ -186,16 +199,56 @@ module.exports = {
     question.option = option;
     question.answer = data.answer;
     const gameison = false;
-    const totalNumberOfWinners = data.totalWinners;
+
     Game.findOneAndUpdate(
       {},
-      { question, kickoftime, uniqueId, gameison, totalNumberOfWinners },
+      {
+        question,
+        kickoftime,
+        uniqueId,
+        gameison,
+        possibleWinners: 0,
+        totalNumberOfWinners: 0,
+        pricepool: 0,
+        totalNumberOfSignedupUsers: 0
+      },
       { new: true },
       (err, game) => {
         Socket.broadcast.emit(setgameobject, game);
         Socket.emit(setgameobject, game);
       }
     );
+  },
+
+  remodifyGameObject: Socket => {
+    // update total signed up user and the pool money stuff
+    try {
+      Game.findOne({}, (err, game) => {
+        if (err) {
+        } else {
+          const newTotalUser = game.totalNumberOfSignedupUsers + 1;
+          const poolCal = poolCalculation(newTotalUser);
+          const { poolMoney, possibleWinners } = poolCal;
+          Game.findOneAndUpdate(
+            {},
+            {
+              totalNumberOfSignedupUsers: newTotalUser,
+              pricepool: poolMoney,
+              possibleWinners: possibleWinners
+            },
+            { new: true },
+            (err, doc) => {
+              if (doc) {
+                Socket.broadcast.emit(setgameobject, { ...doc.game });
+              }
+            }
+          );
+          // use this to calculate pool money
+        }
+      });
+    } catch (err) {
+      Socket.emit(error, err.message);
+    }
   },
 
   verifyUserAccount: (data, Socket) => {

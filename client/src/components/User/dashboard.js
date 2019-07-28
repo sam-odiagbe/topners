@@ -56,7 +56,7 @@ class Dashboard extends Component {
       signupForNextGameShow
     } = user ? user : {};
     const { game: theGame, correct, wrong, blockout } = game;
-    const { gameison } = theGame ? theGame : {};
+    const { gameison, pricepool, possibleWinners } = theGame ? theGame : {};
     if (!user) {
       return <Redirect to="/auth/login" />;
     } else {
@@ -121,8 +121,12 @@ class Dashboard extends Component {
                   <h4>&#8358;100</h4>
                 </div>
                 <div className="tp-possible-win">
-                  <h4>Win</h4>
-                  <h4>upto 100k</h4>
+                  <h4>Pool</h4>
+                  <h4>&#8358;{pricepool}</h4>
+                </div>
+                <div className="tp-possible-win">
+                  <h4>Top</h4>
+                  <h4>{possibleWinners}</h4>
                 </div>
               </div>
             </div>

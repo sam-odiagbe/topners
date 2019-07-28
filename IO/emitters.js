@@ -6,7 +6,6 @@ module.exports = {
   getgameobject: "GET-GAME",
   setgameobject: "SET-GAME",
   blockout: "BLOCK-OUT",
-  newuserjoined: "NEW-USER",
   youwin: "WIN",
   totalwinnersreached: "TOTAL-WINNERS-REACHED",
   wronganswer: "WRONG-ANSWER",
@@ -23,5 +22,7 @@ module.exports = {
   paymentsuccessful: "PAYMENT-SUCCESSFUL",
   retrypayment: "RETRY-PAYMENT",
   paymenterror: "PAYMENT-ERROR",
-  requestverification: "REQUEST-VERIFICATION"
+  requestverification: "REQUEST-VERIFICATION",
+  newuserjoined: "NEW-USER-JOINED-GAME",
+  modify: "MODIFY"
 };

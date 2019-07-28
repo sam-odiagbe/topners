@@ -12,7 +12,8 @@ const {
   resetUser,
   withdrawCash,
   verifyUserPayment,
-  requestVerification
+  requestVerification,
+  remodifyGameObject
 } = require("./gameio");
 const {
   signuserupforgame,
@@ -27,7 +28,8 @@ const {
   resetuser,
   withdrawcash,
   verifyuserpayment,
-  requestverification
+  requestverification,
+  modify
 } = require("./emitters");
 
 module.exports = io => {
@@ -57,7 +59,6 @@ module.exports = io => {
     });
 
     socket.on(updategameobject, data => {
-      console.log("updating game object");
       updateGameObject(data, socket);
     });
 
@@ -86,8 +87,12 @@ module.exports = io => {
     });
 
     socket.on(requestverification, data => {
-      console.log(data);
       requestVerification(data, socket);
+    });
+
+    socket.on(modify, () => {
+      //
+      remodifyGameObject(socket);
     });
   });
 };

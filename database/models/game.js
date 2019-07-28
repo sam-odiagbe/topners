@@ -13,6 +13,19 @@ const gameSchema = new Schema({
     type: Number,
     required: true,
     default: 0
+  },
+  possibleWinners: {
+    default: 0,
+    required: true,
+    type: Number
+  },
+  pricepool: {
+    type: Number
+  },
+  totalNumberOfSignedupUsers: {
+    type: Number,
+    default: 0,
+    required: true
   }
 });
 

@@ -22,7 +22,9 @@ const actions = {
   paymentsuccessful: "PAYMENT-SUCCESSFUL",
   retrypayment: "RETRY-PAYMENT",
   paymenterror: "PAYMENT-ERROR",
-  requestverification: "REQUEST-VERIFICATION"
+  requestverification: "REQUEST-VERIFICATION",
+  newuserjoined: "NEW-USER-JOINED-GAME",
+  modify: "MODIFY"
 };
 
 export default actions;
