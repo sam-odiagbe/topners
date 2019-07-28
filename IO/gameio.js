@@ -69,12 +69,17 @@ module.exports = {
                     }
                     Socket.emit(success, "You have successfully signed up");
                     Socket.emit(setuser, { ...doc._doc, password: null });
-                    Socket.emit(newuserjoined);
+
                     Game.findOneAndUpdate(
                       {},
                       { totalNumberSubmitted },
                       { new: true },
-                      (err, game) => {}
+                      (err, game) => {
+                        if (err) {
+                        } else {
+                          Socket.emit(newuserjoined);
+                        }
+                      }
                     );
                   }
                 );
