@@ -24,5 +24,7 @@ module.exports = {
   paymenterror: "PAYMENT-ERROR",
   requestverification: "REQUEST-VERIFICATION",
   newuserjoined: "NEW-USER-JOINED-GAME",
-  modify: "MODIFY"
+  modify: "MODIFY",
+  getwithdrawalrequest: "GET-WITHDRAWAL-REQUESTS",
+  requests: "RECIEVED-REQUEST"
 };

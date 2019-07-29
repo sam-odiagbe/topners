@@ -17,7 +17,8 @@ const {
   resetuser,
   newuserjoined,
   paymentsuccessful,
-  paymenterror
+  paymenterror,
+  requests
 } = require("./emitters");
 
 module.exports = {
@@ -248,7 +249,7 @@ module.exports = {
               }
             }
           );
-          // use this to calculate pool money
+          // use this to calcula te pool money
         }
       });
     } catch (err) {
@@ -563,5 +564,16 @@ module.exports = {
     } catch (err) {
       Socket.emit(error, err.message);
     }
+  },
+
+  getWithdrawalRequests: Socket => {
+    try {
+      Withdrawal.find({})
+        .limit(10)
+        .populate("user", ["username", "bank", "account_number"])
+        .exec((err, doc) => {
+          Socket.emit(requests, doc);
+        });
+    } catch (err) {}
   }
 };

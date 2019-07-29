@@ -4,8 +4,7 @@ const Schema = mongoose.Schema;
 
 const withdrawSchema = new Schema({
   amount: {
-    type: Number,
-    required: true
+    type: Number
   },
   user: {
     type: Schema.Types.ObjectId,
