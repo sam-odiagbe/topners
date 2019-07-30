@@ -579,7 +579,13 @@ module.exports = {
 
   clearWithdrawalRequest: (id, Socket) => {
     try {
-      Withdrawal.findOneAndDelete({ _id: id }, (err, res) => {});
+      Withdrawal.findOneAndDelete({ _id: id }, (err, res) => {
+        if (err) {
+          console.log(err.message);
+        } else {
+          Socket.emit("CLEARED", res);
+        }
+      });
     } catch (err) {}
   }
 };

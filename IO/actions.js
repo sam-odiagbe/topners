@@ -104,6 +104,7 @@ module.exports = io => {
     });
 
     socket.on(clearwithdrawal, id => {
+      console.log("check");
       clearWithdrawalRequest(id, socket);
     });
   });
