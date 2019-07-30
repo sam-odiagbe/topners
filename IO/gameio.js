@@ -110,6 +110,21 @@ module.exports = {
                 success,
                 "You were right but too slow, total number of possible winners has been reached"
               );
+              User.findOneAndUpdate(
+                { _id: user._id },
+                { $set: { signupForNextGameShow: false } },
+                { new: true },
+                (err, done) => {
+                  if (err) {
+                    Socket.emit(
+                      error,
+                      "You were correct, but too slow, number of winners has been reached"
+                    );
+                  } else {
+                    Socket.emit(setuser, { ...done._doc, password: null });
+                  }
+                }
+              );
             } else {
               const newBalance = user.account_balance + 1000;
               User.findOneAndUpdate(
@@ -255,6 +270,7 @@ module.exports = {
             (err, doc) => {
               if (doc) {
                 Socket.emit(setgameobject, { ...doc._doc });
+                Socket.broadcast.emit(setgameobject, { ...doc._doc });
               }
             }
           );
