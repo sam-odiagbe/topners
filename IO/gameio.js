@@ -184,9 +184,18 @@ module.exports = {
   },
 
   turnGameOnOrOff: (turnon, Socket) => {
+    const off =
+      turnon === false
+        ? {
+            possibleWinners: 0,
+            totalNumberOfWinners: 0,
+            pricepool: 0,
+            totalNumberOfSignedupUsers: 0
+          }
+        : {};
     Game.findOneAndUpdate(
       {},
-      { gameison: turnon },
+      { gameison: turnon, ...off },
       { new: true },
       (err, game) => {
         Socket.broadcast.emit(setgameobject, game);
