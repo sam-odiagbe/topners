@@ -254,7 +254,7 @@ module.exports = {
             { new: true },
             (err, doc) => {
               if (doc) {
-                Socket.broadcast.emit(setgameobject, { ...doc._doc });
+                Socket.emit(setgameobject, { ...doc._doc });
               }
             }
           );
