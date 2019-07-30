@@ -14,7 +14,8 @@ const {
   verifyUserPayment,
   requestVerification,
   remodifyGameObject,
-  getWithdrawalRequests
+  getWithdrawalRequests,
+  clearWithdrawalRequest
 } = require("./gameio");
 const {
   signuserupforgame,
@@ -31,7 +32,8 @@ const {
   verifyuserpayment,
   requestverification,
   modify,
-  getwithdrawalrequest
+  getwithdrawalrequest,
+  clearwithdrawal
 } = require("./emitters");
 
 module.exports = io => {
@@ -99,6 +101,10 @@ module.exports = io => {
 
     socket.on(getwithdrawalrequest, () => {
       getWithdrawalRequests(socket);
+    });
+
+    socket.on(clearwithdrawal, id => {
+      clearWithdrawalRequest(id, socket);
     });
   });
 };

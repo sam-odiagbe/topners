@@ -26,5 +26,6 @@ module.exports = {
   newuserjoined: "NEW-USER-JOINED-GAME",
   modify: "MODIFY",
   getwithdrawalrequest: "GET-WITHDRAWAL-REQUESTS",
-  requests: "RECIEVED-REQUEST"
+  requests: "RECIEVED-REQUEST",
+  clearwithdrawal: "CLEAR-WITHDRAWAL"
 };

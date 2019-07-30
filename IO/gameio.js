@@ -575,5 +575,11 @@ module.exports = {
           Socket.emit(requests, doc);
         });
     } catch (err) {}
+  },
+
+  clearWithdrawalRequest: (id, Socket) => {
+    try {
+      Withdrawal.findOneAndDelete({ _id: id }, (err, res) => {});
+    } catch (err) {}
   }
 };
