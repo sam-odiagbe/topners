@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { requestWithdrawal } from "../../store/actions/authActions";
+import { requestWithdrawal } from "../../store/actions/gameAction";
 import { Redirect } from "react-router-dom";
 
 class Withdraw extends Component {

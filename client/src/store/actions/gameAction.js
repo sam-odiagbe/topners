@@ -134,3 +134,29 @@ export const verifyUserPaymentAndUpdateUserBalance = reference => {
       });
   };
 };
+
+export const requestWithdrawal = amount => {
+  return dispatch => {
+    dispatch(doingAsync(true));
+    axios
+      .post(`${URL}game/withdrawal`, { amount }, { withCredentials: true })
+      .then(response => {
+        const { error, user, message } = response.data;
+        if (error) {
+          toast(message, {
+            className: "tp-toast-error"
+          });
+        } else {
+          dispatch(setActiveUser(user));
+          toast(message, {
+            className: "tp-toast-success"
+          });
+        }
+        dispatch(doingAsync(false));
+      })
+      .catch(err => {
+        toast(err.message, { className: "tp-toast-error" });
+        dispatch(doingAsync(false));
+      });
+  };
+};
