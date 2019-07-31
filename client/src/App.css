@@ -201,6 +201,8 @@ button:disabled {
   border-radius: 30px;
   border: 0;
   outline: 0;
+  font-size: 0.8em;
+  font-weight: bolder;
   margin-top: 5px;
   background: #e20c4c;
   color: #fff;
@@ -648,12 +650,12 @@ button:disabled {
 }
 
 .tp-spinner-container {
-  height: 100%;
-  width: 100%;
+  height: 100vh;
+  width: 100vw;
   top: 0;
   left: 0;
-  background: rgba(0, 0, 0, 0.95);
-  filter: blur(1.5px);
+  background: rgba(0, 0, 0, 0.97);
+  filter: blur(0.5px);
   position: fixed;
   z-index: 1000;
   margin: 0;
@@ -667,8 +669,10 @@ button:disabled {
   padding-left: 50%;
   margin-left: -32px;
   margin-top: -32px;
-  width: 64px;
-  height: 64px;
+  width: 30px;
+  height: 30px;
+  top: 0;
+  left: 0;
 }
 .lds-spinner div {
   transform-origin: 32px 32px;
@@ -680,10 +684,10 @@ button:disabled {
   position: absolute;
   top: 3px;
   left: 29px;
-  width: 5px;
-  height: 14px;
+  width: 2px;
+  height: 20px;
   border-radius: 20%;
-  background: #fff;
+  background: #efefef;
 }
 .lds-spinner div:nth-child(1) {
   transform: rotate(0deg);

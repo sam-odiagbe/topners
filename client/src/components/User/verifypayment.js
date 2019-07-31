@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import queryString from "query-string";
 import { verifyUserPaymentAndUpdateUserBalance } from "../../store/actions/gameAction";
 import { connect } from "react-redux";
-import { doingAsync } from "../../store/actions/componentActions";
 class VerifyPayment extends Component {
   componentDidMount() {
     const query = this.props.location.search;

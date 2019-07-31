@@ -5,7 +5,12 @@ const {
   createnewuser,
   loguserin,
   requestpasswordreset,
-  resetpassword
+  resetpassword,
+  updateUserProfile,
+  verifyUserAccount,
+  sendPasswordReset,
+  verifyResetToken,
+  requestVerification
 } = require("../database/handlers/authHandler");
 const withAuth = require("../database/helpers/withAuth");
 router.post("/login", (req, res, next) => {
@@ -44,5 +49,25 @@ router.post("/logout", withAuth, (req, res, next) => {
       message: "Logged out"
     }
   });
+});
+
+router.post("/profile/update", withAuth, (req, res, next) => {
+  updateUserProfile(req, res);
+});
+
+router.post("/account/verify", (req, res, next) => {
+  verifyUserAccount(req, res);
+});
+
+router.post("/account/password_reset", (req, res, next) => {
+  sendPasswordReset(req, res);
+});
+
+router.post("/account/reset/validate", (req, res, next) => {
+  verifyResetToken(req, res);
+});
+
+router.post("/account/sendverification", withAuth, (req, res, next) => {
+  requestVerification(req, res);
 });
 module.exports = router;

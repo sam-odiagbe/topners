@@ -1,16 +1,14 @@
 import axios from "axios";
-import { logingin, signingup, doingAsync } from "../actions/componentActions";
+import { doingAsync } from "../actions/componentActions";
 import * as jwt from "jsonwebtoken";
 import { toast } from "react-toastify";
 import actions from "../../io/actions";
 import { URL } from "../../config/config";
 
 const {
-  updateprofile,
   verifyaccount,
   passwordreset,
   verifyreset,
-  withdrawcash,
   requestverification
 } = actions;
 
@@ -166,51 +164,177 @@ export const setActiveUser = user => {
 export const updateUserProfile = data => {
   return (dispatch, getState) => {
     dispatch(doingAsync(true));
-    const socket = getState().components.Socket;
-    const _id = getState().auth.user;
-    socket.emit(updateprofile, { data, _id });
+    axios
+      .post(
+        `${url}auth/profile/update`,
+        { data: data },
+        { withCredentials: true }
+      )
+      .then(response => {
+        const { error, message, user } = response.data;
+        if (error) {
+          toast(message, {
+            className: "tp-toast-error"
+          });
+        } else {
+          dispatch(setActiveUser(user));
+          toast(message, {
+            className: "tp-toast-success"
+          });
+        }
+        dispatch(doingAsync(false));
+      })
+      .catch(err => {
+        toast(err.message, {
+          className: "tp-toast-error"
+        });
+        dispatch(doingAsync(false));
+      });
   };
 };
 
 export const verifyAccount = data => {
   return (dispatch, getState) => {
     dispatch(doingAsync(true));
-    const Socket = getState().components.Socket;
-    console.log(Socket);
-    Socket.emit(verifyaccount, data);
+    axios
+      .post(`${url}auth/account/verify`, { data }, { withCredentials: true })
+      .then(response => {
+        const { error, message, user } = response.data;
+        if (error) {
+          toast(message, {
+            className: "tp-toast-error"
+          });
+        } else {
+          dispatch(setActiveUser(user));
+          toast(message, {
+            className: "tp-toast-success"
+          });
+        }
+        dispatch(doingAsync(false));
+      })
+      .catch(err => {
+        toast(err.message, {
+          className: "tp-toast-error"
+        });
+        dispatch(doingAsync(false));
+      });
   };
 };
 
 export const requestPasswordReset = email => {
   return (dispatch, getState) => {
     dispatch(doingAsync(true));
-    const Socket = getState().components.Socket;
-    Socket.emit(passwordreset, email);
+    axios
+      .post(`${url}auth/account/password_reset`, { email })
+      .then(response => {
+        const { error, message } = response.data;
+
+        if (error) {
+          toast(message, {
+            className: "tp-toast-error"
+          });
+        } else {
+          toast(message, {
+            className: "tp-toast-success"
+          });
+        }
+        dispatch(doingAsync(false));
+      })
+      .catch(err => {
+        toast(err.message, {
+          className: "tp-toast-error"
+        });
+        dispatch(doingAsync(false));
+      });
   };
 };
 
 export const validateResetToken = data => {
   return (dispatch, getState) => {
     dispatch(doingAsync(true));
-    const Socket = getState().components.Socket;
-    Socket.emit(verifyreset, data);
+    axios
+      .post(`${url}auth/account/reset/validate`, { data })
+      .then(response => {
+        const { error, message } = response.data;
+
+        if (error) {
+          toast(message, {
+            className: "tp-toast-error"
+          });
+        } else {
+          toast(message, {
+            className: "tp-toast-success"
+          });
+        }
+        dispatch(doingAsync(false));
+      })
+      .catch(err => {
+        toast(err.message, {
+          className: "tp-toast-error"
+        });
+        dispatch(doingAsync(false));
+      });
   };
 };
 
 export const requestWithdrawal = amount => {
   return (dispatch, getState) => {
     dispatch(doingAsync(true));
-    const Socket = getState().components.Socket;
     const user = getState().auth.user;
-    Socket.emit(withdrawcash, { user, amount });
+    axios
+      .post(
+        `${URL}/game/withdrawal`,
+        { user, amount },
+        { withCredentials: true }
+      )
+      .then(response => {
+        const { error, user, message } = response.data;
+        if (error) {
+          toast(message, {
+            className: "tp-toast-error"
+          });
+        } else {
+          dispatch(setActiveUser(user));
+          toast(message, {
+            className: "tp-toast-success"
+          });
+        }
+      })
+      .catch(err => {
+        toast(err.message, { className: "tp-toast-error" });
+      });
+    dispatch(doingAsync(false));
   };
 };
 
 export const requestVerification = () => {
   return (dispatch, getState) => {
     dispatch(doingAsync(true));
-    const Socket = getState().components.Socket;
-    const user = getState().auth.user;
-    Socket.emit(requestverification, { user });
+    axios
+      .post(
+        `${url}auth/account/sendverification`,
+        {},
+        { withCredentials: true }
+      )
+      .then(response => {
+        const { error, message } = response.data;
+
+        if (error) {
+          toast(message, {
+            className: "tp-toast-error"
+          });
+        } else {
+          toast(message, {
+            className: "tp-toast-success"
+          });
+        }
+        dispatch(doingAsync(false));
+      })
+      .catch(err => {
+        toast(err.message, {
+          className: "tp-toast-error"
+        });
+        dispatch(doingAsync(false));
+      });
   };
 };

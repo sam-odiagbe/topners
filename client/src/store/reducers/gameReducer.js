@@ -1,25 +1,14 @@
 import actions from "../../io/actions";
 
 const { setgameobject } = actions;
-console.log(setgameobject);
 const initState = {
-  game: null,
-  blockout: false
+  game: null
 };
 
 const gameReducer = (state = initState, action) => {
+  console.log(action.payload);
   switch (action.type) {
-    case "SET-GAME-OBJECT":
-      state = { ...state, game: action.payload.game };
-      break;
-    case "WRONG-OR-RIGHT":
-      state = { ...state, correct: action.payload, wrong: !action.payload };
-      break;
-    case "BLOCK-OUT":
-      state = { ...state, blockout: action.payload };
-      break;
     case setgameobject:
-      console.log("dispatched an action");
       state = { ...state, game: action.payload };
       break;
     default:

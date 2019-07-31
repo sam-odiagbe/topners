@@ -39,7 +39,6 @@ const {
 module.exports = io => {
   io.on("connection", socket => {
     socket.on(getgameobject, () => {
-      console.log("getting game object");
       const game = getGame();
       game.then(game => {
         sendGame(game, socket);

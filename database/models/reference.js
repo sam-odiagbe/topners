@@ -7,7 +7,9 @@ const referenceSchema = new Schema({
     required: true
   },
   done: {
-    type: Boolean
+    type: Boolean,
+    default: false,
+    required: true
   }
 });
 
