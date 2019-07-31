@@ -114,7 +114,8 @@ module.exports = {
     });
   },
   withdrawCash: (req, res) => {
-    const { user, amount } = req.body;
+    const { amount } = req.body;
+    const user = req.auth;
     User.findOne({ _id: user._id }, (err, user) => {
       if (err) {
         res.json({

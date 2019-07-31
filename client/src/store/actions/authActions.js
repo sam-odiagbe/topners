@@ -280,13 +280,8 @@ export const validateResetToken = data => {
 export const requestWithdrawal = amount => {
   return (dispatch, getState) => {
     dispatch(doingAsync(true));
-    const user = getState().auth.user;
     axios
-      .post(
-        `${url}game/withdrawal`,
-        { user, amount },
-        { withCredentials: true }
-      )
+      .post(`${url}game/withdrawal`, { amount }, { withCredentials: true })
       .then(response => {
         const { error, user, message } = response.data;
         if (error) {
@@ -299,6 +294,7 @@ export const requestWithdrawal = amount => {
             className: "tp-toast-success"
           });
         }
+        dispatch(doingAsync(false));
       })
       .catch(err => {
         toast(err.message, { className: "tp-toast-error" });
