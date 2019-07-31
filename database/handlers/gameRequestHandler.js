@@ -187,6 +187,35 @@ module.exports = {
                       user: user._id,
                       amount: amount
                     });
+                    withdraw.save((err, doc) => {
+                      if (!err) {
+                        const newBalance = user.account_balance - amount;
+                        User.findOneAndUpdate(
+                          { _id: user._id },
+                          { account_balance: newBalance },
+                          { new: true },
+                          (err, done) => {
+                            if (err) {
+                              res.json({
+                                error: true,
+                                message:
+                                  "Something went wrong, couldn't complete withdrawal"
+                              });
+                            } else {
+                              res.json({
+                                user: { ...done._doc, password: null },
+                                message: `Withdrawal request of ${amount} NGN was successful`
+                              });
+                            }
+                          }
+                        );
+                      } else {
+                        res.json({
+                          error: true,
+                          message: "Something went wrong , please try again"
+                        });
+                      }
+                    });
                   }
                 }
               });
