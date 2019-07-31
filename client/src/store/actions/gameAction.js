@@ -155,6 +155,7 @@ export const requestWithdrawal = amount => {
         dispatch(doingAsync(false));
       })
       .catch(err => {
+        console.log(err);
         toast(err.message, { className: "tp-toast-error" });
         dispatch(doingAsync(false));
       });
