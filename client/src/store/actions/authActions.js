@@ -283,7 +283,7 @@ export const requestWithdrawal = amount => {
     const user = getState().auth.user;
     axios
       .post(
-        `${URL}/game/withdrawal`,
+        `${url}game/withdrawal`,
         { user, amount },
         { withCredentials: true }
       )
