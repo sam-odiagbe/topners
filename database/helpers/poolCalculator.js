@@ -1,8 +1,11 @@
 module.exports = totalNumber => {
   let poolMoney = 0;
   let possibleWinners = 0;
-  if (totalNumber > 0 && totalNumber <= 50) {
+  if (totalNumber > 0 && totalNumber <= 20) {
     poolMoney = 1000;
+    possibleWinners = 1;
+  } else if (totalNumber >= 21 && totalNumber <= 50) {
+    poolMoney = 2000;
     possibleWinners = 1;
   } else if (totalNumber > 50 && totalNumber <= 100) {
     poolMoney = 3000;
