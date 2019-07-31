@@ -139,7 +139,7 @@ export const requestWithdrawal = amount => {
   return dispatch => {
     dispatch(doingAsync(true));
     axios
-      .post(`${URL}game/withdrawal`, { amount }, { withCredentials: true })
+      .post(`${URL}/game/withdrawal`, { amount }, { withCredentials: true })
       .then(response => {
         const { error, user, message } = response.data;
         if (error) {
@@ -155,7 +155,6 @@ export const requestWithdrawal = amount => {
         dispatch(doingAsync(false));
       })
       .catch(err => {
-        console.log(err);
         toast(err.message, { className: "tp-toast-error" });
         dispatch(doingAsync(false));
       });
