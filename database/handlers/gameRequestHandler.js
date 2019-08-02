@@ -20,32 +20,32 @@ module.exports = {
 
       if (user) {
         // get the user balance
-        if (user.account_balance < 100 || user.signupForNextGameShow) {
-          res.json({
-            error: true,
-            message:
-              "You have insufficient balance or you are trying to sign up again"
-          });
-        } else {
-          // check to see if game is on
-          Game.findOne({}, (err, game) => {
-            if (err) {
+        // check to see if game is on
+        Game.findOne({}, (err, game) => {
+          if (err) {
+            res.json({
+              error: true,
+              message:
+                "Something went wrong while trying to sign you up for a game, please try again"
+            });
+          }
+
+          if (game) {
+            // check if there is an ongoing game
+            if (game.gameison) {
               res.json({
                 error: true,
-                message:
-                  "Something went wrong while trying to sign you up for a game, please try again"
+                message: "Game is on, current session is blocked out"
               });
-            }
-
-            if (game) {
-              // check if there is an ongoing game
-              if (game.gameison) {
+            } else {
+              // now we can sign user up for next session
+              if (user.account_balance < 100 || user.signupForNextGameShow) {
                 res.json({
                   error: true,
-                  message: "Game is on, current session is blocked out"
+                  message:
+                    "You have insufficient balance or you are trying to sign up again"
                 });
               } else {
-                // now we can sign user up for next session
                 const newBalance = user.account_balance - 100;
                 const newTotalUser = game.totalNumberOfSignedupUsers + 1;
                 const poolCal = poolCalculation(newTotalUser);
@@ -92,8 +92,8 @@ module.exports = {
                 );
               }
             }
-          });
-        }
+          }
+        });
       }
     });
   },
