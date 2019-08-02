@@ -4,6 +4,7 @@ import * as jwt from "jsonwebtoken";
 import { toast } from "react-toastify";
 import actions from "../../io/actions";
 import { URL } from "../../config/config";
+import { set } from "mongoose";
 
 const {
   verifyaccount,
@@ -63,7 +64,7 @@ export const logUserIn = data => {
     dispatch(doingAsync(true));
     axios
       .post(`${url}auth/login`, data, { withCredentials: true })
-      .then(res => {
+      .then(async res => {
         const { error, success } = res.data;
         if (error) {
           dispatch({
@@ -76,8 +77,12 @@ export const logUserIn = data => {
             className: "tp-toast-error"
           });
         } else {
-          let user = jwt.verify(success.auth, "posiedonathenazeuskratoshydra");
-          dispatch({ type: "SET-ACTIVE-USER", payload: { user: user.auth } });
+          const user = jwt.verify(
+            success.auth,
+            "posiedonathenazeuskratoshydra"
+          );
+          const { auth } = user;
+          dispatch(setActiveUser(auth));
           dispatch(doingAsync(false));
         }
       })

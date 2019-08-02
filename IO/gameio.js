@@ -3,7 +3,7 @@ const User = require("../database/models/User");
 const Withdrawal = require("../database/models/withdraw");
 const randomString = require("crypto-random-string");
 const poolCalculation = require("../database/helpers/poolCalculator");
-const { error, setgameobject, resetuser, requests } = require("./emitters");
+const { setgameobject, requests, resetuser } = require("./emitters");
 
 module.exports = {
   sendGame: (data, Socket) => {
@@ -13,104 +13,63 @@ module.exports = {
     return Game.findOne({});
   },
 
-  turnGameOnOrOff: (turnon, Socket) => {
-    const off =
-      turnon === false
-        ? {
-            possibleWinners: 0,
-            totalNumberOfWinners: 0,
-            pricepool: 0,
-            totalNumberOfSignedupUsers: 0
-          }
-        : {};
+  // turn game on or off
+  turnGameOn: Socket => {
     Game.findOneAndUpdate(
       {},
-      { gameison: turnon, ...off },
+      { $set: { gameison: true } },
       { new: true },
-      (err, game) => {
-        Socket.broadcast.emit(setgameobject, game);
-        Socket.emit(setgameobject, game);
+      (err, done) => {
+        if (err) {
+        } else {
+          Socket.emit(setgameobject, done._doc);
+          Socket.broadcast.emit(setgameobject, done._doc);
+        }
       }
     );
   },
 
   // coming back to this one soon
-  updateGameObject: (data, Socket) => {
-    const question = {};
-    const option = data.options.split(",");
-    const uniqueId = randomString({ length: 10 });
-    const kickoftime = data.data;
-    question.question = data.question;
-    question.option = option;
-    question.answer = data.answer;
-    const gameison = false;
-
-    Game.findOneAndUpdate(
-      {},
-      {
-        question,
-        kickoftime,
-        uniqueId,
-        gameison,
-        possibleWinners: 0,
-        totalNumberOfWinners: 0,
-        pricepool: 0,
-        totalNumberOfSignedupUsers: 0
-      },
-      { new: true },
-      (err, game) => {
-        Socket.broadcast.emit(setgameobject, game);
-        Socket.emit(setgameobject, game);
-      }
-    );
-  },
-
-  remodifyGameObject: Socket => {
-    // update total signed up user and the pool money stuff
-    try {
-      Game.findOne({}, (err, game) => {
-        if (err) {
-        } else {
-          const newTotalUser = game.totalNumberOfSignedupUsers + 1;
-          const poolCal = poolCalculation(newTotalUser);
-          const { poolMoney, possibleWinners } = poolCal;
-          Game.findOneAndUpdate(
-            {},
-            {
-              totalNumberOfSignedupUsers: newTotalUser,
-              pricepool: poolMoney,
-              possibleWinners: possibleWinners
-            },
-            { new: true },
-            (err, doc) => {
-              if (doc) {
-                Socket.emit(setgameobject, { ...doc._doc });
-                Socket.broadcast.emit(setgameobject, { ...doc._doc });
-              }
+  resetGameObject: Socket => {
+    // first thing to do is to turn the game of
+    Game.findOne({}, (err, game) => {
+      if (err) {
+      } else {
+        const currentWinners = game.currentWinners;
+        Game.findOneAndUpdate(
+          {},
+          {
+            $set: {
+              gameison: false,
+              possibleWinners: 0,
+              currentWinners: [],
+              prevWinners: currentWinners,
+              pricepool: 0,
+              totalNumberOfSignedupUsers: 0,
+              totalNumberOfWinners: 0
             }
-          );
-          // use this to calcula te pool money
-        }
-      });
-    } catch (err) {
-      Socket.emit(error, err.message);
-    }
-  },
-
-  resetUser: Socket => {
-    User.update(
-      { signupForNextGameShow: true },
-      { signupForNextGameShow: false },
-      { multi: true },
-      (err, done) => {
-        if (err) {
-          console.log("error");
-        } else {
-          console.log("updated");
-        }
+          },
+          { new: true },
+          (err, doc) => {
+            if (err) {
+            } else {
+              Socket.emit(setgameobject, doc._doc);
+              Socket.broadcast.emit(setgameobject, doc._doc);
+              User.updateMany(
+                { signupForNextGameShow: true },
+                { $set: { signupForNextGameShow: false } },
+                (err, done) => {
+                  if (err) {
+                  } else {
+                    Socket.broadcast.emit(resetuser);
+                  }
+                }
+              );
+            }
+          }
+        );
       }
-    );
-    Socket.broadcast.emit(resetuser);
+    });
   },
 
   getWithdrawalRequests: Socket => {
@@ -134,5 +93,34 @@ module.exports = {
         }
       });
     } catch (err) {}
+  },
+
+  createGame: (data, Socket) => {
+    // creating a new game
+    Game.findOne({}, (err, game) => {
+      let on = game.gameison;
+      if (on) {
+        Socket.emit(
+          "ERROR",
+          "game is on, reset game before you can post new question"
+        );
+      } else {
+        const question = {};
+        question.question = data.question;
+        question.option = data.options.split(",");
+        question.answer = data.answer;
+        Game.findOneAndUpdate(
+          {},
+          { $set: { question } },
+          { new: true },
+          (err, doc) => {
+            if (err) {
+            } else {
+              Socket.emit(setgameobject, doc._doc);
+            }
+          }
+        );
+      }
+    });
   }
 };

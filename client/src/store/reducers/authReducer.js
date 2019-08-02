@@ -4,15 +4,17 @@ const initState = {
 };
 
 const authReducer = (state = initState, action) => {
-  // console.log("payload: ", action);
   const { loading, user } = action.payload ? action.payload : {};
   switch (action.type) {
     case "AUTHENTICATION-END":
       state = { ...state, loading };
       break;
     case "SET-ACTIVE-USER":
-      console.log(user);
       state = { ...state, user };
+      break;
+    case "RESET-USER":
+      let usr = { ...state.user, signupForNextGameShow: false };
+      state = { ...state, user: usr };
       break;
     default:
       break;

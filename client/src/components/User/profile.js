@@ -5,55 +5,111 @@ import {
   requestVerification
 } from "../../store/actions/authActions";
 import { updateProfileInputAction } from "../../store/actions/inputActions";
-import { toast } from "react-toastify";
 import { Redirect } from "react-router-dom";
+import _ from "lodash";
+import regex from "../../helpers/validationRegex";
+import errorClassName from "../../helpers/className";
+import Banks from "../layout/banks";
 
 class UpdateProfile extends Component {
   constructor() {
     super();
 
     this.updateUserProfile = this.updateUserProfile.bind(this);
-    this.handleInputChange = this.handleInputChange.bind(this);
+    this._handleInputChange = this._handleInputChange.bind(this);
+    this._formValidation = this._formValidation.bind(this);
     this.requestVerification = this.requestVerification.bind(this);
+
+    this.state = {
+      input: {
+        bank: "Select your bank",
+        account_number: ""
+      },
+
+      errors: {
+        bank: null,
+        account_number: null
+      }
+    };
   }
-  handleInputChange(e) {
+  _handleInputChange(e) {
     const { id, value } = e.target;
-    console.log(id, " ", value);
-    this.props.updateProfileInputAction({ id, value });
+    const input = { ...this.state.input, [id]: value };
+    this.setState(
+      {
+        input
+      },
+      () => {}
+    );
   }
   updateUserProfile(e) {
-    const { input_data } = this.props;
-    const { name, bank, account_number } = input_data;
     e.preventDefault();
-    let accountNumberRegex = /^[0-9]{10}$/;
-    let nameRegex = /^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/;
-    let banks = [
-      "Firstbank",
-      "GTB",
-      "Polaris Bank",
-      "Access Bank",
-      "UBA",
-      "Fidelity Bank",
-      "Eco Bank"
-    ];
-    if (!accountNumberRegex.test(account_number)) {
-      return toast("Invalid account number", {
-        delay: 50,
-        className: "tp-toast-error"
-      });
-    } else if (!nameRegex.test(name)) {
-      return toast("Invalid name provided", {
-        delay: 50,
-        className: "tp-toast-error"
-      });
-    } else if (!banks.includes(bank)) {
-      return toast("Invalid bank name provided", {
-        delay: 50,
-        className: "tp-toast-error"
-      });
-    }
+    const { input } = this.state;
+    const fieldToValiadate = ["bank", "account_number"];
+    this._formValidation(fieldToValiadate, isValid => {
+      if (isValid) {
+        return this.props.updateUserProfile(input);
+      }
+    });
+    //
+  }
 
-    return this.props.updateUserProfile(input_data);
+  _formValidation(fieldsToValidate, callback = () => {}) {
+    const { input } = this.state;
+    const allFields = {
+      bank: {
+        message: "Bank name is not valid",
+        validateField: () => {
+          const value = _.get(input, "bank");
+          const bankNames = _.get(regex, "bankNames");
+          if (value && bankNames.indexOf(value) > -1) {
+            return true;
+          }
+          return false;
+        }
+      },
+      account_number: {
+        message: "Account number is invalid, must be numbers and 10 in length",
+        validateField: () => {
+          const value = _.get(input, "account_number");
+          const regexp = _.get(regex, "accountNumberRegex");
+          if (value && regexp.test(value)) {
+            return true;
+          }
+          return false;
+        }
+      }
+    };
+
+    let errors = this.state.errors;
+    _.each(fieldsToValidate, field => {
+      const fieldValidate = _.get(allFields, field);
+      if (fieldValidate) {
+        errors[field] = null;
+        const isFieldValid = fieldValidate.validateField();
+        if (!isFieldValid) {
+          errors[field] = _.get(fieldValidate, "message");
+        }
+      }
+    });
+
+    console.log(errors);
+
+    this.setState(
+      {
+        errors
+      },
+      () => {
+        let isValid = true;
+        _.each(errors, err => {
+          if (err) {
+            isValid = false;
+          }
+        });
+
+        callback(isValid);
+      }
+    );
   }
 
   requestVerification(e) {
@@ -61,18 +117,19 @@ class UpdateProfile extends Component {
     this.props.requestVerification();
   }
   render() {
-    const { user, input_data } = this.props;
-    const { name, account_number, bank, verified } = user ? user : {};
+    const { user } = this.props;
+    const { account_number, bank, verified } = user ? user : {};
     const {
-      name: inputName,
-      bank: bankInputName,
-      account_number: accountNumber
-    } = input_data;
+      bank: userBank,
+      account_number: userAccountNumber
+    } = this.state.input;
+    const { bank: bankErr, account_number: accountError } = this.state.errors;
+    console.log(this.state.errors);
     if (!user) {
       return <Redirect to="/auth/login" />;
     }
     return (
-      <div className="tp-updateprofile-container">
+      <div className="tp-main-container">
         {!verified && (
           <p className="tp-form-note">
             Your account is not verified and thereby limited, please verify your
@@ -88,49 +145,28 @@ class UpdateProfile extends Component {
         <div className="tp-updateprofile-user" />
         <div className="tp-auth-container">
           <h2 className="tp-auth-title">Update profile</h2>
-          <form onSubmit={this.updateUserProfile}>
-            <h5>Name: {name}</h5>
-            <label htmlFor="name" className="tp-label">
-              Name
-              <input
-                type="text"
-                placeholder="new name"
-                className="tp-input-field"
-                required
-                value={inputName}
-                onChange={this.handleInputChange}
-                id="name"
-              />
-            </label>
-            <div>
-              <h5>Bankname: {bank}</h5>
+          <form onSubmit={this.updateUserProfile} noValidate>
+            <h5>Bankname: {bank}</h5>
+            <div className={errorClassName(bankErr)}>
               <label htmlFor="bank">Bank Name</label>
-              <select
-                id="bank"
-                required
-                value={bankInputName}
-                onChange={this.handleInputChange}
-              >
-                <option disabled>Select your bank</option>
-                <option>Firstbank</option>
-                <option>UBA</option>
-                <option>Access Bank</option>
-                <option>Polaris Bank</option>
-                <option>Fidelity Bank</option>
-                <option>GTB</option>
-                <option>Eco Bank</option>
-              </select>
+              <Banks
+                bankNames={regex.bankNames}
+                userBank={userBank}
+                _handleInputChange={this._handleInputChange}
+              />
+              {bankErr && <p>{bankErr}</p>}
             </div>
-            <div>
-              <h5>Account number: {account_number}</h5>
+            <h5>Account number: {account_number}</h5>
+            <div className={errorClassName(accountError)}>
               <label htmlFor="account_number">Account number</label>
               <input
                 type="text"
                 placeholder="Account number"
                 id="account_number"
-                value={accountNumber}
-                onChange={this.handleInputChange}
+                value={userAccountNumber}
+                onChange={this._handleInputChange}
               />
+              {accountError && <p>{accountError}</p>}
             </div>
             <div>
               <button className="tp-auth-btn">Save Changes</button>

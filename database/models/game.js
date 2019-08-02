@@ -26,6 +26,17 @@ const gameSchema = new Schema({
     type: Number,
     default: 0,
     required: true
+  },
+  prevWinners: {
+    type: [Schema.Types.ObjectId],
+    ref: "User",
+    default: []
+  },
+
+  currentWinners: {
+    type: [Schema.Types.ObjectId],
+    ref: "User",
+    default: []
   }
 });
 

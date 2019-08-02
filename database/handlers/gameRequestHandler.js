@@ -125,7 +125,7 @@ module.exports = {
       } else {
         if (user.account_balance >= amount) {
           if (amount >= 1000) {
-            if (!user.verified && amount >= 5000) {
+            if (!user.verified && amount > 5000) {
               res.json({
                 error: true,
                 message:
@@ -268,6 +268,8 @@ module.exports = {
               );
             } else {
               const newBalance = user.account_balance + game.pricepool;
+              // get the current winners list
+              const currentWinners = game.currentWinners;
               User.findOneAndUpdate(
                 { _id: user._id },
                 {
@@ -285,13 +287,22 @@ module.exports = {
                       if (err) {
                       } else {
                         const totalWinners = game.totalNumberOfWinners + 1;
+                        // push the current winner to the current winners array
+                        currentWinners.push(user._id);
                         Game.findOneAndUpdate(
                           {},
-                          { $set: { totalNumberOfWinners: totalWinners } },
+                          {
+                            $set: {
+                              totalNumberOfWinners: totalWinners,
+                              // update the crrentWinners
+                              currentWinners
+                            }
+                          },
                           { new: true },
                           (err, game) => {
                             res.json({
                               user: { ...done._doc, password: null },
+                              game: { ...game._doc },
                               message:
                                 "Hurrayyyyy, you were on correct and on time"
                             });

@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import {
   setGameObject,
-  verifyUserPaymentAndUpdateUserBalance
+  verifyUserPaymentAndUpdateUserBalance,
+  resetUser
 } from "../../store/actions/gameAction";
 import {
   setActiveUser,
@@ -20,7 +21,8 @@ const {
   totalwinnersreached,
   paymentsuccessful,
   paymenterror,
-  modify
+  modify,
+  resetuser
 } = actions;
 class Io extends Component {
   constructor() {
@@ -77,6 +79,7 @@ class Io extends Component {
     });
 
     Socket.on(setgameobject, game => {
+      console.log("setting game object");
       this.props.setGameObject(game);
     });
 
@@ -114,6 +117,10 @@ class Io extends Component {
     Socket.on(newuserjoined, () => {
       Socket.emit(modify);
     });
+
+    Socket.on(resetuser, () => {
+      this.props.resetUser();
+    });
   }
   render() {
     const { redirect } = this.state;
@@ -140,6 +147,9 @@ const mapDispatchToProps = dispatch => {
     },
     verifyUserPaymentAndUpdateUserBalance: reference => {
       return dispatch(verifyUserPaymentAndUpdateUserBalance(reference));
+    },
+    resetUser: () => {
+      return dispatch(resetUser());
     }
   };
 };

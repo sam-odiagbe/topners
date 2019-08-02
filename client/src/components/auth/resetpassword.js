@@ -4,54 +4,120 @@ import { requestPasswordReset } from "../../store/actions/authActions";
 import { passwordResetInputAction } from "../../store/actions/inputActions";
 import { passwordResetValidation } from "../../store/actions/validationActins";
 import { Redirect } from "react-router-dom";
+import _ from "lodash";
+import errorClassName from "../../helpers/className";
+import regex from "../../helpers/validationRegex";
 
 class ResetPassword extends Component {
   constructor() {
     super();
-    this.handleInputChange = this.handleInputChange.bind(this);
-    this.requestPasswordReset = this.requestPasswordReset.bind(this);
+    this._handleInputChange = this._handleInputChange.bind(this);
+    this._requestPasswordReset = this._requestPasswordReset.bind(this);
+
+    this.state = {
+      input: {
+        email: ""
+      },
+      errors: {
+        email: null
+      }
+    };
   }
 
-  handleInputChange(e) {
+  _handleInputChange(e) {
     const { id, value } = e.target;
-    this.props.passwordResetInputAction({ id, value });
+    const input = { ...this.state.input, [id]: value };
+    this.setState({
+      input
+    });
   }
 
-  requestPasswordReset(e) {
+  _formValidation(fieldsToValidate, callback = () => {}) {
+    const { input } = this.state;
+    const allFields = {
+      email: {
+        message: "Email is not valid",
+        validateField: () => {
+          const value = _.get(input, "email");
+          const regexp = _.get(regex, "emailRegex");
+          if (value && regexp.test(value)) {
+            return true;
+          }
+          return false;
+        }
+      }
+    };
+
+    let errors = this.state.errors;
+    _.each(fieldsToValidate, field => {
+      const fieldValidate = _.get(allFields, field);
+      if (fieldValidate) {
+        errors[field] = null;
+        const isFieldValid = fieldValidate.validateField();
+        if (!isFieldValid) {
+          errors[field] = _.get(fieldValidate, "message");
+        }
+      }
+    });
+
+    this.setState(
+      {
+        errors
+      },
+      () => {
+        let isValid = false;
+        _.each(errors, err => {
+          if (err) {
+            isValid = false;
+          }
+        });
+
+        callback(isValid);
+      }
+    );
+  }
+
+  _requestPasswordReset(e) {
     e.preventDefault();
-    const { email } = this.props.resetpassword_input_data;
-    this.props.requestPasswordReset(email);
+    const { email } = this.state.input;
+    const fieldsToValidate = ["email"];
+    this._formValidation(fieldsToValidate, isValid => {
+      if (isValid) {
+        this.props.requestPasswordReset(email);
+      }
+    });
   }
 
   render() {
-    const { validation, resetpassword_input_data, user } = this.props;
-    const { email } = resetpassword_input_data;
-    const { email: validEmail, validfield } = validation;
+    const { user } = this.props;
+    const { email } = this.state.input;
+    const { email: emailError } = this.state.errors;
     if (user) {
       return <Redirect to="/dashboard" />;
     }
     return (
-      <div className="tp-auth-container">
-        <h2 className="tp-auth-title">Password Reset</h2>
-        <form onSubmit={this.requestPasswordReset}>
-          <div>
-            <label htmlFor="email">Email</label>
-            <input
-              type="email"
-              placeholder="email"
-              id="email"
-              required
-              className={`tp-input-field ${
-                validEmail ? "" : "tp-invalid-field"
-              }`}
-              value={email}
-              onChange={this.handleInputChange}
-            />
-          </div>
-          <div>
-            <button className="tp-auth-btn">Send reset link</button>
-          </div>
-        </form>
+      <div className="tp-main-container">
+        <div className="tp-auth-container">
+          <h2 className="tp-auth-title">Password Reset</h2>
+          <form onSubmit={this._requestPasswordReset} noValidate>
+            <div className={errorClassName(emailError)}>
+              <label htmlFor="email">Email</label>
+              <input
+                type="email"
+                placeholder="email"
+                id="email"
+                required
+                className={`tp-input-field`}
+                value={email}
+                onChange={this._handleInputChange}
+              />
+              {emailError && <p>{emailError}</p>}
+            </div>
+            <div>
+              <button className="tp-auth-btn">Send reset link</button>
+            </div>
+          </form>
+        </div>
       </div>
     );
   }

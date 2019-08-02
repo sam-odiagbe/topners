@@ -1,108 +1,148 @@
 import React, { Component } from "react";
 import { validateResetToken } from "../../store/actions/authActions";
 import { connect } from "react-redux";
-import { toast } from "react-toastify";
 import { Redirect } from "react-router-dom";
+import _ from "lodash";
+import regex from "../../helpers/validationRegex";
+import errorClassName from "../../helpers/className";
 
 class NewPassword extends Component {
   constructor() {
     super();
     this.state = {
-      valid: true,
-      checked: false,
       input: {
-        password: "Samson1@",
-        confirm_password: "Samson1@"
+        password: "",
+        confirm_password: ""
+      },
+      errors: {
+        password: null,
+        confirm_password: null
       }
     };
 
-    this.handleInputChange = this.handleInputChange.bind(this);
-    this.resetPassword = this.resetPassword.bind(this);
-  }
-  componentDidMount() {
-    // verify the token
-    const { email, token } = this.props;
-    console.log(this.props);
-    // check to see if the token is valid
+    this._handleInputChange = this._handleInputChange.bind(this);
+    this._resetPassword = this._resetPassword.bind(this);
+    this._formValidation = this._formValidation.bind(this);
   }
 
-  handleInputChange(e) {
+  _handleInputChange(e) {
     const { id, value } = e.target;
-    console.log(id, value);
     const input = { ...this.state.input, [id]: value };
     this.setState({
       input
     });
   }
 
-  resetPassword(e) {
-    e.preventDefault();
-    const { password, confirm_password } = this.state.input;
-    const { email, token } = this.props.match.params;
-    let passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$^+=!*()@%&]).{8,30}$/;
-    if (password !== confirm_password) {
-      return toast("Passwords do not match", {
-        delay: 50,
-        className: "tp-toast-error"
-      });
-    } else if (
-      !passwordRegex.test(password) ||
-      !passwordRegex.test(confirm_password)
-    ) {
-      this.setState({
-        valid: false
-      });
-      return toast(
-        "Password/Confirm-password must contain uppercase, lowercase, numbers, and symbols",
-        {
-          delay: 50,
-          className: "tp-toast-error"
+  _formValidation(fieldToValidate, callback = () => {}) {
+    const { input } = this.state;
+    const allFields = {
+      password: {
+        message:
+          "Password is invalid, password must have uppercase, lowercase,a number, and any of this #$^*=!()@%&",
+        validateField: () => {
+          const value = _.get(input, "password");
+          const regexp = _.get(regex, "passwordRegex");
+          if (value && regexp.test(value)) {
+            return true;
+          }
+          return false;
         }
-      );
-    }
-    this.setState({
-      valid: true
+      },
+      confirm_password: {
+        message: "Passwords do not match",
+        validateField: () => {
+          const passwordValue = _.get(input, "password");
+          const value = _.get(input, "confirm_password");
+          if (value && passwordValue) {
+            return true;
+          }
+          return false;
+        }
+      }
+    };
+
+    let errors = this.state.errors;
+    _.each(fieldToValidate, field => {
+      const fieldValidate = _.get(allFields, field);
+      if (fieldValidate) {
+        errors[field] = null;
+        const isFieldValid = fieldValidate.validateField();
+        if (!isFieldValid) {
+          errors[field] = _.get(fieldValidate, "message");
+        }
+      }
     });
-    return this.props.validateResetToken({ password, email, token });
+
+    this.setState({ errors }, () => {
+      let isValid = true;
+      _.each(errors, err => {
+        if (err) {
+          isValid = false;
+        }
+      });
+      callback(isValid);
+    });
+  }
+
+  _resetPassword(e) {
+    e.preventDefault();
+    const { password } = this.state.input;
+    const { email, token } = this.props.match.params;
+    const fieldsToValidate = ["password", "confirm_password"];
+    this._formValidation(fieldsToValidate, isValid => {
+      if (isValid) {
+        this.props.validateResetToken({ password, email, token });
+      }
+    });
   }
   render() {
     const { user } = this.props;
     const { password, confirm_password } = this.state.input;
-    const { valid } = this.state;
+    const { password: pErr, confirm_password: cpErr } = this.state.errors;
+    console.log(this.state.errors);
     if (user) {
       return <Redirect to="/dashboard" />;
     }
     return (
-      <div className="tp-auth-container">
-        <form onSubmit={this.resetPassword}>
-          <label className="tp-label">
-            Password
-            <input
-              type="password"
-              className={`tp-input-field ${!valid && "tp-invalid-field"}`}
-              placeholder="Confirm password"
-              value={password}
-              id="password"
-              onChange={this.handleInputChange}
-              required
-            />
-          </label>
-          <label className="tp-label">
-            Confirm password
-            <input
-              type="password"
-              className={`tp-input-field ${!valid && "tp-invalid-field"}`}
-              placeholder="Password"
-              id="confirm_password"
-              value={confirm_password}
-              onChange={this.handleInputChange}
-              required
-            />
-          </label>
-          <div>
-            <button className="tp-auth-btn">Reset Password</button>
-          </div>
-        </form>
+      <div className="tp-main-container">
+        <div className="tp-auth-container">
+          <form onSubmit={this._resetPassword} noValidate>
+            <div className={errorClassName(pErr)}>
+              <label className="tp-label">
+                Password
+                <input
+                  type="password"
+                  className={`tp-input-field `}
+                  placeholder="Password"
+                  value={password}
+                  id="password"
+                  onChange={this._handleInputChange}
+                  required
+                />
+              </label>
+              {pErr && <p>{pErr}</p>}
+            </div>
+            <div className={errorClassName(cpErr)}>
+              <label className="tp-label">
+                Confirm password
+                <input
+                  type="password"
+                  className={`tp-input-field`}
+                  placeholder="Password"
+                  id="confirm_password"
+                  value={confirm_password}
+                  onChange={this._handleInputChange}
+                  required
+                />
+              </label>
+              {cpErr && <p>{cpErr}</p>}
+            </div>
+
+            <div>
+              <button className="tp-auth-btn">Reset Password</button>
+            </div>
+          </form>
+        </div>
       </div>
     );
   }

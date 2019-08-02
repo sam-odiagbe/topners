@@ -5,6 +5,7 @@
   padding: 0;
   margin: 0;
   box-sizing: border-box;
+  font-family: "Ubuntu";
 }
 
 body {
@@ -52,15 +53,15 @@ select {
   border-radius: 5px;
   outline: 0;
   width: 100%;
-  background: rgba(0, 0, 0, 0.2);
-  border: 0;
+  background: transparent;
+  border: 1px solid #2196f3;
   transition: border 0.5s;
 }
 
 .tp-auth-container {
   position: relative;
   padding: 1em 0.5em;
-  margin: 0 1.5em;
+  margin: 0 0;
   margin-top: 30px;
   margin-bottom: 15px;
   background: #fff;
@@ -70,10 +71,12 @@ select {
   z-index: 100 !important;
 }
 
-label {
+label,
+label.tp-label {
   display: block;
   font-size: 0.8em;
-  margin: 5px 0;
+  margin-bottom: 10px;
+  margin-top: 5px;
 }
 
 .tp-input-field {
@@ -81,7 +84,7 @@ label {
 }
 
 .tp-auth-btn {
-  background: #e20c4c;
+  background: #2196f3;
   color: #ffffff;
   font-weight: bolder;
   font-size: 1em;
@@ -154,7 +157,9 @@ button:disabled {
   background: #fcff5e;
   padding: 8px 0.4em;
   padding-top: 10px;
-  font-size: 0.7em;
+  transition: all 0.1;
+  font-size: 0.7em !important;
+  color: #000 !important;
 }
 
 .tp-field-error {
@@ -762,4 +767,83 @@ button:disabled {
 
 .tp-indicator-open {
   background: green;
+}
+
+/* current winners  */
+.tp-current-winners {
+  /* position: fixed;
+  height: 80px;
+  width: 80px;
+  background: red;
+  top: 0;
+  border-radius: 50%;
+  left: 50%;
+  margin-left: -40px;
+  top: 50px; */
+}
+
+.tp-current-winners-container {
+  /* height: 100vh;
+  width: 100vh;
+  position: fixed;
+  z-index: 100000;
+  background: rgba(255, 255, 255, 0.9);
+  top: 0;
+  left: 0; */
+
+  background: #fff;
+  position: relative;
+  top: -1000px;
+  margin-top: 50px;
+  padding: 20px 0;
+  padding-left: 100px;
+  border-radius: 20px;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.7);
+  color: #222;
+  opacity: 0;
+  animation-name: slidein;
+  animation-fill-mode: forwards;
+  animation-duration: 0.5s;
+  animation-delay: 0.2s;
+}
+.tp-current-winners-num {
+  position: absolute;
+  height: 100px;
+  width: 100px;
+  line-height: 100px;
+  text-align: center;
+  top: -20px;
+  color: #222;
+  font-weight: bolder;
+  font-size: 1.8em;
+  left: -5px;
+  box-shadow: -1px -1px 1px 0 rgba(0, 0, 0, 0.8);
+  border-radius: 50%;
+  background: #fff;
+}
+
+@keyframes slidein {
+  0% {
+    top: -1000px;
+    opacity: 0;
+  }
+
+  100% {
+    top: 0;
+    opacity: 1;
+  }
+}
+
+.tp-error-field {
+  color: #e20c4c;
+}
+
+.tp-error-field input,
+.tp-error-field select {
+  border: 1px solid #e20c4c;
+}
+
+.tp-error-field p {
+  font-size: 0.7em;
+  padding: 5px 0.4em;
 }

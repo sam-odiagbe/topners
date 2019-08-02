@@ -50,7 +50,7 @@ export const submitAnswer = answer => {
         { withCredentials: true }
       )
       .then(response => {
-        const { error, user, message } = response.data;
+        const { error, user, message, game } = response.data;
         if (error) {
           toast(message, {
             className: "tp-toast-error"
@@ -62,6 +62,9 @@ export const submitAnswer = answer => {
         }
         if (user) {
           dispatch(setActiveUser(user));
+        }
+        if (game) {
+          dispatch(setGameObject(game));
         }
         dispatch(doingAsync(false));
       })
@@ -158,5 +161,12 @@ export const requestWithdrawal = amount => {
         toast(err.message, { className: "tp-toast-error" });
         dispatch(doingAsync(false));
       });
+  };
+};
+
+export const resetUser = () => {
+  return {
+    type: "RESET-USER",
+    payload: null
   };
 };
