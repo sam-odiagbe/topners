@@ -154,7 +154,7 @@ button:disabled {
 }
 
 .tp-form-note {
-  background: #fcff5e;
+  background: #f5f79a;
   padding: 8px 0.4em;
   padding-top: 10px;
   transition: all 0.1;
@@ -795,6 +795,7 @@ button:disabled {
   position: relative;
   top: -1000px;
   margin-top: 50px;
+  margin-bottom: 50px;
   padding: 20px 0;
   padding-left: 100px;
   border-radius: 20px;

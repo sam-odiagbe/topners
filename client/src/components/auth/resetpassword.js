@@ -63,7 +63,7 @@ class ResetPassword extends Component {
         errors
       },
       () => {
-        let isValid = false;
+        let isValid = true;
         _.each(errors, err => {
           if (err) {
             isValid = false;

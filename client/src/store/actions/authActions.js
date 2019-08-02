@@ -2,16 +2,7 @@ import axios from "axios";
 import { doingAsync } from "../actions/componentActions";
 import * as jwt from "jsonwebtoken";
 import { toast } from "react-toastify";
-import actions from "../../io/actions";
 import { URL } from "../../config/config";
-import { set } from "mongoose";
-
-const {
-  verifyaccount,
-  passwordreset,
-  verifyreset,
-  requestverification
-} = actions;
 
 const url = `${URL}/`;
 
