@@ -1,8 +1,6 @@
 const Game = require("../database/models/game");
 const User = require("../database/models/User");
 const Withdrawal = require("../database/models/withdraw");
-const randomString = require("crypto-random-string");
-const poolCalculation = require("../database/helpers/poolCalculator");
 const { setgameobject, requests, resetuser } = require("./emitters");
 
 module.exports = {
@@ -120,6 +118,16 @@ module.exports = {
             }
           }
         );
+      }
+    });
+  },
+
+  newWinner: Socket => {
+    Game.findOne({}, (err, game) => {
+      if (err) {
+      } else {
+        Socket.broadcast.emit(setgameobject, game);
+        Socket.emit(setgameobject, game);
       }
     });
   }

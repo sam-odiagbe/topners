@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import { setActiveUser } from "./authActions";
 
 import { URL } from "../../config/config";
+import { Socket } from "dgram";
 const { setgameobject } = actions;
 export const signupForGame = () => {
   return (dispatch, getState) => {
@@ -39,6 +40,7 @@ export const submitAnswer = answer => {
   return (dispatch, getState) => {
     dispatch(doingAsync(true));
     const user = getState().auth.user;
+    const Socket = getState().components.Socket;
     const answerToQuestion = getState().game.game.question.answer;
     axios
       .post(
@@ -59,6 +61,7 @@ export const submitAnswer = answer => {
           toast(message, {
             className: "tp-toast-success"
           });
+          Socket.emit("NEW-WINNER");
         }
         if (user) {
           dispatch(setActiveUser(user));

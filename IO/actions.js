@@ -3,7 +3,8 @@ const {
   sendGame,
   resetGameObject,
   turnGameOn,
-  createGame
+  createGame,
+  newWinner
 } = require("./gameio");
 const { getgameobject } = require("./emitters");
 
@@ -26,6 +27,10 @@ module.exports = io => {
 
     socket.on("CREATE-GAME", data => {
       createGame(data, socket);
+    });
+
+    socket.on("NEW-WINNER", () => {
+      newWinner(socket);
     });
   });
 };
