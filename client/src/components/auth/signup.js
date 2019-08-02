@@ -146,7 +146,7 @@ class Signup extends Component {
     ];
     this._formValidation(fieldToValidate, isValid => {
       if (isValid) {
-        this.props._createUserAccount(input);
+        this.props.createUserAccount(input);
       }
     });
   }

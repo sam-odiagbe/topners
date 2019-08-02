@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { requestPasswordReset } from "../../store/actions/authActions";
-import { passwordResetInputAction } from "../../store/actions/inputActions";
-import { passwordResetValidation } from "../../store/actions/validationActins";
 import { Redirect } from "react-router-dom";
 import _ from "lodash";
 import errorClassName from "../../helpers/className";
@@ -125,20 +123,12 @@ class ResetPassword extends Component {
 
 const mapStateToProps = state => {
   return {
-    resetpassword_input_data: state.input.resetpassword,
-    validation: state.validation.passwordreset,
     user: state.auth.user
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    passwordResetInputAction: data => {
-      dispatch(passwordResetInputAction(data));
-    },
-    passwordResetValidation: data => {
-      dispatch(passwordResetValidation(data));
-    },
     requestPasswordReset: email => {
       dispatch(requestPasswordReset(email));
     }
