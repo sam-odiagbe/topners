@@ -30,6 +30,7 @@ module.exports = io => {
     });
 
     socket.on("NEW-WINNER", () => {
+      console.log("we have a winner");
       newWinner(socket);
     });
   });

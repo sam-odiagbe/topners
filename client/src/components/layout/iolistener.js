@@ -79,7 +79,6 @@ class Io extends Component {
     });
 
     Socket.on(setgameobject, game => {
-      console.log("setting game object");
       this.props.setGameObject(game);
     });
 

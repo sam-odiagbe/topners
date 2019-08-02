@@ -126,6 +126,7 @@ module.exports = {
     Game.findOne({}, (err, game) => {
       if (err) {
       } else {
+        console.log(game);
         Socket.broadcast.emit(setgameobject, game);
         Socket.emit(setgameobject, game);
       }
