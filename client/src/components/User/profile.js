@@ -130,23 +130,26 @@ class UpdateProfile extends Component {
     }
     return (
       <div className="tp-main-container">
-        {!verified && (
-          <p className="tp-form-note">
-            Your account is not verified and thereby limited, please verify your
-            account to get full control{" "}
-            <a
-              onClick={this.requestVerification}
-              style={{ color: "red", textDecoration: "underline" }}
-            >
-              Verify Account now
-            </a>
-          </p>
-        )}
-        <div className="tp-updateprofile-user" />
         <div className="tp-auth-container">
+          {!verified && (
+            <p className="tp-form-note">
+              Your account is not verified and thereby limited, please verify
+              your account to get full control{" "}
+              <a
+                onClick={this.requestVerification}
+                style={{ color: "red", textDecoration: "underline" }}
+              >
+                Verify Account now
+              </a>
+            </p>
+          )}
           <h2 className="tp-auth-title">Update profile</h2>
           <form onSubmit={this.updateUserProfile} noValidate>
-            <h5>Bankname: {bank}</h5>
+            <div className="tp-profile-details">
+              <h4>Bankname: {bank}</h4>
+              <h4>Account number: {account_number}</h4>
+            </div>
+
             <div className={errorClassName(bankErr)}>
               <label htmlFor="bank">Bank Name</label>
               <Banks
@@ -156,7 +159,7 @@ class UpdateProfile extends Component {
               />
               {bankErr && <p>{bankErr}</p>}
             </div>
-            <h5>Account number: {account_number}</h5>
+
             <div className={errorClassName(accountError)}>
               <label htmlFor="account_number">Account number</label>
               <input

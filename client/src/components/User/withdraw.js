@@ -97,24 +97,25 @@ class Withdraw extends Component {
               Account is not verified, withdrawals are limited to &#8358;5000
             </p>
           )}
-          <h4>
+          <h4 style={{ paddingTop: 10, paddingBottom: 10 }}>
             your balance is
             <span style={{ color: colors }}> &#8358;{account_balance}</span>
           </h4>
           <form onSubmit={this._requestWithdrawal} noValidate>
             <div className={errorClassName(validAmount)}>
-              <label className="tp-label">
-                Amount to Withdraw
-                <input
-                  type="number"
-                  min="1000"
-                  max="20000"
-                  required
-                  value={number}
-                  onChange={this._handleInputChange}
-                  placeholder="Withdraw how much"
-                />
+              <label className="tp-label" style={{ marginBottom: 10 }}>
+                Amount to withdraw
               </label>
+
+              <input
+                type="number"
+                min="1000"
+                max="20000"
+                value={number}
+                onChange={this._handleInputChange}
+                placeholder="Withdraw how much"
+              />
+
               {validAmount && <p>{validAmount}</p>}
             </div>
             <div>

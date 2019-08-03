@@ -6,12 +6,14 @@ import { Link } from "react-router-dom";
 const Navigation = ({ user }) => {
   const link = user ? <SignedInLink user={user} /> : <SignoutLinks />;
   return (
-    <nav className="tp-navigation">
-      <Link to="/dashboard" className="tp-brand">
-        Topners
-      </Link>
-      <ul>{link}</ul>
-    </nav>
+    <div className="tp-center">
+      <nav className="tp-navigation">
+        <Link to="/dashboard" className="tp-brand">
+          Topners
+        </Link>
+        <ul>{link}</ul>
+      </nav>
+    </div>
   );
 };
 

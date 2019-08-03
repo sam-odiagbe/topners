@@ -64,83 +64,87 @@ class Dashboard extends Component {
       return (
         <React.Fragment>
           <div className="tp-main-container">
-            <div className="tp-user-header">
-              <h4>hi, {username}</h4>
-              <div>
-                <h4>&#8358; {account_balance.toFixed(1)}</h4>
-                <a
-                  href="https://paystack.com/pay/topnerz"
-                  className="tp-top-up-account"
-                >
-                  Deposit
-                </a>
+            <div className="tp-left">
+              <div className="tp-user-header">
+                <h4>hi, {username}</h4>
+                <div>
+                  <h4>&#8358; {account_balance.toFixed(1)}</h4>
+                  <a
+                    href="https://paystack.com/pay/topnerz"
+                    className="tp-top-up-account"
+                  >
+                    Deposit
+                  </a>
+                </div>
               </div>
-            </div>
 
-            {gameison && (
-              <CurrentWinners
-                currentWinners={currentWinners}
-                possibleWinners={possibleWinners}
-              />
-            )}
-            {!account_number || !bank ? (
-              <p className="tp-form-note">
-                You have not provided an account number or bank name, please
-                update your profile
-              </p>
-            ) : (
-              ""
-            )}
-            <div className="tp-question-container">
-              {theGame && gameison && signupForNextGameShow ? (
-                <Question
-                  question={theGame.question}
-                  submitAnswer={this.submitAnswer}
-                  correct={correct}
-                  wrong={wrong}
-                  blockedout={blockout}
+              {gameison && (
+                <CurrentWinners
+                  currentWinners={currentWinners}
+                  possibleWinners={possibleWinners}
                 />
-              ) : (
-                <p className="tp-form-note">
-                  ! When you are signed up for a game, and question is available
-                  for answering , it will appear here
-                </p>
               )}
-            </div>
-            <div className="tp-card-container">
-              <div
-                className={`tp-card ${(gameison || signupForNextGameShow) &&
-                  "tp-block-out"}`}
-                onClick={this.signUpForGame}
-              >
-                <div className="tp-card-top">
-                  <h1>Fastsmart</h1>
-                  <span
-                    className={`tp-indicator ${
-                      signupForNextGameShow
-                        ? "tp-indicator-open"
-                        : "tp-indicator-close"
-                    }`}
-                    label="Indicates if you are signed up for a game already"
+              {!account_number || !bank ? (
+                <p className="tp-form-note">
+                  You have not provided an account number or bank name, please
+                  update your profile
+                </p>
+              ) : (
+                ""
+              )}
+              <div className="tp-question-container">
+                {theGame && gameison && signupForNextGameShow ? (
+                  <Question
+                    question={theGame.question}
+                    submitAnswer={this.submitAnswer}
+                    correct={correct}
+                    wrong={wrong}
+                    blockedout={blockout}
                   />
-                </div>
-                <div className="tp-card-bottom">
-                  <div className="tp-entrance-fee">
-                    <h4>Entrance fee</h4>
-                    <h4>&#8358;100</h4>
+                ) : (
+                  <p className="tp-form-note">
+                    ! When you are signed up for a game, and question is
+                    available for answering , it will appear here
+                  </p>
+                )}
+              </div>
+              <div className="tp-card-container">
+                <div
+                  className={`tp-card ${(gameison || signupForNextGameShow) &&
+                    "tp-block-out"}`}
+                  onClick={this.signUpForGame}
+                >
+                  <div className="tp-card-top">
+                    <h1>Fastsmart</h1>
+                    <span
+                      className={`tp-indicator ${
+                        signupForNextGameShow
+                          ? "tp-indicator-open"
+                          : "tp-indicator-close"
+                      }`}
+                      label="Indicates if you are signed up for a game already"
+                    />
                   </div>
-                  <div className="tp-possible-win">
-                    <h4>Pool</h4>
-                    <h4>&#8358;{pricepool}</h4>
-                  </div>
-                  <div className="tp-possible-win">
-                    <h4>Top</h4>
-                    <h4>{possibleWinners}</h4>
+                  <div className="tp-card-bottom">
+                    <div className="tp-entrance-fee">
+                      <h4>Entrance fee</h4>
+                      <h4>&#8358;100</h4>
+                    </div>
+                    <div className="tp-possible-win">
+                      <h4>Pool</h4>
+                      <h4>&#8358;{pricepool}</h4>
+                    </div>
+                    <div className="tp-possible-win">
+                      <h4>Top</h4>
+                      <h4>{possibleWinners}</h4>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-            <Howitworks />
+            <div className="tp-right">
+              <Howitworks />
+            </div>
           </div>
         </React.Fragment>
       );
