@@ -635,6 +635,12 @@ button:disabled {
   color: #e20c4c;
 }
 
+.tp-google-add {
+  position: fixed;
+  bottom: 0;
+  z-index: 10000000;
+  left: 0;
+}
 .tp-error-field input,
 .tp-error-field select {
   border: 1px solid #e20c4c;

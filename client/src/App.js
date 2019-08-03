@@ -63,6 +63,22 @@ function App({ loading, user, doingAsync, socket }) {
           </Switch>
 
           <IO toast={toast} />
+          <div className="tp-google-ad">
+            <script
+              async
+              src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"
+            />
+
+            <ins
+              class="adsbygoogle"
+              style="display:block"
+              data-ad-client="ca-pub-6517866523041558"
+              data-ad-slot="6178286612"
+              data-ad-format="link"
+              data-full-width-responsive="true"
+            />
+            <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+          </div>
         </div>
       </Router>
     );
