@@ -9,7 +9,11 @@ const SignedInLink = ({ user, loguserout, dropdown, openDropdown }) => {
     <React.Fragment>
       <li>
         <div className="tp-initials" onClick={openDropdown}>
-          <span>{user.username[0]}</span>
+          <img
+            src={`https://api.adorable.io/avatars/80/${user._id}.png`}
+            alt="image"
+            className="tp-img"
+          />
           <div className={`tp-drop-down ${dropdown ? "tp-open" : ""}`}>
             <ul>
               <li>

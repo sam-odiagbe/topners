@@ -257,18 +257,13 @@ button:disabled {
 /* usr */
 .tp-initials {
   display: inline-block;
-  height: 50px;
-  width: 50px;
-  border-radius: 50%;
-  line-height: 50px;
-  background: #0c93e2;
-  text-align: center;
-  vertical-align: center;
-  font-size: 1.5em;
-  font-weight: bold;
-  font-weight: bolder;
-  color: #fff;
   position: relative;
+  height: 80px;
+  width: 80px;
+}
+
+.tp-img {
+  border-radius: 50% !important;
 }
 
 .tp-initials span {
