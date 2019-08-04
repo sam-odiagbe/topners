@@ -258,8 +258,6 @@ button:disabled {
 .tp-initials {
   display: inline-block;
   position: relative;
-  height: 50px;
-  width: 50px;
 }
 
 .tp-img {
