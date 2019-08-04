@@ -270,8 +270,8 @@ button:disabled {
 .tp-drop-down ul li {
   display: block;
   width: 100%;
-  padding: 10px 0;
-  font-size: 0.8em;
+  padding: 10px 0 !important;
+  font-size: 0.9em !important;
 }
 
 .tp-show-snackbar {
@@ -280,17 +280,6 @@ button:disabled {
 }
 
 /* snackbar animation */
-
-.tp-drop-down ul li a {
-  color: #555;
-  font-size: 0.7em !important;
-}
-
-.tp-drop-down ul li {
-  display: block;
-  text-align: left;
-  padding: 5px 0;
-}
 
 .tp-drop-down::after {
   position: absolute;
