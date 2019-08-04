@@ -77,7 +77,7 @@ class Dashboard extends Component {
                   </a>
                   <Link
                     className="tp-top-up-account"
-                    style={{ color: "#E9E3D7" }}
+                    style={{ background: "#E9E3D7", color: "#222" }}
                     to="/withdrawal"
                   >
                     Withdraw
