@@ -260,14 +260,14 @@ button:disabled {
   position: relative;
   height: 50px;
   width: 50px;
-  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
 }
 
 .tp-img {
   border-radius: 50% !important;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
 }
 
-.tp-initials ul li {
+.tp-drop-down ul li {
   display: block;
   width: 100%;
   padding: 10px 0;
