@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import "./userstyle.css";
 import { connect } from "react-redux";
-import { Redirect } from "react-router-dom";
+import { Redirect, Link } from "react-router-dom";
 import Question from "../layout/question";
 import Howitworks from "../layout/howitworks";
 import {
@@ -75,6 +75,13 @@ class Dashboard extends Component {
                   >
                     Deposit
                   </a>
+                  <Link
+                    className="tp-top-up-account"
+                    style={{ color: "#E9E3D7" }}
+                    to="/withdrawal"
+                  >
+                    Withdraw
+                  </Link>
                 </div>
               </div>
 

@@ -19,9 +19,6 @@ const SignedInLink = ({ user, loguserout, dropdown, openDropdown }) => {
               <li>
                 <Link to="/update_profile">Update profile</Link>
               </li>
-              <li>
-                <Link to="/withdrawal">Withdraw cash</Link>
-              </li>
 
               <li>
                 <a href="javascript:void(0)" onClick={loguserout}>
