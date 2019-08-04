@@ -10,7 +10,9 @@ const SignedInLink = ({ user, loguserout, dropdown, openDropdown }) => {
       <li>
         <div className="tp-initials" onClick={openDropdown}>
           <img
-            src={`https://api.adorable.io/avatars/50/${user._id}.png`}
+            src={`https://api.adorable.io/avatars/face/eye4/nose4/mouth5/50/${
+              user._id
+            }.png`}
             alt="image"
             className="tp-img"
           />
